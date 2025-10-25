@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { IconButton, Box, AppBar, useMediaQuery, Toolbar, styled, Stack } from '@mui/material';
 import PropTypes from 'prop-types';
-import { CustomizerContext } from '../../../../../context/CustomizerContext.jsx';
-import { ProductProvider } from '../../../../../context/EcommerceContext/index.jsx'
 import { IconMenu2, IconMoon, IconSun } from '@tabler/icons-react';
-import config from '../../../../../context/config.js'
+import { CustomizerContext } from '../../../../../context/CustomizerContext.jsx';
+import { ProductProvider } from '../../../../../context/EcommerceContext/index.jsx';
+import config from '../../../../../context/config.js';
 
 // components
 import Notifications from './Notifications.jsx';

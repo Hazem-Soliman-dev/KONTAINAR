@@ -95,57 +95,63 @@ const ReviewsModeration = () => {
   const reviewsData = [
     {
       id: 1,
-      sku: 'LAPTOP-001',
-      customer: 'John Doe',
+      sku: 'لاب توب-001',
+      customer: 'محمود هشام',
       rating: 5,
-      comment: 'Excellent laptop, very fast!',
-      status: 'pending',
+      comment: 'لاب توب ممتاز، سريع جدا!',
+      status: 'في الانتظار',
       createdAt: '2024-01-15',
     },
     {
       id: 2,
-      sku: 'PHONE-002',
-      customer: 'Jane Smith',
+      sku: 'هاتف-002',
+      customer: 'محمد عبد الله',
       rating: 4,
-      comment: 'Good phone but battery could be better',
-      status: 'approved',
+      comment: 'هاتف ممتاز، لكن البطارية يمكن أن تكون أفضل',
+      status: 'موافقة',
       createdAt: '2024-01-14',
     },
     {
       id: 3,
-      sku: 'SHIRT-003',
-      customer: 'Bob Johnson',
+      sku: 'قميص-003',
+      customer: 'مؤمن ابوعلي',
       rating: 3,
-      comment: 'Average quality, fits well',
-      status: 'rejected',
+      comment: 'جودة جيدة، تناسب جيدا',
+      status: 'مرفوض',
       createdAt: '2024-01-13',
     },
     {
       id: 4,
-      sku: 'SHOES-004',
-      customer: 'Alice Brown',
+      sku: 'أحذية-004',
+      customer: 'محمد حسن',
       rating: 5,
-      comment: 'Perfect fit and very comfortable',
-      status: 'approved',
+      comment: 'تناسب جيدا ومريح جدا',
+      status: 'موافقة',
       createdAt: '2024-01-12',
     },
     {
       id: 5,
-      sku: 'BAG-005',
-      customer: 'Charlie Wilson',
+      sku: 'مشينج-005',
+      customer: 'أحمد خالد',
       rating: 2,
-      comment: 'Poor quality, zipper broke quickly',
-      status: 'pending',
+      comment: 'جودة سيئة، الخيط سقط بسرعة',
+      status: 'في الانتظار',
       createdAt: '2024-01-11',
     },
   ];
 
   // Mock data for review stats
   const reviewStats = [
-    { title: 'Pending', value: '24', change: '+3', color: 'warning', icon: ScheduleIcon },
-    { title: 'Approved Today', value: '18', change: '+5', color: 'success', icon: CheckCircleIcon },
-    { title: 'Rejected Today', value: '6', change: '+2', color: 'error', icon: WarningIcon },
-    { title: 'Avg Rating', value: '4.2', change: '+0.1', color: 'info', icon: StarIcon },
+    { title: 'في الانتظار', value: '24', change: '+3', color: 'warning', icon: ScheduleIcon },
+    {
+      title: 'موافق عليه اليوم',
+      value: '18',
+      change: '+5',
+      color: 'success',
+      icon: CheckCircleIcon,
+    },
+    { title: 'مرفوض اليوم', value: '6', change: '+2', color: 'error', icon: WarningIcon },
+    { title: 'متوسط التقييم', value: '4.2', change: '+0.1', color: 'info', icon: StarIcon },
   ];
 
   useEffect(() => {
@@ -187,15 +193,15 @@ const ReviewsModeration = () => {
 
     switch (action) {
       case 'approve':
-        notify(`Approved ${selectedItems.length} reviews`);
+        notify(`موافقة ${selectedItems.length} مراجعات`);
         setSelectedItems([]);
         break;
       case 'reject':
-        notify(`Rejected ${selectedItems.length} reviews`);
+        notify(`مرفوض ${selectedItems.length} مراجعات`);
         setSelectedItems([]);
         break;
       case 'export':
-        notify(`Exported ${selectedItems.length} reviews`);
+        notify(`تصدير ${selectedItems.length} مراجعات`);
         break;
       default:
         break;
@@ -262,7 +268,7 @@ const ReviewsModeration = () => {
     }
   });
   const [formData, setFormData] = useState({
-    title: 'Reviews Moderation',
+    title: 'إدارة المراجعات',
     content: '',
     isActive: true,
     moderationLevel: 'auto',
@@ -274,26 +280,26 @@ const ReviewsModeration = () => {
   const [sections, setSections] = useState([
     {
       id: 1,
-      title: 'Moderation Rules',
-      content: 'Configure review moderation rules and approval process.',
+      title: 'قواعد المراجعة',
+      content: 'تضبيط قواعد المراجعة وعملية الموافقة.',
       isExpanded: true,
     },
     {
       id: 2,
-      title: 'Review Filters',
-      content: 'Set up filters to automatically moderate reviews.',
+      title: 'مرشحات المراجعات',
+      content: 'تعيين مرشحات لمراجعة المراجعات تلقائياً.',
       isExpanded: false,
     },
     {
       id: 3,
-      title: 'Review Approval',
-      content: 'Manage review approval workflow and notifications.',
+      title: 'موافقة المراجعات',
+      content: 'إدارة عملية موافقة المراجعات والإشعارات.',
       isExpanded: false,
     },
     {
       id: 4,
-      title: 'Review Analytics',
-      content: 'View review moderation analytics and performance.',
+      title: 'تحليل المراجعات',
+      content: 'عرض تحليلات مراجعة المراجعات والأداء.',
       isExpanded: false,
     },
   ]);
@@ -301,7 +307,7 @@ const ReviewsModeration = () => {
   const handleAddSection = () => {
     const newSection = {
       id: sections.length + 1,
-      title: 'New Section',
+      title: 'قسم جديد',
       content: '',
       isExpanded: false,
     };
@@ -327,24 +333,30 @@ const ReviewsModeration = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box
+      sx={{ p: 3 }}
+      role="main"
+      aria-label="إدارة مراجعات العملاء"
+      aria-hidden="false"
+      tabIndex={0}
+    >
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main', mb: 1 }}>
-          Reviews Moderation
+          إدارة مراجعات العملاء
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-          Moderate and manage customer reviews to maintain quality and trust
+          مراجعة وإدارة تقييمات العملاء للحفاظ على الجودة والثقة
         </Typography>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-          <Link color="inherit" href="/main-store">
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="مسار التنقل">
+          <Link color="inherit" href="/main-store" aria-label="الذهاب إلى المتجر الرئيسي">
             <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Main Store
+            المتجر الرئيسي
           </Link>
-          <Link color="inherit" href="/main-store/catalog">
-            Catalog
+          <Link color="inherit" href="/main-store/catalog" aria-label="الذهاب إلى الكتالوج">
+            الكتالوج
           </Link>
-          <Typography color="text.primary">Reviews Moderation</Typography>
+          <Typography color="text.primary">إدارة المراجعات</Typography>
         </Breadcrumbs>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
           <Stack direction="row" spacing={2}>
@@ -353,11 +365,21 @@ const ReviewsModeration = () => {
               startIcon={<RefreshIcon />}
               onClick={handleRefresh}
               disabled={isRefreshing}
+              aria-label="تحديث البيانات"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Refresh
+              تحديث
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Review
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenDialog(true)}
+              aria-label="إضافة مراجعة جديدة"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إضافة مراجعة
             </Button>
           </Stack>
         </Box>
@@ -411,24 +433,31 @@ const ReviewsModeration = () => {
       </Grid>
 
       {/* Filters & Search */}
-      <Paper sx={{ p: 3, mb: 4 }}>
+      <Paper sx={{ p: 3, mb: 4 }} aria-hidden="false">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
-          <Button variant="outlined" size="small">
-            Clear Filters
+          <Button
+            variant="outlined"
+            size="small"
+            aria-label="مسح الفلاتر"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            مسح الفلاتر
           </Button>
         </Box>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField
               fullWidth
-              placeholder="Search reviews..."
+              placeholder="البحث في المراجعات..."
               variant="outlined"
               size="small"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="البحث في المراجعات"
               InputProps={{
                 startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
               }}
@@ -436,33 +465,35 @@ const ReviewsModeration = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
                 value={statusFilter}
-                label="Status"
+                label="الحالة"
                 onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="فلتر الحالة"
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                <MenuItem value="موافقة">موافق عليه</MenuItem>
+                <MenuItem value="مرفوض">مرفوض</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Rating</InputLabel>
+              <InputLabel>التقييم</InputLabel>
               <Select
                 value={ratingFilter}
-                label="Rating"
+                label="التقييم"
                 onChange={(e) => setRatingFilter(e.target.value)}
+                aria-label="فلتر التقييم"
               >
-                <MenuItem value="all">All Ratings</MenuItem>
-                <MenuItem value="5">5 Stars</MenuItem>
-                <MenuItem value="4">4 Stars</MenuItem>
-                <MenuItem value="3">3 Stars</MenuItem>
-                <MenuItem value="2">2 Stars</MenuItem>
-                <MenuItem value="1">1 Star</MenuItem>
+                <MenuItem value="all">جميع التقييمات</MenuItem>
+                <MenuItem value="5">5 نجوم</MenuItem>
+                <MenuItem value="4">4 نجوم</MenuItem>
+                <MenuItem value="3">3 نجوم</MenuItem>
+                <MenuItem value="2">2 نجوم</MenuItem>
+                <MenuItem value="1">1 نجمة</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -477,7 +508,7 @@ const ReviewsModeration = () => {
                 justifyContent: 'center',
               }}
             >
-              {filteredData.length} reviews found
+              تم العثور على {filteredData.length} مراجعة
             </Typography>
           </Grid>
         </Grid>
@@ -490,26 +521,39 @@ const ReviewsModeration = () => {
         {selectedItems.length > 0 && (
           <Toolbar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1) }}>
             <Typography variant="subtitle1" sx={{ flex: '1 1 100%' }}>
-              {selectedItems.length} selected
+              {selectedItems.length} محدد
             </Typography>
             <Button
               variant="outlined"
               size="small"
               onClick={() => handleBulkAction('approve')}
               sx={{ mr: 1 }}
+              aria-label="الموافقة على المحدد"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Approve
+              موافقة
             </Button>
             <Button
               variant="outlined"
               size="small"
               onClick={() => handleBulkAction('reject')}
               sx={{ mr: 1 }}
+              aria-label="رفض المحدد"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Reject
+              رفض
             </Button>
-            <Button variant="outlined" size="small" onClick={() => handleBulkAction('export')}>
-              Export
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => handleBulkAction('export')}
+              aria-label="تصدير المحدد"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              تصدير
             </Button>
           </Toolbar>
         )}
@@ -526,13 +570,15 @@ const ReviewsModeration = () => {
                   onChange={handleSelectAll}
                 />
               </TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>SKU</TableCell>
-              <TableCell>Rating</TableCell>
-              <TableCell>Comment</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Created</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>العميل</TableCell>
+              <TableCell>رمز المنتج</TableCell>
+              <TableCell>التقييم</TableCell>
+              <TableCell>التعليق</TableCell>
+              <TableCell>الحالة</TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+                تاريخ الإنشاء
+              </TableCell>
+              <TableCell>الإجراءات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -568,7 +614,7 @@ const ReviewsModeration = () => {
             ) : sortedData.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8} align="center" sx={{ py: 4 }}>
-                  <Alert severity="info">No reviews found</Alert>
+                  <Alert severity="info">لم يتم العثور على مراجعات</Alert>
                 </TableCell>
               </TableRow>
             ) : (
@@ -608,9 +654,9 @@ const ReviewsModeration = () => {
                         label={review.status}
                         size="small"
                         color={
-                          review.status === 'approved'
+                          review.status === 'موافقة'
                             ? 'success'
-                            : review.status === 'rejected'
+                            : review.status === 'مرفوض'
                             ? 'error'
                             : 'warning'
                         }
@@ -624,30 +670,36 @@ const ReviewsModeration = () => {
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1}>
-                        <Tooltip title="View Details">
+                        <Tooltip title="عرض التفاصيل">
                           <IconButton
                             size="small"
                             onClick={() => handleView(review)}
-                            aria-label="view review"
+                            aria-label="عرض المراجعة"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <VisibilityOutlined />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Edit Review">
+                        <Tooltip title="تعديل المراجعة">
                           <IconButton
                             size="small"
                             onClick={() => handleEdit(review)}
-                            aria-label="edit review"
+                            aria-label="تعديل المراجعة"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Delete Review">
+                        <Tooltip title="حذف المراجعة">
                           <IconButton
                             size="small"
                             onClick={() => handleDelete(review)}
-                            aria-label="delete review"
+                            aria-label="حذف المراجعة"
                             color="error"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -672,84 +724,134 @@ const ReviewsModeration = () => {
       </Paper>
 
       {/* Edit Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit Review</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        maxWidth="sm"
+        fullWidth
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <DialogTitle id="dialog-title">تعديل المراجعة</DialogTitle>
+        <DialogContent id="dialog-description">
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Customer"
+                label="العميل"
                 value={selectedReview?.customer || ''}
                 variant="outlined"
-                helperText="Customer name"
+                helperText="اسم العميل"
+                aria-label="اسم العميل"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="SKU"
+                label="رمز المنتج"
                 value={selectedReview?.sku || ''}
                 variant="outlined"
-                helperText="Product SKU"
+                helperText="رمز المنتج"
+                aria-label="رمز المنتج"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Comment"
+                label="التعليق"
                 multiline
                 rows={3}
                 value={selectedReview?.comment || ''}
                 variant="outlined"
-                helperText="Review comment"
+                helperText="تعليق المراجعة"
+                aria-label="تعليق المراجعة"
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>
-                <InputLabel>Rating</InputLabel>
-                <Select value={selectedReview?.rating || 5} label="Rating">
-                  <MenuItem value={1}>1 Star</MenuItem>
-                  <MenuItem value={2}>2 Stars</MenuItem>
-                  <MenuItem value={3}>3 Stars</MenuItem>
-                  <MenuItem value={4}>4 Stars</MenuItem>
-                  <MenuItem value={5}>5 Stars</MenuItem>
+                <InputLabel>التقييم</InputLabel>
+                <Select
+                  value={selectedReview?.rating || 5}
+                  label="التقييم"
+                  aria-label="تقييم المراجعة"
+                >
+                  <MenuItem value={1}>1 نجمة</MenuItem>
+                  <MenuItem value={2}>2 نجوم</MenuItem>
+                  <MenuItem value={3}>3 نجوم</MenuItem>
+                  <MenuItem value={4}>4 نجوم</MenuItem>
+                  <MenuItem value={5}>5 نجوم</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select value={selectedReview?.status || 'pending'} label="Status">
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="approved">Approved</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+                <Select
+                  value={selectedReview?.status || 'في الانتظار'}
+                  label="الحالة"
+                  aria-label="حالة المراجعة"
+                >
+                  <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                  <MenuItem value="موافقة">موافق عليه</MenuItem>
+                  <MenuItem value="مرفوض">مرفوض</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleSave} variant="contained">
-            Save
+          <Button
+            onClick={() => setOpenDialog(false)}
+            aria-label="إلغاء العملية"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            إلغاء
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            aria-label="حفظ المراجعة"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            حفظ
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>Delete Review</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">حذف المراجعة</DialogTitle>
+        <DialogContent id="delete-dialog-description">
           <Typography>
-            Are you sure you want to delete the review by "{selectedReview?.customer}"? This action
-            cannot be undone.
+            هل أنت متأكد من حذف المراجعة من "{selectedReview?.customer}"؟ لا يمكن التراجع عن هذا
+            الإجراء.
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
-            Delete
+          <Button
+            onClick={() => setOpenDeleteDialog(false)}
+            aria-label="إلغاء الحذف"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            إلغاء
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            aria-label="تأكيد الحذف"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            حذف
           </Button>
         </DialogActions>
       </Dialog>
@@ -760,33 +862,34 @@ const ReviewsModeration = () => {
         open={viewDrawer}
         onClose={() => setViewDrawer(false)}
         sx={{ '& .MuiDrawer-paper': { width: 400 } }}
+        aria-labelledby="drawer-title"
       >
         <Box sx={{ p: 3 }}>
-          <Typography variant="h6" sx={{ mb: 3 }}>
-            Review Details
+          <Typography variant="h6" sx={{ mb: 3 }} id="drawer-title">
+            تفاصيل المراجعة
           </Typography>
           {selectedReview && (
             <List>
               <ListItem>
-                <ListItemText primary="Customer" secondary={selectedReview.customer} />
+                <ListItemText primary="العميل" secondary={selectedReview.customer} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="SKU" secondary={selectedReview.sku} />
+                <ListItemText primary="رمز المنتج" secondary={selectedReview.sku} />
               </ListItem>
               <ListItem>
                 <ListItemText
-                  primary="Rating"
+                  primary="التقييم"
                   secondary={<Rating value={selectedReview.rating} readOnly />}
                 />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Comment" secondary={selectedReview.comment} />
+                <ListItemText primary="التعليق" secondary={selectedReview.comment} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Status" secondary={selectedReview.status} />
+                <ListItemText primary="الحالة" secondary={selectedReview.status} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Created" secondary={selectedReview.createdAt} />
+                <ListItemText primary="تاريخ الإنشاء" secondary={selectedReview.createdAt} />
               </ListItem>
             </List>
           )}
@@ -809,37 +912,39 @@ const ReviewsModeration = () => {
         </Alert>
       </Snackbar>
       {/* Moderation Settings */}
-      <Paper sx={{ p: 3, mt: 4 }}>
+      <Paper sx={{ p: 3, mt: 4 }} aria-hidden="false">
         <Typography variant="h6" gutterBottom>
-          Moderation Settings
+          إعدادات المراجعة
         </Typography>
         <Divider sx={{ mb: 2 }} />
 
         <Grid container spacing={2}>
           <Grid size={{ xs: 12 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Moderation Level</InputLabel>
+              <InputLabel>مستوى المراجعة</InputLabel>
               <Select
                 value={formData.moderationLevel}
-                label="Moderation Level"
+                label="مستوى المراجعة"
                 onChange={(e) => setFormData({ ...formData, moderationLevel: e.target.value })}
+                aria-label="مستوى المراجعة"
               >
-                <MenuItem value="auto">Auto</MenuItem>
-                <MenuItem value="manual">Manual</MenuItem>
-                <MenuItem value="hybrid">Hybrid</MenuItem>
-                <MenuItem value="disabled">Disabled</MenuItem>
+                <MenuItem value="auto">تلقائي</MenuItem>
+                <MenuItem value="manual">يدوي</MenuItem>
+                <MenuItem value="hybrid">مختلط</MenuItem>
+                <MenuItem value="disabled">معطل</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
-              label="Review Threshold"
+              label="حد المراجعة"
               type="number"
               value={formData.reviewThreshold}
               onChange={(e) => setFormData({ ...formData, reviewThreshold: e.target.value })}
               size="small"
-              helperText="Minimum rating to auto-approve reviews"
+              helperText="أقل تقييم للموافقة التلقائية على المراجعات"
+              aria-label="حد المراجعة"
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
@@ -850,19 +955,20 @@ const ReviewsModeration = () => {
                   onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                 />
               }
-              label="Moderation Active"
+              label="المراجعة نشطة"
             />
           </Grid>
           <Grid size={{ xs: 12 }}>
             <TextField
               fullWidth
-              label="Contact Information"
+              label="معلومات الاتصال"
               multiline
               rows={2}
               value={formData.contactInfo}
               onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
               size="small"
-              placeholder="Review moderation team contact details..."
+              placeholder="تفاصيل الاتصال بفريق مراجعة المراجعات..."
+              aria-label="معلومات الاتصال"
             />
           </Grid>
         </Grid>

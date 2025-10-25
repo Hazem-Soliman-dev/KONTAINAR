@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -16,21 +16,9 @@ import {
   Select,
   MenuItem,
   Chip,
-  IconButton,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TablePagination,
   Switch,
   FormControlLabel,
   Accordion,
@@ -38,6 +26,20 @@ import {
   AccordionDetails,
   Stack,
   Avatar,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TablePagination,
+  IconButton,
+  Checkbox,
+  LinearProgress,
+  Skeleton,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -54,48 +56,191 @@ import {
   TrendingUp as TrendingUpIcon,
   AttachMoney as AttachMoneyIcon,
   Inventory as InventoryIcon,
+  Visibility as ViewIcon,
+  Search as SearchIcon,
 } from '@mui/icons-material';
 
 const Replenishment = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [sourceFilter, setSourceFilter] = useState('all');
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [selectedReplenishment, setSelectedReplenishment] = useState(null);
   const [formData, setFormData] = useState({
-    title: 'إعادة التموين',
+    title: 'إدارة إعادة التموين',
     content: '',
     isActive: true,
     replenishmentStatus: 'pending',
     replenishmentDate: new Date().toISOString().split('T')[0],
     replenishmentSource: '',
     lastUpdated: new Date().toISOString().split('T')[0],
+    warehouse: '',
+    priority: 'متوسط',
+    description: '',
+    estimatedCost: 0,
   });
+
+  // بيانات وهمية شاملة لإعادة التموين
+  const replenishmentData = [
+    {
+      id: 1,
+      replenishmentNumber: 'REP-001',
+      title: 'إعادة تموين الإلكترونيات',
+      status: 'مكتمل',
+      priority: 'عالي',
+      source: 'مورد الإلكترونيات',
+      warehouse: 'المستودع الرئيسي',
+      items: 15,
+      totalCost: 25000.0,
+      createdBy: 'أحمد محمد',
+      createdAt: '2024-01-15',
+      completedAt: '2024-01-16',
+      description: 'إعادة تموين منتجات إلكترونية',
+      notes: 'تم التموين بنجاح',
+      itemsList: [
+        { name: 'سماعات لاسلكية', qty: 50, cost: 2500.0 },
+        { name: 'ساعات ذكية', qty: 30, cost: 7500.0 },
+        { name: 'لوحات مفاتيح', qty: 100, cost: 5000.0 },
+      ],
+    },
+    {
+      id: 2,
+      replenishmentNumber: 'REP-002',
+      title: 'إعادة تموين الأجهزة المنزلية',
+      status: 'قيد التقدم',
+      priority: 'متوسط',
+      source: 'مورد الأجهزة المنزلية',
+      warehouse: 'مستودع الأجهزة',
+      items: 8,
+      totalCost: 15000.0,
+      createdBy: 'فاطمة علي',
+      createdAt: '2024-01-14',
+      completedAt: null,
+      description: 'إعادة تموين أجهزة منزلية',
+      notes: 'التموين قيد التنفيذ',
+      itemsList: [
+        { name: 'ماكينات قهوة', qty: 20, cost: 8000.0 },
+        { name: 'خلاطات', qty: 30, cost: 7000.0 },
+      ],
+    },
+    {
+      id: 3,
+      replenishmentNumber: 'REP-003',
+      title: 'إعادة تموين الملابس',
+      status: 'في الانتظار',
+      priority: 'منخفض',
+      source: 'مورد الملابس',
+      warehouse: 'مستودع الملابس',
+      items: 25,
+      totalCost: 8000.0,
+      createdBy: 'محمد عبدالله',
+      createdAt: '2024-01-13',
+      completedAt: null,
+      description: 'إعادة تموين ملابس موسمية',
+      notes: 'في انتظار الموافقة',
+      itemsList: [
+        { name: 'قمصان رجالية', qty: 100, cost: 3000.0 },
+        { name: 'فساتين نسائية', qty: 80, cost: 5000.0 },
+      ],
+    },
+    {
+      id: 4,
+      replenishmentNumber: 'REP-004',
+      title: 'إعادة تموين الكتب',
+      status: 'ملغي',
+      priority: 'متوسط',
+      source: 'مورد الكتب',
+      warehouse: 'مستودع الكتب',
+      items: 5,
+      totalCost: 3000.0,
+      createdBy: 'نورا السعيد',
+      createdAt: '2024-01-12',
+      completedAt: null,
+      description: 'إعادة تموين كتب تعليمية',
+      notes: 'تم إلغاء التموين',
+      itemsList: [{ name: 'كتب تعليمية', qty: 50, cost: 3000.0 }],
+    },
+    {
+      id: 5,
+      replenishmentNumber: 'REP-005',
+      title: 'إعادة تموين الألعاب',
+      status: 'مكتمل',
+      priority: 'عالي',
+      source: 'مورد الألعاب',
+      warehouse: 'مستودع الألعاب',
+      items: 12,
+      totalCost: 12000.0,
+      createdBy: 'خالد أحمد',
+      createdAt: '2024-01-11',
+      completedAt: '2024-01-12',
+      description: 'إعادة تموين ألعاب أطفال',
+      notes: 'تم التموين بنجاح',
+      itemsList: [
+        { name: 'ألعاب تعليمية', qty: 40, cost: 6000.0 },
+        { name: 'دمى', qty: 60, cost: 6000.0 },
+      ],
+    },
+  ];
+
+  const warehouses = [
+    'المستودع الرئيسي',
+    'مستودع الأجهزة',
+    'مستودع الملابس',
+    'مستودع الكتب',
+    'مستودع الألعاب',
+  ];
+  const sources = [
+    'مورد الإلكترونيات',
+    'مورد الأجهزة المنزلية',
+    'مورد الملابس',
+    'مورد الكتب',
+    'مورد الألعاب',
+  ];
+  const statuses = ['في الانتظار', 'قيد التقدم', 'مكتمل', 'ملغي'];
+  const priorities = ['عالي', 'متوسط', 'منخفض'];
 
   const [sections, setSections] = useState([
     {
       id: 1,
       title: 'عملية إعادة التموين',
-      content: 'إدارة إعادة تموين وإعادة تخزين المخزون.',
+      content: 'إدارة إعادة تموين وإعادة تخزين المخزون مع التتبع التفصيلي والتحليلات المتقدمة.',
       isExpanded: true,
     },
     {
       id: 2,
       title: 'قواعد إعادة التموين',
-      content: 'تكوين قواعد وسياسات إعادة التموين.',
+      content: 'تكوين قواعد وسياسات إعادة التموين مع التنبيهات التلقائية والموافقات.',
       isExpanded: false,
     },
     {
       id: 3,
       title: 'تتبع إعادة التموين',
-      content: 'تتبع تقدم وحالة إعادة التموين.',
+      content: 'تتبع تقدم وحالة إعادة التموين مع التقارير التفصيلية والتحليلات.',
       isExpanded: false,
     },
     {
       id: 4,
       title: 'تحليلات إعادة التموين',
-      content: 'عرض أداء وتحليلات إعادة التموين.',
+      content: 'عرض أداء وتحليلات إعادة التموين مع الرسوم البيانية والتقارير.',
       isExpanded: false,
     },
   ]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   const handleSave = () => {
     setLoading(true);
@@ -103,7 +248,7 @@ const Replenishment = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Replenishment settings updated successfully',
+        message: 'تم تحديث إعدادات إعادة التموين بنجاح',
         severity: 'success',
       });
     }, 1000);
@@ -112,7 +257,7 @@ const Replenishment = () => {
   const handleAddSection = () => {
     const newSection = {
       id: sections.length + 1,
-      title: 'New Section',
+      title: 'قسم جديد',
       content: '',
       isExpanded: false,
     };
@@ -143,14 +288,132 @@ const Replenishment = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Replenishment refreshed successfully',
+        message: 'تم تحديث إعادة التموين بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      setSelectedItems(filteredData.map((item) => item.id));
+    } else {
+      setSelectedItems([]);
+    }
+  };
+
+  const handleSelectItem = (itemId) => {
+    setSelectedItems((prev) =>
+      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
+    );
+  };
+
+  const handleBulkAction = (action) => {
+    setSnackbar({
+      open: true,
+      message: `تم ${action} لـ ${selectedItems.length} تموين`,
+      severity: 'success',
+    });
+    setSelectedItems([]);
+  };
+
+  const handleView = (replenishment) => {
+    setSelectedReplenishment(replenishment);
+    setOpenViewDialog(true);
+  };
+
+  const handleEdit = (replenishment) => {
+    setSelectedReplenishment(replenishment);
+    setOpenDialog(true);
+  };
+
+  const handleDelete = (replenishment) => {
+    setSelectedReplenishment(replenishment);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setOpenDeleteDialog(false);
+      setSnackbar({ open: true, message: 'تم حذف التموين بنجاح', severity: 'success' });
+    }, 1000);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'مكتمل':
+        return 'success';
+      case 'قيد التقدم':
+        return 'warning';
+      case 'في الانتظار':
+        return 'info';
+      case 'ملغي':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'عالي':
+        return 'error';
+      case 'متوسط':
+        return 'warning';
+      case 'منخفض':
+        return 'success';
+      default:
+        return 'default';
+    }
+  };
+
+  const filteredData = replenishmentData.filter((item) => {
+    const matchesSearch =
+      item.replenishmentNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.source.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.createdBy.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
+    const matchesSource = sourceFilter === 'all' || item.source === sourceFilter;
+    return matchesSearch && matchesStatus && matchesSource;
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    let aValue = a[sortBy];
+    let bValue = b[sortBy];
+
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
+
+    if (sortOrder === 'asc') {
+      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+    } else {
+      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+    }
+  });
+
   return (
-    <Box sx={{ p: 3 }}>
+    <Box
+      sx={{ p: 3 }}
+      role="main"
+      aria-label="إدارة إعادة التموين"
+      aria-hidden="false"
+      tabIndex={0}
+    >
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -158,24 +421,29 @@ const Replenishment = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Replenishment Management
+              إدارة إعادة التموين
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Automate inventory replenishment and restocking processes
+              أتمتة عمليات إعادة تموين وإعادة تخزين المخزون مع التتبع التفصيلي والتحليلات المتقدمة
             </Typography>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              sx={{ mt: 1 }}
+              aria-label="مسار التنقل"
+            >
               <Link
                 color="inherit"
-                href="/main-store"
+                href="/system"
                 sx={{ display: 'flex', alignItems: 'center' }}
+                aria-label="الذهاب إلى لوحة التحكم"
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
-              <Link color="inherit" href="/main-store/operations">
-                Operations
+              <Link color="inherit" href="/system/operations" aria-label="الذهاب إلى العمليات">
+                العمليات
               </Link>
-              <Typography color="text.primary">Replenishment</Typography>
+              <Typography color="text.primary">إعادة التموين</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -185,11 +453,21 @@ const Replenishment = () => {
               startIcon={<RefreshIcon />}
               onClick={handleRefresh}
               disabled={loading}
+              aria-label="تحديث البيانات"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              {loading ? 'Refreshing...' : 'Refresh'}
+              {loading ? 'جاري التحديث...' : 'تحديث'}
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-              Add Process
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenDialog(true)}
+              aria-label="إضافة تموين جديد"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إضافة تموين
             </Button>
           </Stack>
         </Box>
@@ -221,10 +499,10 @@ const Replenishment = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  89
+                  {replenishmentData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Replenishments
+                  إجمالي عمليات إعادة التموين
                 </Typography>
               </CardContent>
             </Card>
@@ -254,10 +532,10 @@ const Replenishment = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  67
+                  {replenishmentData.filter((item) => item.status === 'مكتمل').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Completed
+                  مكتمل
                 </Typography>
               </CardContent>
             </Card>
@@ -287,10 +565,10 @@ const Replenishment = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  18
+                  {replenishmentData.filter((item) => item.status === 'قيد التقدم').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  In Progress
+                  قيد التقدم
                 </Typography>
               </CardContent>
             </Card>
@@ -320,10 +598,10 @@ const Replenishment = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  4
+                  {replenishmentData.filter((item) => item.status === 'في الانتظار').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Pending
+                  في الانتظار
                 </Typography>
               </CardContent>
             </Card>
@@ -332,40 +610,72 @@ const Replenishment = () => {
       </Box>
 
       {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Paper sx={{ p: 2, mb: 3 }} aria-hidden="false">
         <Grid container spacing={2} alignItems="center">
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search Replenishment"
+              label="البحث في إعادة التموين"
               size="small"
-              placeholder="Search replenishment..."
+              placeholder="البحث في إعادة التموين..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+              }}
+              aria-label="البحث في إعادة التموين"
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select
+                value={statusFilter}
+                label="الحالة"
+                onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="فلتر الحالة"
+              >
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                <MenuItem value="قيد التقدم">قيد التقدم</MenuItem>
+                <MenuItem value="مكتمل">مكتمل</MenuItem>
+                <MenuItem value="ملغي">ملغي</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Replenishment Status</InputLabel>
-              <Select value="all" label="Replenishment Status">
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="in-progress">In Progress</MenuItem>
-                <MenuItem value="completed">Completed</MenuItem>
+              <InputLabel>المصدر</InputLabel>
+              <Select
+                value={sourceFilter}
+                label="المصدر"
+                onChange={(e) => setSourceFilter(e.target.value)}
+                aria-label="فلتر المصدر"
+              >
+                <MenuItem value="all">جميع المصادر</MenuItem>
+                {sources.map((source) => (
+                  <MenuItem key={source} value={source}>
+                    {source}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+            <Button
+              variant="outlined"
+              size="small"
+              fullWidth
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('all');
+                setSourceFilter('all');
+              }}
+              aria-label="إعادة تعيين الفلاتر"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -376,16 +686,22 @@ const Replenishment = () => {
                 onClick={handleSave}
                 disabled={loading}
                 size="small"
+                aria-label="حفظ إعادة التموين"
+                aria-hidden="false"
+                tabIndex={0}
               >
-                Save Replenishment
+                حفظ إعادة التموين
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={() => setOpenDialog(true)}
                 size="small"
+                aria-label="إضافة تموين"
+                aria-hidden="false"
+                tabIndex={0}
               >
-                Add Process
+                إضافة تموين
               </Button>
             </Box>
           </Grid>
@@ -399,32 +715,33 @@ const Replenishment = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Replenishment Settings
+                إعدادات إعادة التموين
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth size="small">
-                    <InputLabel>Replenishment Status</InputLabel>
+                    <InputLabel>حالة إعادة التموين</InputLabel>
                     <Select
                       value={formData.replenishmentStatus}
-                      label="Replenishment Status"
+                      label="حالة إعادة التموين"
                       onChange={(e) =>
                         setFormData({ ...formData, replenishmentStatus: e.target.value })
                       }
+                      aria-label="حالة إعادة التموين"
                     >
-                      <MenuItem value="pending">Pending</MenuItem>
-                      <MenuItem value="in-progress">In Progress</MenuItem>
-                      <MenuItem value="completed">Completed</MenuItem>
-                      <MenuItem value="cancelled">Cancelled</MenuItem>
+                      <MenuItem value="pending">في الانتظار</MenuItem>
+                      <MenuItem value="in-progress">قيد التقدم</MenuItem>
+                      <MenuItem value="completed">مكتمل</MenuItem>
+                      <MenuItem value="cancelled">ملغي</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Replenishment Date"
+                    label="تاريخ إعادة التموين"
                     type="date"
                     value={formData.replenishmentDate}
                     onChange={(e) =>
@@ -432,6 +749,7 @@ const Replenishment = () => {
                     }
                     size="small"
                     InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ إعادة التموين"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
@@ -442,19 +760,87 @@ const Replenishment = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Replenishment Active"
+                    label="إعادة التموين نشطة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>مصدر إعادة التموين</InputLabel>
+                    <Select
+                      value={formData.replenishmentSource}
+                      label="مصدر إعادة التموين"
+                      onChange={(e) =>
+                        setFormData({ ...formData, replenishmentSource: e.target.value })
+                      }
+                      aria-label="مصدر إعادة التموين"
+                    >
+                      {sources.map((source) => (
+                        <MenuItem key={source} value={source}>
+                          {source}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المستودع</InputLabel>
+                    <Select
+                      value={formData.warehouse}
+                      label="المستودع"
+                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
+                      aria-label="المستودع"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="التكلفة المتوقعة"
+                    type="number"
+                    value={formData.estimatedCost}
+                    onChange={(e) =>
+                      setFormData({ ...formData, estimatedCost: parseFloat(e.target.value) || 0 })
+                    }
+                    size="small"
+                    placeholder="أدخل التكلفة المتوقعة"
+                    aria-label="التكلفة المتوقعة"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Replenishment Source"
-                    value={formData.replenishmentSource}
-                    onChange={(e) =>
-                      setFormData({ ...formData, replenishmentSource: e.target.value })
-                    }
+                    label="الوصف"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     size="small"
-                    placeholder="Replenishment source..."
+                    multiline
+                    rows={3}
+                    placeholder="وصف إعادة التموين..."
+                    aria-label="الوصف"
                   />
                 </Grid>
               </Grid>
@@ -462,9 +848,9 @@ const Replenishment = () => {
           </Card>
         </Grid>
 
-        {/* Replenishment Sections */}
+        {/* Replenishment Table */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
             <CardContent>
               <Box
                 sx={{
@@ -474,86 +860,366 @@ const Replenishment = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Replenishment Processes</Typography>
-                <Chip label={`${sections.length} processes`} color="primary" size="small" />
+                <Typography variant="h6">قائمة إعادة التموين</Typography>
+                <Chip label={`${filteredData.length} تموين`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <RefreshIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                        size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Process">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
-                        </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter process details..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <RefreshIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No replenishment processes yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first replenishment process to get started
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Process
-                  </Button>
+              {loading ? (
+                <Box sx={{ p: 2 }}>
+                  {[...Array(3)].map((_, index) => (
+                    <Skeleton key={index} height={60} sx={{ mb: 1 }} />
+                  ))}
                 </Box>
+              ) : (
+                <>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={selectedItems.length === filteredData.length}
+                            onChange={handleSelectAll}
+                          />
+                        </TableCell>
+                        <TableCell>رقم التموين</TableCell>
+                        <TableCell>العنوان</TableCell>
+                        <TableCell>المصدر</TableCell>
+                        <TableCell>الحالة</TableCell>
+                        <TableCell>الأولوية</TableCell>
+                        <TableCell>التكلفة</TableCell>
+                        <TableCell>الإجراءات</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sortedData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((item) => (
+                          <TableRow key={item.id} hover>
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={selectedItems.includes(item.id)}
+                                onChange={() => handleSelectItem(item.id)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Box>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                                  {item.replenishmentNumber}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {item.items} عنصر
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ maxWidth: 200 }}>
+                                {item.title}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{item.source}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.status}
+                                size="small"
+                                color={getStatusColor(item.status)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.priority}
+                                size="small"
+                                color={getPriorityColor(item.priority)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">
+                                ${item.totalCost.toLocaleString()}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Stack direction="row" spacing={1}>
+                                <Tooltip title="عرض">
+                                  <IconButton size="small" onClick={() => handleView(item)}>
+                                    <ViewIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="تعديل">
+                                  <IconButton size="small" onClick={() => handleEdit(item)}>
+                                    <EditIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="حذف">
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleDelete(item)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </>
               )}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add/Edit Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>{selectedReplenishment ? 'تعديل التموين' : 'إضافة تموين جديد'}</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="رقم التموين"
+                value={selectedReplenishment?.replenishmentNumber || ''}
+                placeholder="أدخل رقم التموين"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="عنوان التموين"
+                value={selectedReplenishment?.title || ''}
+                placeholder="أدخل عنوان التموين"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>المصدر</InputLabel>
+                <Select label="المصدر">
+                  {sources.map((source) => (
+                    <MenuItem key={source} value={source}>
+                      {source}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>المستودع</InputLabel>
+                <Select label="المستودع">
+                  {warehouses.map((warehouse) => (
+                    <MenuItem key={warehouse} value={warehouse}>
+                      {warehouse}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  {statuses.map((status) => (
+                    <MenuItem key={status} value={status}>
+                      {status}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الأولوية</InputLabel>
+                <Select label="الأولوية">
+                  {priorities.map((priority) => (
+                    <MenuItem key={priority} value={priority}>
+                      {priority}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="التكلفة الإجمالية"
+                type="number"
+                value={selectedReplenishment?.totalCost || 0}
+                placeholder="أدخل التكلفة الإجمالية"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="عدد العناصر"
+                type="number"
+                value={selectedReplenishment?.items || 0}
+                placeholder="أدخل عدد العناصر"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ البداية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ النهاية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="الوصف"
+                multiline
+                rows={3}
+                value={selectedReplenishment?.description || ''}
+                placeholder="أدخل وصف التموين"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="ملاحظات"
+                multiline
+                rows={2}
+                value={selectedReplenishment?.notes || ''}
+                placeholder="أدخل ملاحظات إضافية"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={loading}
+            startIcon={<SaveIcon />}
+          >
+            {loading ? 'جاري الحفظ...' : 'حفظ'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* View Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>تفاصيل التموين</DialogTitle>
+        <DialogContent>
+          {selectedReplenishment && (
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  {selectedReplenishment.title}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  رقم التموين: {selectedReplenishment.replenishmentNumber}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  المصدر: {selectedReplenishment.source}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  المستودع: {selectedReplenishment.warehouse}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الحالة: {selectedReplenishment.status}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الأولوية: {selectedReplenishment.priority}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  العناصر: {selectedReplenishment.items}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  التكلفة: ${selectedReplenishment.totalCost.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  أنشأه: {selectedReplenishment.createdBy}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  تاريخ الإنشاء: {selectedReplenishment.createdAt}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  تاريخ الإكمال: {selectedReplenishment.completedAt || 'لم يكتمل بعد'}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الوصف: {selectedReplenishment.description}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الملاحظات: {selectedReplenishment.notes}
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+        <DialogTitle>تأكيد الحذف</DialogTitle>
+        <DialogContent>
+          <Typography>
+            هل أنت متأكد من حذف التموين "{selectedReplenishment?.title}"؟ هذا الإجراء لا يمكن
+            التراجع عنه.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            حذف
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar

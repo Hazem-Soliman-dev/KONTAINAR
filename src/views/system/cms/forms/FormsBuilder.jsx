@@ -24,23 +24,18 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Avatar,
-  Stack,
-  Zoom,
-  LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,16 +45,29 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
+  Build as BuildIcon,
   CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
   TrendingUp as TrendingUpIcon,
-  Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  DynamicForm as DynamicFormIcon,
+  Speed as SpeedIcon,
+  Assignment as FormIcon,
+  ContentCopy as ContentCopyIcon,
+  Preview as PreviewIcon,
+  TextFields as TextFieldsIcon,
+  CheckBox as CheckBoxIcon,
+  RadioButtonChecked as RadioButtonCheckedIcon,
+  SelectAll as SelectAllIcon,
+  DateRange as DateRangeIcon,
+  AttachFile as AttachFileIcon,
+  Image as ImageIcon,
+  Email as EmailIcon,
+  Phone as PhoneIcon,
+  Star as StarIcon,
+  Person as PersonIcon,
+  Poll as PollIcon,
+  Support as SupportIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Tune as TuneIcon,
 } from '@mui/icons-material';
 
 const FormsBuilder = () => {
@@ -67,44 +75,107 @@ const FormsBuilder = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Stats data
   const formsStats = [
     {
-      title: 'Total Forms',
-      value: '15',
+      title: 'إجمالي النماذج',
+      value: '24',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: DynamicFormIcon,
+      icon: FormIcon,
       change: '+3',
     },
     {
-      title: 'Active Forms',
-      value: '12',
+      title: 'النماذج النشطة',
+      value: '18',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       icon: CheckCircleIcon,
-      change: '80%',
+      change: '75%',
     },
     {
-      title: 'Submissions',
-      value: '234',
+      title: 'الإجابات المستلمة',
+      value: '1,250',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '+18',
+      icon: TrendingUpIcon,
+      change: '+25%',
     },
     {
-      title: 'Conversion Rate',
-      value: '12.5%',
+      title: 'معدل الإكمال',
+      value: '92.5%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: TrendingUpIcon,
-      change: '+2.1%',
+      icon: SpeedIcon,
+      change: '+5.2%',
     },
+  ];
+
+  // Mock data for forms
+  const formsData = [
+    {
+      id: 1,
+      name: 'نموذج الاتصال',
+      description: 'نموذج للتواصل مع العملاء',
+      type: 'contact',
+      status: 'active',
+      submissions: 45,
+      createdAt: '2024-01-15',
+      lastSubmission: '2024-01-20',
+      fields: 5,
+    },
+    {
+      id: 2,
+      name: 'نموذج التسجيل',
+      description: 'نموذج تسجيل المستخدمين الجدد',
+      type: 'registration',
+      status: 'active',
+      submissions: 23,
+      createdAt: '2024-01-14',
+      lastSubmission: '2024-01-19',
+      fields: 8,
+    },
+    {
+      id: 3,
+      name: 'نموذج الاستطلاع',
+      description: 'استطلاع رضا العملاء',
+      type: 'survey',
+      status: 'draft',
+      submissions: 0,
+      createdAt: '2024-01-13',
+      lastSubmission: null,
+      fields: 12,
+    },
+  ];
+
+  const formTypes = [
+    { value: 'contact', label: 'نموذج الاتصال', icon: EmailIcon },
+    { value: 'registration', label: 'نموذج التسجيل', icon: PersonIcon },
+    { value: 'survey', label: 'استطلاع', icon: PollIcon },
+    { value: 'feedback', label: 'تقييم', icon: StarIcon },
+    { value: 'order', label: 'طلب', icon: ShoppingCartIcon },
+    { value: 'support', label: 'دعم فني', icon: SupportIcon },
+  ];
+
+  const fieldTypes = [
+    { value: 'text', label: 'نص', icon: TextFieldsIcon },
+    { value: 'email', label: 'بريد إلكتروني', icon: EmailIcon },
+    { value: 'phone', label: 'هاتف', icon: PhoneIcon },
+    { value: 'textarea', label: 'نص طويل', icon: TextFieldsIcon },
+    { value: 'select', label: 'قائمة منسدلة', icon: SelectAllIcon },
+    { value: 'radio', label: 'خيار واحد', icon: RadioButtonCheckedIcon },
+    { value: 'checkbox', label: 'خيارات متعددة', icon: CheckBoxIcon },
+    { value: 'date', label: 'تاريخ', icon: DateRangeIcon },
+    { value: 'file', label: 'ملف', icon: AttachFileIcon },
+    { value: 'image', label: 'صورة', icon: ImageIcon },
+    { value: 'rating', label: 'تقييم', icon: StarIcon },
+    { value: 'slider', label: 'شريط تمرير', icon: TuneIcon },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,42 +185,22 @@ const FormsBuilder = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'Forms Builder',
+    title: 'منشئ النماذج',
     content: '',
     isActive: true,
-    formType: 'contact',
-    maxSubmissions: 100,
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    autoSave: true,
+    validation: true,
+    notifications: true,
+    analytics: true,
+    responsive: true,
+    accessibility: true,
+    multiStep: false,
+    conditionalLogic: false,
   });
-
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'Form Fields',
-      content: 'Configure form fields including text inputs, dropdowns, and checkboxes.',
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'Validation Rules',
-      content: 'Set up validation rules for required fields and data formats.',
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'Submission Handling',
-      content: 'Configure how form submissions are processed and stored.',
-      isExpanded: false,
-    },
-    {
-      id: 4,
-      title: 'Email Notifications',
-      content: 'Set up email notifications for form submissions.',
-      isExpanded: false,
-    },
-  ]);
 
   const handleSave = () => {
     setLoading(true);
@@ -157,38 +208,57 @@ const FormsBuilder = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Form builder settings updated successfully',
+        message: 'تم تحديث إعدادات النماذج بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'New Section',
-      content: '',
-      isExpanded: false,
-    };
-    setSections([...sections, newSection]);
+  const handleAddForm = () => {
+    setOpenDialog(true);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteForm = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف النموذج بنجاح',
+      severity: 'success',
+    });
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
-    );
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'active':
+        return 'success';
+      case 'draft':
+        return 'warning';
+      case 'inactive':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'active':
+        return 'نشط';
+      case 'draft':
+        return 'مسودة';
+      case 'inactive':
+        return 'غير نشط';
+      default:
+        return 'غير محدد';
+    }
   };
 
   return (
@@ -200,10 +270,10 @@ const FormsBuilder = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Forms Builder Management
+              منشئ النماذج
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage your store's forms and form builder settings
+              إنشاء وإدارة النماذج التفاعلية بسهولة
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -212,12 +282,12 @@ const FormsBuilder = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+                إدارة المحتوى
               </Link>
-              <Typography color="text.primary">Forms Builder</Typography>
+              <Typography color="text.primary">منشئ النماذج</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -227,7 +297,7 @@ const FormsBuilder = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -235,7 +305,7 @@ const FormsBuilder = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              Save Forms
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -309,14 +379,14 @@ const FormsBuilder = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <BuildIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Forms Management
+              إعدادات النماذج
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Configure and manage your forms
+              تخصيص وإدارة النماذج
             </Typography>
           </Box>
         </Box>
@@ -324,35 +394,37 @@ const FormsBuilder = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search forms"
+              label="البحث في النماذج"
               size="small"
-              placeholder="Search form configurations..."
+              placeholder="البحث في النماذج..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="draft">مسودة</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Form Type</InputLabel>
-              <Select value="all" label="Form Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="contact">Contact</MenuItem>
-                <MenuItem value="survey">Survey</MenuItem>
-                <MenuItem value="registration">Registration</MenuItem>
+              <InputLabel>نوع النموذج</InputLabel>
+              <Select value="all" label="نوع النموذج">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="contact">اتصال</MenuItem>
+                <MenuItem value="registration">تسجيل</MenuItem>
+                <MenuItem value="survey">استطلاع</MenuItem>
+                <MenuItem value="feedback">تقييم</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -364,15 +436,15 @@ const FormsBuilder = () => {
                 disabled={loading}
                 size="small"
               >
-                Save Forms
+                حفظ الإعدادات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddForm}
                 size="small"
               >
-                Add Form
+                إنشاء نموذج
               </Button>
             </Box>
           </Grid>
@@ -386,7 +458,7 @@ const FormsBuilder = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Form Settings
+                إعدادات النماذج
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -394,7 +466,7 @@ const FormsBuilder = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Form Title"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -408,52 +480,134 @@ const FormsBuilder = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Forms Active"
+                    label="النماذج نشطة"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Form Type</InputLabel>
-                    <Select
-                      value={formData.formType}
-                      label="Form Type"
-                      onChange={(e) => setFormData({ ...formData, formType: e.target.value })}
-                    >
-                      <MenuItem value="contact">Contact Form</MenuItem>
-                      <MenuItem value="survey">Survey Form</MenuItem>
-                      <MenuItem value="registration">Registration Form</MenuItem>
-                      <MenuItem value="feedback">Feedback Form</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Max Submissions"
-                    type="number"
-                    value={formData.maxSubmissions}
-                    onChange={(e) => setFormData({ ...formData, maxSubmissions: e.target.value })}
-                    size="small"
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoSave}
+                        onChange={(e) => setFormData({ ...formData, autoSave: e.target.checked })}
+                      />
+                    }
+                    label="الحفظ التلقائي"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Contact Information"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="Form administrator contact details..."
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.validation}
+                        onChange={(e) => setFormData({ ...formData, validation: e.target.checked })}
+                      />
+                    }
+                    label="التحقق من البيانات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.notifications}
+                        onChange={(e) =>
+                          setFormData({ ...formData, notifications: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الإشعارات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.analytics}
+                        onChange={(e) => setFormData({ ...formData, analytics: e.target.checked })}
+                      />
+                    }
+                    label="التحليلات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.responsive}
+                        onChange={(e) => setFormData({ ...formData, responsive: e.target.checked })}
+                      />
+                    }
+                    label="التصميم المتجاوب"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.accessibility}
+                        onChange={(e) =>
+                          setFormData({ ...formData, accessibility: e.target.checked })
+                        }
+                      />
+                    }
+                    label="إمكانية الوصول"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.multiStep}
+                        onChange={(e) => setFormData({ ...formData, multiStep: e.target.checked })}
+                      />
+                    }
+                    label="النماذج متعددة الخطوات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.conditionalLogic}
+                        onChange={(e) =>
+                          setFormData({ ...formData, conditionalLogic: e.target.checked })
+                        }
+                      />
+                    }
+                    label="المنطق الشرطي"
                   />
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
+
+          {/* Field Types */}
+          <Card sx={{ mt: 3 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                أنواع الحقول
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <Grid container spacing={1}>
+                {fieldTypes.map((field, index) => (
+                  <Grid key={index} size={{ xs: 6, sm: 4 }}>
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      startIcon={<field.icon />}
+                      fullWidth
+                      sx={{ mb: 1 }}
+                    >
+                      {field.label}
+                    </Button>
+                  </Grid>
+                ))}
+              </Grid>
+            </CardContent>
+          </Card>
         </Grid>
 
-        {/* Form Sections */}
+        {/* Forms Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
             <CardContent>
@@ -465,86 +619,165 @@ const FormsBuilder = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Form Configurations</Typography>
-                <Chip label={`${sections.length} configurations`} color="primary" size="small" />
+                <Typography variant="h6">قائمة النماذج</Typography>
+                <Chip label={`${formsData.length} نموذج`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>اسم النموذج</TableCell>
+                    <TableCell>الوصف</TableCell>
+                    <TableCell>النوع</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell>الإجابات</TableCell>
+                    <TableCell>الحقول</TableCell>
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {formsData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((form) => (
+                      <TableRow key={form.id} hover>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {form.name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" color="text.secondary">
+                            {form.description}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip label={form.type} size="small" color="primary" />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={getStatusLabel(form.status)}
                         size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Configuration">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
+                            color={getStatusColor(form.status)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {form.submissions}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {form.fields}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
+                            <Tooltip title="معاينة" arrow>
+                              <IconButton size="small">
+                                <PreviewIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="نسخ" arrow>
+                              <IconButton size="small">
+                                <ContentCopyIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteForm(form.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
                         </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter configuration details..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No form configurations yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first form configuration to get started
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Configuration
-                  </Button>
-                </Box>
-              )}
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={formsData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add Form Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>إنشاء نموذج جديد</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="اسم النموذج"
+                placeholder="نموذج الاتصال"
+                helperText="اسم النموذج الذي سيظهر في القائمة"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="وصف النموذج"
+                placeholder="نموذج للتواصل مع العملاء"
+                multiline
+                rows={2}
+                helperText="وصف مختصر للنموذج"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>نوع النموذج</InputLabel>
+                <Select label="نوع النموذج">
+                  <MenuItem value="contact">نموذج الاتصال</MenuItem>
+                  <MenuItem value="registration">نموذج التسجيل</MenuItem>
+                  <MenuItem value="survey">استطلاع</MenuItem>
+                  <MenuItem value="feedback">تقييم</MenuItem>
+                  <MenuItem value="order">طلب</MenuItem>
+                  <MenuItem value="support">دعم فني</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  <MenuItem value="draft">مسودة</MenuItem>
+                  <MenuItem value="active">نشط</MenuItem>
+                  <MenuItem value="inactive">غير نشط</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="تفعيل النموذج فور الإنشاء"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إنشاء النموذج
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar

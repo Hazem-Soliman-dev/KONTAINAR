@@ -4,52 +4,49 @@ import {
   Typography,
   Paper,
   Grid,
+  Card,
+  CardContent,
   TextField,
   Button,
+  Breadcrumbs,
+  Link,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Snackbar,
+  Alert,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Breadcrumbs,
-  Link,
-  Toolbar,
-  Chip,
-  IconButton,
-  Tooltip,
-  Alert,
-  Skeleton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Snackbar,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Card,
-  CardContent,
-  Divider,
-  Stack,
-  Avatar,
-  Zoom,
-  LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  EditOutlined as EditIcon,
-  DeleteOutline as DeleteIcon,
-  VisibilityOutlined as ViewIcon,
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-  Save as SaveIcon,
   Home as HomeIcon,
-  Store as StoreIcon,
   NavigateNext as NavigateNextIcon,
+  Save as SaveIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  Store as StoreIcon,
   CheckCircle as CheckCircleIcon,
+  Warning as WarningIcon,
   Assignment as AssignmentIcon,
   AttachMoney as AttachMoneyIcon,
   TrendingUp as TrendingUpIcon,
@@ -58,48 +55,118 @@ import {
 } from '@mui/icons-material';
 
 const BecomeSeller = () => {
+  const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Stats data
   const sellerStats = [
     {
-      title: 'Total Applications',
-      value: '156',
+      title: 'إجمالي الطلبات',
+      value: '1,250',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       icon: StoreIcon,
-      change: '+12',
+      change: '+45',
     },
     {
-      title: 'Approved Sellers',
-      value: '89',
+      title: 'الطلبات المعلقة',
+      value: '85',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      icon: CheckCircleIcon,
-      change: '57.1%',
+      icon: WarningIcon,
+      change: '7%',
     },
     {
-      title: 'Pending Review',
-      value: '23',
+      title: 'الطلبات المقبولة',
+      value: '1,120',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '14.7%',
+      icon: CheckCircleIcon,
+      change: '89%',
     },
     {
-      title: 'Revenue Generated',
-      value: '$45.6K',
+      title: 'معدل القبول',
+      value: '94.5%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: AttachMoneyIcon,
-      change: '+8.2%',
+      icon: TrendingUpIcon,
+      change: '+2.1%',
     },
+  ];
+
+  // Mock data for seller applications
+  const sellerData = [
+    {
+      id: 1,
+      name: 'أحمد محمد العلي',
+      email: 'ahmed.ali@example.com',
+      phone: '+966501234567',
+      businessName: 'متجر التقنية المتقدمة',
+      businessType: 'تجارة إلكترونية',
+      status: 'approved',
+      applicationDate: '2024-01-15',
+      reviewDate: '2024-01-18',
+      documents: ['هوية وطنية', 'سجل تجاري', 'رخصة نشاط'],
+      experience: '5 سنوات',
+      rating: 4.8,
+      notes: 'طلب ممتاز مع وثائق كاملة',
+    },
+    {
+      id: 2,
+      name: 'فاطمة أحمد السعيد',
+      email: 'fatima.saeed@example.com',
+      phone: '+966507654321',
+      businessName: 'بوتيك الأزياء الأنيقة',
+      businessType: 'أزياء وموضة',
+      status: 'pending',
+      applicationDate: '2024-01-20',
+      reviewDate: null,
+      documents: ['هوية وطنية', 'سجل تجاري'],
+      experience: '3 سنوات',
+      rating: 0,
+      notes: 'في انتظار المراجعة',
+    },
+    {
+      id: 3,
+      name: 'محمد عبدالله القحطاني',
+      email: 'mohammed.qhtani@example.com',
+      phone: '+966509876543',
+      businessName: 'مكتبة المعرفة الرقمية',
+      businessType: 'تعليم وثقافة',
+      status: 'rejected',
+      applicationDate: '2024-01-18',
+      reviewDate: '2024-01-22',
+      documents: ['هوية وطنية'],
+      experience: '2 سنوات',
+      rating: 0,
+      notes: 'وثائق غير مكتملة',
+    },
+  ];
+
+  const businessTypes = [
+    'تجارة إلكترونية',
+    'أزياء وموضة',
+    'تعليم وثقافة',
+    'صحة وطب',
+    'رياضة ولياقة',
+    'طعام ومشروبات',
+    'تكنولوجيا',
+    'خدمات',
+    'أخرى',
+  ];
+
+  const statuses = [
+    { value: 'pending', label: 'معلق', color: 'warning' },
+    { value: 'approved', label: 'مقبول', color: 'success' },
+    { value: 'rejected', label: 'مرفوض', color: 'error' },
+    { value: 'under_review', label: 'قيد المراجعة', color: 'info' },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -109,45 +176,48 @@ const BecomeSeller = () => {
       setLoading(false);
     }, 800);
   }, []);
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  // Mock data
-  const sellerData = [
-    {
-      id: 1,
-      name: 'John Doe',
-      email: 'john@example.com',
-      businessName: 'Tech Solutions',
-      status: 'Approved',
-      applicationDate: '2024-01-15',
-      lastModified: '2024-01-15',
-      author: 'Admin',
-    },
-    {
-      id: 2,
-      name: 'Jane Smith',
-      email: 'jane@example.com',
-      businessName: 'Fashion Store',
-      status: 'Pending',
-      applicationDate: '2024-01-14',
-      lastModified: '2024-01-14',
-      author: 'Admin',
-    },
-    {
-      id: 3,
-      name: 'Bob Johnson',
-      email: 'bob@example.com',
-      businessName: 'Electronics Hub',
-      status: 'Rejected',
-      applicationDate: '2024-01-13',
-      lastModified: '2024-01-13',
-      author: 'Admin',
-    },
-  ];
+  const [formData, setFormData] = useState({
+    title: 'انضم كبائع',
+    content: '',
+    isActive: true,
+    language: 'ar',
+    lastUpdated: new Date().toISOString().split('T')[0],
+    requireDocuments: true,
+    requireExperience: true,
+    requireBusinessLicense: true,
+    requireBankAccount: true,
+    requireTaxNumber: true,
+    allowMultipleApplications: false,
+    autoApprove: false,
+    requireInterview: false,
+    minExperience: 1,
+    maxApplications: 100,
+  });
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSnackbar({
+        open: true,
+        message: 'تم تحديث إعدادات البائعين بنجاح',
+        severity: 'success',
+      });
+    }, 1000);
+  };
+
+  const handleAddApplication = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDeleteApplication = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف الطلب بنجاح',
+      severity: 'success',
+    });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -158,72 +228,43 @@ const BecomeSeller = () => {
     setPage(0);
   };
 
-  const handleSelectAll = (event) => {
-    if (event.target.checked) {
-      setSelectedItems(sellerData.map((item) => item.id));
-    } else {
-      setSelectedItems([]);
-    }
+  const getStatusColor = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.color : 'default';
   };
 
-  const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) =>
-      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
-    );
+  const getStatusLabel = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.label : 'غير محدد';
   };
-
-  const handleBulkAction = (action) => {
-    console.log(`Bulk ${action} for items:`, selectedItems);
-    setSnackbar({
-      open: true,
-      message: `${action} completed for ${selectedItems.length} applications`,
-      severity: 'success',
-    });
-    setSelectedItems([]);
-  };
-
-  const handleSave = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpenDialog(false);
-      setSnackbar({
-        open: true,
-        message: 'Seller application updated successfully',
-        severity: 'success',
-      });
-    }, 1000);
-  };
-
-  const filteredData = sellerData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.businessName.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
 
   return (
     <Box sx={{ p: 3 }}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}
+        >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Become a Seller
+              إدارة طلبات البائعين
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage seller applications and onboarding
+              إدارة طلبات الانضمام كبائع في المنصة
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-              <Link color="inherit" href="/main-store" sx={{ display: 'flex', alignItems: 'center' }}>
+              <Link
+                color="inherit"
+                href="/main-store"
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
-              <Link color="inherit" href="/main-store/cms">CMS</Link>
-              <Typography color="text.primary">Become a Seller</Typography>
+              <Link color="inherit" href="/main-store/cms">
+                إدارة المحتوى
+              </Link>
+              <Typography color="text.primary">طلبات البائعين</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -233,10 +274,15 @@ const BecomeSeller = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Application
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={handleSave}
+              disabled={loading}
+            >
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -261,7 +307,13 @@ const BecomeSeller = () => {
                   }}
                 >
                   <CardContent>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                    <Box
+                      sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                      }}
+                    >
                       <Box>
                         <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
                           {stat.value}
@@ -304,233 +356,437 @@ const BecomeSeller = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <StoreIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Seller Applications
+              إعدادات البائعين
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Manage and review seller applications
+              تخصيص وإدارة طلبات البائعين
             </Typography>
           </Box>
         </Box>
         <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
+              label="البحث في الطلبات"
               size="small"
-              placeholder="Search applications..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
-              }}
+              placeholder="البحث في الطلبات..."
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={statusFilter}
-                label="Status"
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                {statuses.map((status) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Button
-              variant="outlined"
-              startIcon={<FilterIcon />}
-              onClick={() => {
-                setSearchTerm('');
-                setStatusFilter('all');
-              }}
-            >
-              Reset
+            <FormControl fullWidth size="small">
+              <InputLabel>نوع النشاط</InputLabel>
+              <Select value="all" label="نوع النشاط">
+                <MenuItem value="all">الكل</MenuItem>
+                {businessTypes.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, md: 2 }}>
+            <Button variant="outlined" size="small" fullWidth>
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
-            <Typography variant="body2" color="text.secondary">
-              {filteredData.length} applications found
-            </Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button
+                variant="contained"
+                startIcon={<SaveIcon />}
+                onClick={handleSave}
+                disabled={loading}
+                size="small"
+              >
+                حفظ الإعدادات
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={handleAddApplication}
+                size="small"
+              >
+                إضافة طلب
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Paper>
 
       {/* Content */}
-      <Paper>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flex: 1 }}>
-            Seller Applications
-          </Typography>
-          {selectedItems.length > 0 && (
-            <Box sx={{ mr: 2 }}>
-              <Button size="small" onClick={() => handleBulkAction('Approve')} sx={{ mr: 1 }}>
-                Approve ({selectedItems.length})
-              </Button>
-              <Button size="small" color="error" onClick={() => handleBulkAction('Reject')}>
-                Reject ({selectedItems.length})
-              </Button>
-            </Box>
-          )}
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-            New Application
-          </Button>
-        </Toolbar>
+      <Grid container spacing={3}>
+        {/* Seller Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات البائعين
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
 
-        {loading ? (
-          <Box sx={{ p: 2 }}>
-            {[...Array(3)].map((_, index) => (
-              <Skeleton key={index} height={60} sx={{ mb: 1 }} />
-            ))}
-          </Box>
-        ) : filteredData.length === 0 ? (
-          <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Alert severity="info">
-              No seller applications found. Create your first application.
-            </Alert>
-          </Box>
-        ) : (
-          <>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.length === filteredData.length}
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>Name</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Business</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Application Date</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => (
-                    <TableRow key={item.id} hover>
-                      <TableCell padding="checkbox">
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.includes(item.id)}
-                          onChange={() => handleSelectItem(item.id)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <StoreIcon sx={{ mr: 1, color: 'text.secondary' }} />
-                          <Typography variant="subtitle2">{item.name}</Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>{item.email}</TableCell>
-                      <TableCell>{item.businessName}</TableCell>
-                      <TableCell>
-                        <Chip
-                          label={item.status}
-                          size="small"
-                          color={
-                            item.status === 'Approved'
-                              ? 'success'
-                              : item.status === 'Pending'
-                              ? 'warning'
-                              : 'error'
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>{item.applicationDate}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="View">
-                          <IconButton size="small">
-                            <ViewIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton size="small">
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <IconButton size="small" color="error">
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={filteredData.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </>
-        )}
-      </Paper>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="عنوان الصفحة"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="الطلبات نشطة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireDocuments}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireDocuments: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الوثائق"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireExperience}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireExperience: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الخبرة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireBusinessLicense}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireBusinessLicense: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب رخصة تجارية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireBankAccount}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireBankAccount: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب حساب بنكي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireTaxNumber}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireTaxNumber: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الرقم الضريبي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowMultipleApplications}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowMultipleApplications: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بطلبات متعددة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoApprove}
+                        onChange={(e) =>
+                          setFormData({ ...formData, autoApprove: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الموافقة التلقائية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireInterview}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireInterview: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب مقابلة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الحد الأدنى للخبرة (سنوات)"
+                    type="number"
+                    value={formData.minExperience}
+                    onChange={(e) =>
+                      setFormData({ ...formData, minExperience: parseInt(e.target.value) })
+                    }
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الحد الأقصى للطلبات"
+                    type="number"
+                    value={formData.maxApplications}
+                    onChange={(e) =>
+                      setFormData({ ...formData, maxApplications: parseInt(e.target.value) })
+                    }
+                    size="small"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* Edit Dialog */}
+        {/* Applications Table */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6">قائمة الطلبات</Typography>
+                <Chip label={`${sellerData.length} طلب`} color="primary" size="small" />
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>المتقدم</TableCell>
+                    <TableCell>اسم النشاط</TableCell>
+                    <TableCell>نوع النشاط</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell>الوثائق</TableCell>
+                    <TableCell>الخبرة</TableCell>
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sellerData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((application) => (
+                      <TableRow key={application.id} hover>
+                        <TableCell>
+                          <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {application.name}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {application.email}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary" display="block">
+                              {application.phone}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {application.businessName}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip label={application.businessType} size="small" color="primary" />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={getStatusLabel(application.status)}
+                            size="small"
+                            color={getStatusColor(application.status)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">
+                            {application.documents.length} وثيقة
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {application.experience}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
+                            <Tooltip title="عرض التفاصيل" arrow>
+                              <IconButton size="small">
+                                <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteApplication(application.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={sellerData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Add Application Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>New Seller Application</DialogTitle>
+        <DialogTitle>إضافة طلب جديد</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="Full Name" placeholder="Enter full name" />
+              <TextField
+                fullWidth
+                label="الاسم الكامل"
+                placeholder="أحمد محمد العلي"
+                helperText="الاسم الكامل للمتقدم"
+              />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="Email" type="email" placeholder="Enter email address" />
+              <TextField
+                fullWidth
+                label="البريد الإلكتروني"
+                placeholder="ahmed.ali@example.com"
+                type="email"
+              />
             </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField fullWidth label="Business Name" placeholder="Enter business name" />
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="رقم الهاتف" placeholder="+966501234567" type="tel" />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="اسم النشاط التجاري" placeholder="متجر التقنية المتقدمة" />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select label="Status">
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="approved">Approved</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
+                <InputLabel>نوع النشاط</InputLabel>
+                <Select label="نوع النشاط">
+                  {businessTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="Phone Number" placeholder="Enter phone number" />
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  {statuses.map((status) => (
+                    <MenuItem key={status.value} value={status.value}>
+                      {status.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="سنوات الخبرة" type="number" placeholder="5" />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="التقييم"
+                type="number"
+                placeholder="4.8"
+                inputProps={{ min: 0, max: 5, step: 0.1 }}
+              />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
+                label="الملاحظات"
+                placeholder="ملاحظات إضافية..."
                 multiline
                 rows={3}
-                label="Business Description"
-                placeholder="Describe your business"
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={<SaveIcon />}
-          >
-            {loading ? 'Saving...' : 'Save'}
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة الطلب
           </Button>
         </DialogActions>
       </Dialog>

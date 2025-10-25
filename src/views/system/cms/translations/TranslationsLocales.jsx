@@ -25,12 +25,6 @@ import {
   Snackbar,
   Alert,
   Skeleton,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TablePagination,
   Switch,
   FormControlLabel,
   Accordion,
@@ -41,6 +35,17 @@ import {
   Zoom,
   LinearProgress,
   Fade,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TablePagination,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListItemSecondaryAction,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,8 +55,8 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
+  Language as LanguageIcon,
+  Translate as TranslateIcon,
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
   Assignment as AssignmentIcon,
@@ -59,7 +64,16 @@ import {
   TrendingUp as TrendingUpIcon,
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  Translate as TranslateIcon,
+  Public as PublicIcon,
+  Search as SearchIcon,
+  Analytics as AnalyticsIcon,
+  Speed as SpeedIcon,
+  Flag as FlagIcon,
+  Keyboard as KeyboardIcon,
+  Schedule as ScheduleIcon,
+  CloudUpload as CloudUploadIcon,
+  Download as DownloadIcon,
+  ContentCopy as ContentCopyIcon,
 } from '@mui/icons-material';
 
 const TranslationsLocales = () => {
@@ -67,44 +81,92 @@ const TranslationsLocales = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Stats data
-  const translationsStats = [
+  const translationStats = [
     {
-      title: 'جميع اللغات',
-      value: '8',
+      title: 'إجمالي اللغات',
+      value: '12',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: TranslateIcon,
+      icon: LanguageIcon,
       change: '+2',
     },
     {
-      title: 'اللغات النشطة',
-      value: '6',
+      title: 'الترجمات المكتملة',
+      value: '8,450',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       icon: CheckCircleIcon,
-      change: '75%',
+      change: '94%',
     },
     {
-      title: 'المفاتيح المترجمة',
-      value: '1,247',
+      title: 'الترجمات المعلقة',
+      value: '520',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '+89',
+      icon: WarningIcon,
+      change: '6%',
     },
     {
-      title: 'معدل الاكمال',
-      value: '87%',
+      title: 'معدل الترجمة',
+      value: '98.5%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: TrendingUpIcon,
-      change: '+5%',
+      icon: SpeedIcon,
+      change: '+2.1%',
     },
+  ];
+
+  // Mock data for translations
+  const translationsData = [
+    {
+      id: 1,
+      key: 'welcome_message',
+      arabic: 'مرحباً بك في متجرنا',
+      english: 'Welcome to our store',
+      french: 'Bienvenue dans notre magasin',
+      spanish: 'Bienvenido a nuestra tienda',
+      status: 'completed',
+      lastUpdated: '2024-01-20',
+      translator: 'أحمد محمد',
+    },
+    {
+      id: 2,
+      key: 'product_description',
+      arabic: 'وصف المنتج',
+      english: 'Product description',
+      french: 'Description du produit',
+      spanish: 'Descripción del producto',
+      status: 'pending',
+      lastUpdated: '2024-01-19',
+      translator: 'فاطمة علي',
+    },
+    {
+      id: 3,
+      key: 'add_to_cart',
+      arabic: 'أضف إلى السلة',
+      english: 'Add to cart',
+      french: 'Ajouter au panier',
+      spanish: 'Añadir al carrito',
+      status: 'completed',
+      lastUpdated: '2024-01-18',
+      translator: 'محمد أحمد',
+    },
+  ];
+
+  const languages = [
+    { code: 'ar', name: 'العربية', flag: '🇸🇦', isRTL: true },
+    { code: 'en', name: 'English', flag: '🇺🇸', isRTL: false },
+    { code: 'fr', name: 'Français', flag: '🇫🇷', isRTL: false },
+    { code: 'es', name: 'Español', flag: '🇪🇸', isRTL: false },
+    { code: 'de', name: 'Deutsch', flag: '🇩🇪', isRTL: false },
+    { code: 'it', name: 'Italiano', flag: '🇮🇹', isRTL: false },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,42 +176,20 @@ const TranslationsLocales = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'الترجمات واللغات',
+    title: 'إدارة الترجمات',
     content: '',
     isActive: true,
-    defaultLocale: 'en',
-    supportedLocales: 'en,ar,fr,es',
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    autoTranslate: true,
+    preserveFormatting: true,
+    caseSensitive: false,
+    pluralization: true,
+    contextAware: true,
+    qualityCheck: true,
   });
-
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'اللغات المدعومة',
-      content: 'الإنجليزية (en)، العربية (ar)، الفرنسية (fr)، الإسبانية (es)',
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'إرشادات الترجمة',
-      content: 'اتبع المصطلحات المتسقة والسياق الثقافي لكل لغة.',
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'إعدادات اللغة',
-      content: 'قم بتكوين تنسيقات التاريخ والوقت والأرقام لكل لغة.',
-      isExpanded: false,
-    },
-    {
-      id: 4,
-      title: 'ضمان الجودة',
-      content: 'راجع الترجمات للدقة والملاءمة الثقافية.',
-      isExpanded: false,
-    },
-  ]);
 
   const handleSave = () => {
     setLoading(true);
@@ -157,38 +197,57 @@ const TranslationsLocales = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'تم تحديث إعدادات الترجمة بنجاح',
+        message: 'تم تحديث إعدادات الترجمات بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'قسم جديد',
-      content: '',
-      isExpanded: false,
-    };
-    setSections([...sections, newSection]);
+  const handleAddTranslation = () => {
+    setOpenDialog(true);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteTranslation = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف الترجمة بنجاح',
+      severity: 'success',
+    });
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
-    );
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'completed':
+        return 'success';
+      case 'pending':
+        return 'warning';
+      case 'error':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStatusLabel = (status) => {
+    switch (status) {
+      case 'completed':
+        return 'مكتملة';
+      case 'pending':
+        return 'معلقة';
+      case 'error':
+        return 'خطأ';
+      default:
+        return 'غير محدد';
+    }
   };
 
   return (
@@ -203,7 +262,7 @@ const TranslationsLocales = () => {
               إدارة الترجمات واللغات
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              إدارة ترجمات متجرك وإعدادات اللغة
+              إدارة الترجمات واللغات المدعومة في النظام
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -235,14 +294,14 @@ const TranslationsLocales = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              حفظ الترجمات
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
 
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          {translationsStats.map((stat, index) => (
+          {translationStats.map((stat, index) => (
             <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
               <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
                 <Card
@@ -309,14 +368,14 @@ const TranslationsLocales = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <TranslateIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              إدارة الترجمات
+              إعدادات الترجمات
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              قم بتكوين وإدارة ترجماتك
+              تخصيص وإدارة الترجمات واللغات
             </Typography>
           </Box>
         </Box>
@@ -326,34 +385,35 @@ const TranslationsLocales = () => {
               fullWidth
               label="البحث في الترجمات"
               size="small"
-              placeholder="البحث في مفاتيح الترجمة..."
+              placeholder="البحث في الترجمات..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
               <InputLabel>الحالة</InputLabel>
-              <Select value="all" label="Status">
+              <Select value="all" label="الحالة">
                 <MenuItem value="all">الكل</MenuItem>
-                <MenuItem value="active">نشط</MenuItem>
-                <MenuItem value="inactive">غير نشط</MenuItem>
+                <MenuItem value="completed">مكتملة</MenuItem>
+                <MenuItem value="pending">معلقة</MenuItem>
+                <MenuItem value="error">خطأ</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
               <InputLabel>اللغة</InputLabel>
-              <Select value="all" label="Locale">
-                <MenuItem value="all">جميع اللغات</MenuItem>
-                <MenuItem value="en">الإنجليزية</MenuItem>
+              <Select value="all" label="اللغة">
+                <MenuItem value="all">الكل</MenuItem>
                 <MenuItem value="ar">العربية</MenuItem>
-                <MenuItem value="fr">الفرنسية</MenuItem>
-                <MenuItem value="es">الإسبانية</MenuItem>
+                <MenuItem value="en">English</MenuItem>
+                <MenuItem value="fr">Français</MenuItem>
+                <MenuItem value="es">Español</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              إعادة تعيين المرشحات
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -365,12 +425,12 @@ const TranslationsLocales = () => {
                 disabled={loading}
                 size="small"
               >
-                حفظ الترجمات
+                حفظ الإعدادات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddTranslation}
                 size="small"
               >
                 إضافة ترجمة
@@ -395,7 +455,7 @@ const TranslationsLocales = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="عنوان الترجمة"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -413,50 +473,123 @@ const TranslationsLocales = () => {
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>اللغة الافتراضية</InputLabel>
-                    <Select
-                      value={formData.defaultLocale}
-                      label="اللغة الافتراضية"
-                      onChange={(e) => setFormData({ ...formData, defaultLocale: e.target.value })}
-                    >
-                      <MenuItem value="en">الإنجليزية (en)</MenuItem>
-                      <MenuItem value="ar">العربية (ar)</MenuItem>
-                      <MenuItem value="fr">الفرنسية (fr)</MenuItem>
-                      <MenuItem value="es">الإسبانية (es)</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="اللغات المدعومة"
-                    value={formData.supportedLocales}
-                    onChange={(e) => setFormData({ ...formData, supportedLocales: e.target.value })}
-                    size="small"
-                    placeholder="مثال: en,ar,fr,es"
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoTranslate}
+                        onChange={(e) =>
+                          setFormData({ ...formData, autoTranslate: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الترجمة التلقائية"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="معلومات الاتصال"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="تفاصيل الاتصال بفريق الترجمة..."
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.preserveFormatting}
+                        onChange={(e) =>
+                          setFormData({ ...formData, preserveFormatting: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الحفاظ على التنسيق"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.caseSensitive}
+                        onChange={(e) =>
+                          setFormData({ ...formData, caseSensitive: e.target.checked })
+                        }
+                      />
+                    }
+                    label="حساسية الأحرف"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.pluralization}
+                        onChange={(e) =>
+                          setFormData({ ...formData, pluralization: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الجمع والمفرد"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.contextAware}
+                        onChange={(e) =>
+                          setFormData({ ...formData, contextAware: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الترجمة السياقية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.qualityCheck}
+                        onChange={(e) =>
+                          setFormData({ ...formData, qualityCheck: e.target.checked })
+                        }
+                      />
+                    }
+                    label="فحص الجودة"
                   />
                 </Grid>
               </Grid>
             </CardContent>
           </Card>
+
+          {/* Supported Languages */}
+          <Card sx={{ mt: 3 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                اللغات المدعومة
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <List>
+                {languages.map((lang, index) => (
+                  <ListItem key={index}>
+                    <ListItemIcon>
+                      <Avatar sx={{ width: 32, height: 32, bgcolor: 'primary.main' }}>
+                        {lang.flag}
+                      </Avatar>
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={lang.name}
+                      secondary={`${lang.code.toUpperCase()} ${lang.isRTL ? '(RTL)' : '(LTR)'}`}
+                    />
+                    <ListItemSecondaryAction>
+                      <Chip
+                        label={lang.isRTL ? 'RTL' : 'LTR'}
+                        size="small"
+                        color={lang.isRTL ? 'primary' : 'default'}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
         </Grid>
 
-        {/* Translation Sections */}
+        {/* Translations Table */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
             <CardContent>
               <Box
                 sx={{
@@ -466,86 +599,164 @@ const TranslationsLocales = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">إرشادات الترجمة</Typography>
-                <Chip label={`${sections.length} إرشادات`} color="primary" size="small" />
+                <Typography variant="h6">قائمة الترجمات</Typography>
+                <Chip label={`${translationsData.length} ترجمة`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>المفتاح</TableCell>
+                    <TableCell>العربية</TableCell>
+                    <TableCell>English</TableCell>
+                    <TableCell>Français</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell>آخر تحديث</TableCell>
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {translationsData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((translation) => (
+                      <TableRow key={translation.id} hover>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                            {translation.key}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{translation.arabic}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{translation.english}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{translation.french}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={getStatusLabel(translation.status)}
                         size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="حذف الإرشاد">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
+                            color={getStatusColor(translation.status)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{translation.lastUpdated}</Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="نسخ" arrow>
+                              <IconButton size="small">
+                                <ContentCopyIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteTranslation(translation.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
                         </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="أدخل محتوى الإرشاد..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    لا توجد إرشادات ترجمة بعد
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    أضف أول إرشاد ترجمة للبدء
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    إضافة أول إرشاد
-                  </Button>
-                </Box>
-              )}
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={translationsData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add Translation Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>إضافة ترجمة جديدة</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="مفتاح الترجمة"
+                placeholder="welcome_message"
+                helperText="المفتاح المستخدم في الكود"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="الترجمة العربية"
+                placeholder="مرحباً بك"
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="الترجمة الإنجليزية"
+                placeholder="Welcome"
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="الترجمة الفرنسية"
+                placeholder="Bienvenue"
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="الترجمة الإسبانية"
+                placeholder="Bienvenido"
+                multiline
+                rows={2}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  <MenuItem value="completed">مكتملة</MenuItem>
+                  <MenuItem value="pending">معلقة</MenuItem>
+                  <MenuItem value="error">خطأ</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="المترجم" placeholder="اسم المترجم" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة الترجمة
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar

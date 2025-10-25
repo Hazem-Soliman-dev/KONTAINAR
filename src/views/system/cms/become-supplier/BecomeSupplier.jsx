@@ -4,102 +4,177 @@ import {
   Typography,
   Paper,
   Grid,
+  Card,
+  CardContent,
   TextField,
   Button,
+  Breadcrumbs,
+  Link,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Snackbar,
+  Alert,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Breadcrumbs,
-  Link,
-  Toolbar,
-  Chip,
-  IconButton,
-  Tooltip,
-  Alert,
-  Skeleton,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Snackbar,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Card,
-  CardContent,
-  Divider,
-  Stack,
-  Avatar,
-  Zoom,
-  LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  EditOutlined as EditIcon,
-  DeleteOutline as DeleteIcon,
-  VisibilityOutlined as ViewIcon,
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-  Save as SaveIcon,
   Home as HomeIcon,
-  LocalShipping as LocalShippingIcon,
   NavigateNext as NavigateNextIcon,
+  Save as SaveIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  LocalShipping as LocalShippingIcon,
   CheckCircle as CheckCircleIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
+  Warning as WarningIcon,
   TrendingUp as TrendingUpIcon,
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
 } from '@mui/icons-material';
 
 const BecomeSupplier = () => {
+  const [loading, setLoading] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isRefreshing, setIsRefreshing] = useState(false);
 
   // Stats data
   const supplierStats = [
     {
-      title: 'Total Applications',
-      value: '89',
+      title: 'إجمالي الطلبات',
+      value: '890',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       icon: LocalShippingIcon,
-      change: '+8',
+      change: '+32',
     },
     {
-      title: 'Approved Suppliers',
-      value: '67',
+      title: 'الطلبات المعلقة',
+      value: '45',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      icon: CheckCircleIcon,
-      change: '75.3%',
+      icon: WarningIcon,
+      change: '5%',
     },
     {
-      title: 'Pending Review',
-      value: '12',
+      title: 'الطلبات المقبولة',
+      value: '780',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '13.5%',
+      icon: CheckCircleIcon,
+      change: '87%',
     },
     {
-      title: 'Revenue Generated',
-      value: '$32.4K',
+      title: 'معدل القبول',
+      value: '96.2%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: AttachMoneyIcon,
-      change: '+12.5%',
+      icon: TrendingUpIcon,
+      change: '+1.8%',
     },
+  ];
+
+  // Mock data for supplier applications
+  const supplierData = [
+    {
+      id: 1,
+      name: 'شركة التوريد المتقدمة',
+      contactPerson: 'سعد عبدالله المطيري',
+      email: 'saad.mutairi@example.com',
+      phone: '+966501234567',
+      businessType: 'تجهيزات طبية',
+      status: 'approved',
+      applicationDate: '2024-01-15',
+      reviewDate: '2024-01-18',
+      documents: ['سجل تجاري', 'رخصة نشاط', 'شهادة ISO', 'تأمين'],
+      experience: '8 سنوات',
+      rating: 4.9,
+      notes: 'مورد موثوق مع سجل ممتاز',
+      location: 'الرياض',
+      capacity: '1000 وحدة/شهر',
+    },
+    {
+      id: 2,
+      name: 'مؤسسة المواد الغذائية',
+      contactPerson: 'نورا أحمد الزهراني',
+      email: 'nora.zahrani@example.com',
+      phone: '+966507654321',
+      businessType: 'مواد غذائية',
+      status: 'pending',
+      applicationDate: '2024-01-20',
+      reviewDate: null,
+      documents: ['سجل تجاري', 'رخصة نشاط'],
+      experience: '5 سنوات',
+      rating: 0,
+      notes: 'في انتظار المراجعة',
+      location: 'جدة',
+      capacity: '500 وحدة/شهر',
+    },
+    {
+      id: 3,
+      name: 'شركة الأجهزة الإلكترونية',
+      contactPerson: 'خالد محمد القحطاني',
+      email: 'khalid.qhtani@example.com',
+      phone: '+966509876543',
+      businessType: 'إلكترونيات',
+      status: 'rejected',
+      applicationDate: '2024-01-18',
+      reviewDate: '2024-01-22',
+      documents: ['سجل تجاري'],
+      experience: '3 سنوات',
+      rating: 0,
+      notes: 'وثائق غير مكتملة',
+      location: 'الدمام',
+      capacity: '200 وحدة/شهر',
+    },
+  ];
+
+  const businessTypes = [
+    'تجهيزات طبية',
+    'مواد غذائية',
+    'إلكترونيات',
+    'أزياء وملابس',
+    'أدوات منزلية',
+    'كتب وقرطاسية',
+    'ألعاب وأطفال',
+    'رياضة ولياقة',
+    'جمال وعناية',
+    'سيارات وقطع غيار',
+    'بناء ومقاولات',
+    'زراعة وحدائق',
+    'أخرى',
+  ];
+
+  const statuses = [
+    { value: 'pending', label: 'معلق', color: 'warning' },
+    { value: 'approved', label: 'مقبول', color: 'success' },
+    { value: 'rejected', label: 'مرفوض', color: 'error' },
+    { value: 'under_review', label: 'قيد المراجعة', color: 'info' },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -109,45 +184,51 @@ const BecomeSupplier = () => {
       setLoading(false);
     }, 800);
   }, []);
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
 
-  // Mock data
-  const supplierData = [
-    {
-      id: 1,
-      name: 'Global Suppliers Ltd',
-      email: 'contact@globalsuppliers.com',
-      category: 'Electronics',
-      status: 'Approved',
-      applicationDate: '2024-01-15',
-      lastModified: '2024-01-15',
-      author: 'Admin',
-    },
-    {
-      id: 2,
-      name: 'Fashion Wholesale',
-      email: 'info@fashionwholesale.com',
-      category: 'Fashion',
-      status: 'Pending',
-      applicationDate: '2024-01-14',
-      lastModified: '2024-01-14',
-      author: 'Admin',
-    },
-    {
-      id: 3,
-      name: 'Home & Garden Supply',
-      email: 'sales@homegarden.com',
-      category: 'Home & Garden',
-      status: 'Rejected',
-      applicationDate: '2024-01-13',
-      lastModified: '2024-01-13',
-      author: 'Admin',
-    },
-  ];
+  const [formData, setFormData] = useState({
+    title: 'انضم كمورد',
+    content: '',
+    isActive: true,
+    language: 'ar',
+    lastUpdated: new Date().toISOString().split('T')[0],
+    requireDocuments: true,
+    requireExperience: true,
+    requireBusinessLicense: true,
+    requireBankAccount: true,
+    requireTaxNumber: true,
+    requireInsurance: true,
+    requireQualityCertificates: true,
+    allowMultipleApplications: false,
+    autoApprove: false,
+    requireInterview: false,
+    requireSiteVisit: false,
+    minExperience: 2,
+    maxApplications: 50,
+  });
+
+  const handleSave = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSnackbar({
+        open: true,
+        message: 'تم تحديث إعدادات الموردين بنجاح',
+        severity: 'success',
+      });
+    }, 1000);
+  };
+
+  const handleAddApplication = () => {
+    setOpenDialog(true);
+  };
+
+  const handleDeleteApplication = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف الطلب بنجاح',
+      severity: 'success',
+    });
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -158,52 +239,15 @@ const BecomeSupplier = () => {
     setPage(0);
   };
 
-  const handleSelectAll = (event) => {
-    if (event.target.checked) {
-      setSelectedItems(supplierData.map((item) => item.id));
-    } else {
-      setSelectedItems([]);
-    }
+  const getStatusColor = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.color : 'default';
   };
 
-  const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) =>
-      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
-    );
+  const getStatusLabel = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.label : 'غير محدد';
   };
-
-  const handleBulkAction = (action) => {
-    console.log(`Bulk ${action} for items:`, selectedItems);
-    setSnackbar({
-      open: true,
-      message: `${action} completed for ${selectedItems.length} applications`,
-      severity: 'success',
-    });
-    setSelectedItems([]);
-  };
-
-  const handleSave = () => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      setOpenDialog(false);
-      setSnackbar({
-        open: true,
-        message: 'Supplier application updated successfully',
-        severity: 'success',
-      });
-    }, 1000);
-  };
-
-  const filteredData = supplierData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
 
   return (
     <Box sx={{ p: 3 }}>
@@ -214,10 +258,10 @@ const BecomeSupplier = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Become a Supplier
+              إدارة طلبات الموردين
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage supplier applications and partnerships
+              إدارة طلبات الانضمام كمورد في المنصة
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -226,12 +270,12 @@ const BecomeSupplier = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+                إدارة المحتوى
               </Link>
-              <Typography color="text.primary">Become a Supplier</Typography>
+              <Typography color="text.primary">طلبات الموردين</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -241,10 +285,15 @@ const BecomeSupplier = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Application
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={handleSave}
+              disabled={loading}
+            >
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -318,245 +367,490 @@ const BecomeSupplier = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <LocalShippingIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Supplier Applications
+              إعدادات الموردين
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Manage and review supplier applications
+              تخصيص وإدارة طلبات الموردين
             </Typography>
           </Box>
         </Box>
         <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, md: 4 }}>
+          <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
+              label="البحث في الطلبات"
               size="small"
-              placeholder="Search suppliers..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
-              }}
+              placeholder="البحث في الطلبات..."
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={statusFilter}
-                label="Status"
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="rejected">Rejected</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                {statuses.map((status) => (
+                  <MenuItem key={status.value} value={status.value}>
+                    {status.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Button
-              variant="outlined"
-              startIcon={<FilterIcon />}
-              onClick={() => {
-                setSearchTerm('');
-                setStatusFilter('all');
-              }}
-            >
-              Reset
+            <FormControl fullWidth size="small">
+              <InputLabel>نوع النشاط</InputLabel>
+              <Select value="all" label="نوع النشاط">
+                <MenuItem value="all">الكل</MenuItem>
+                {businessTypes.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, md: 2 }}>
+            <Button variant="outlined" size="small" fullWidth>
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
-            <Typography variant="body2" color="text.secondary">
-              {filteredData.length} applications found
-            </Typography>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+              <Button
+                variant="contained"
+                startIcon={<SaveIcon />}
+                onClick={handleSave}
+                disabled={loading}
+                size="small"
+              >
+                حفظ الإعدادات
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={handleAddApplication}
+                size="small"
+              >
+                إضافة طلب
+              </Button>
+            </Box>
           </Grid>
         </Grid>
       </Paper>
 
       {/* Content */}
-      <Paper>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flex: 1 }}>
-            Supplier Applications
-          </Typography>
-          {selectedItems.length > 0 && (
-            <Box sx={{ mr: 2 }}>
-              <Button size="small" onClick={() => handleBulkAction('Approve')} sx={{ mr: 1 }}>
-                Approve ({selectedItems.length})
-              </Button>
-              <Button size="small" color="error" onClick={() => handleBulkAction('Reject')}>
-                Reject ({selectedItems.length})
-              </Button>
-            </Box>
-          )}
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-            New Application
-          </Button>
-        </Toolbar>
+      <Grid container spacing={3}>
+        {/* Supplier Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات الموردين
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
 
-        {loading ? (
-          <Box sx={{ p: 2 }}>
-            {[...Array(3)].map((_, index) => (
-              <Skeleton key={index} height={60} sx={{ mb: 1 }} />
-            ))}
-          </Box>
-        ) : filteredData.length === 0 ? (
-          <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Alert severity="info">
-              No supplier applications found. Create your first application.
-            </Alert>
-          </Box>
-        ) : (
-          <>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.length === filteredData.length}
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>Company</TableCell>
-                  <TableCell>Email</TableCell>
-                  <TableCell>Category</TableCell>
-                  <TableCell>Status</TableCell>
-                  <TableCell>Application Date</TableCell>
-                  <TableCell align="right">Actions</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {filteredData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => (
-                    <TableRow key={item.id} hover>
-                      <TableCell padding="checkbox">
-                        <input
-                          type="checkbox"
-                          checked={selectedItems.includes(item.id)}
-                          onChange={() => handleSelectItem(item.id)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                          <LocalShippingIcon sx={{ mr: 1, color: 'text.secondary' }} />
-                          <Typography variant="subtitle2">{item.name}</Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>{item.email}</TableCell>
-                      <TableCell>
-                        <Chip label={item.category} size="small" variant="outlined" />
-                      </TableCell>
-                      <TableCell>
-                        <Chip
-                          label={item.status}
-                          size="small"
-                          color={
-                            item.status === 'Approved'
-                              ? 'success'
-                              : item.status === 'Pending'
-                              ? 'warning'
-                              : 'error'
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>{item.applicationDate}</TableCell>
-                      <TableCell align="right">
-                        <Tooltip title="View">
-                          <IconButton size="small">
-                            <ViewIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Edit">
-                          <IconButton size="small">
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Delete">
-                          <IconButton size="small" color="error">
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={filteredData.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </>
-        )}
-      </Paper>
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="عنوان الصفحة"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="الطلبات نشطة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireDocuments}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireDocuments: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الوثائق"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireExperience}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireExperience: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الخبرة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireBusinessLicense}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireBusinessLicense: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب رخصة تجارية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireBankAccount}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireBankAccount: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب حساب بنكي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireTaxNumber}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireTaxNumber: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الرقم الضريبي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireInsurance}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireInsurance: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب التأمين"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireQualityCertificates}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireQualityCertificates: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب شهادات الجودة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowMultipleApplications}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowMultipleApplications: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بطلبات متعددة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoApprove}
+                        onChange={(e) =>
+                          setFormData({ ...formData, autoApprove: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الموافقة التلقائية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireInterview}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireInterview: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب مقابلة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireSiteVisit}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireSiteVisit: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب زيارة موقع"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الحد الأدنى للخبرة (سنوات)"
+                    type="number"
+                    value={formData.minExperience}
+                    onChange={(e) =>
+                      setFormData({ ...formData, minExperience: parseInt(e.target.value) })
+                    }
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الحد الأقصى للطلبات"
+                    type="number"
+                    value={formData.maxApplications}
+                    onChange={(e) =>
+                      setFormData({ ...formData, maxApplications: parseInt(e.target.value) })
+                    }
+                    size="small"
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* Edit Dialog */}
+        {/* Applications Table */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6">قائمة الطلبات</Typography>
+                <Chip label={`${supplierData.length} طلب`} color="primary" size="small" />
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>اسم الشركة</TableCell>
+                    <TableCell>الشخص المسؤول</TableCell>
+                    <TableCell>نوع النشاط</TableCell>
+                    <TableCell>الموقع</TableCell>
+                    <TableCell>السعة</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {supplierData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((application) => (
+                      <TableRow key={application.id} hover>
+                        <TableCell>
+                          <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {application.name}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary">
+                              {application.email}
+                            </Typography>
+                            <Typography variant="caption" color="text.secondary" display="block">
+                              {application.phone}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {application.contactPerson}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip label={application.businessType} size="small" color="primary" />
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{application.location}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {application.capacity}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={getStatusLabel(application.status)}
+                            size="small"
+                            color={getStatusColor(application.status)}
+                          />
+                        </TableCell>
+                        <TableCell align="right">
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
+                            <Tooltip title="عرض التفاصيل" arrow>
+                              <IconButton size="small">
+                                <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteApplication(application.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
+                            </Tooltip>
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={supplierData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Add Application Dialog */}
       <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>New Supplier Application</DialogTitle>
+        <DialogTitle>إضافة طلب جديد</DialogTitle>
         <DialogContent>
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="Company Name" placeholder="Enter company name" />
+              <TextField
+                fullWidth
+                label="اسم الشركة"
+                placeholder="شركة التوريد المتقدمة"
+                helperText="الاسم الرسمي للشركة"
+              />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label="Contact Email"
-                type="email"
-                placeholder="Enter contact email"
+                label="الشخص المسؤول"
+                placeholder="سعد عبدالله المطيري"
+                helperText="اسم الشخص المسؤول عن التواصل"
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="البريد الإلكتروني"
+                placeholder="saad.mutairi@example.com"
+                type="email"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="رقم الهاتف" placeholder="+966501234567" type="tel" />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>
-                <InputLabel>Category</InputLabel>
-                <Select label="Category">
-                  <MenuItem value="electronics">Electronics</MenuItem>
-                  <MenuItem value="fashion">Fashion</MenuItem>
-                  <MenuItem value="home-garden">Home & Garden</MenuItem>
-                  <MenuItem value="automotive">Automotive</MenuItem>
+                <InputLabel>نوع النشاط</InputLabel>
+                <Select label="نوع النشاط">
+                  {businessTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select label="Status">
-                  <MenuItem value="pending">Pending</MenuItem>
-                  <MenuItem value="approved">Approved</MenuItem>
-                  <MenuItem value="rejected">Rejected</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  {statuses.map((status) => (
+                    <MenuItem key={status.value} value={status.value}>
+                      {status.label}
+                    </MenuItem>
+                  ))}
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="الموقع" placeholder="الرياض" />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="السعة الإنتاجية"
+                placeholder="1000 وحدة/شهر"
+                helperText="القدرة الإنتاجية الشهرية"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="سنوات الخبرة" type="number" placeholder="8" />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="التقييم"
+                type="number"
+                placeholder="4.9"
+                inputProps={{ min: 0, max: 5, step: 0.1 }}
+              />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
+                label="الملاحظات"
+                placeholder="ملاحظات إضافية..."
                 multiline
                 rows={3}
-                label="Company Description"
-                placeholder="Describe your company and products"
               />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={<SaveIcon />}
-          >
-            {loading ? 'Saving...' : 'Save'}
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة الطلب
           </Button>
         </DialogActions>
       </Dialog>

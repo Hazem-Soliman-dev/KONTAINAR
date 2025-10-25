@@ -4,978 +4,613 @@ import {
   Typography,
   Paper,
   Grid,
+  Card,
+  CardContent,
   TextField,
   Button,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TablePagination,
   Breadcrumbs,
   Link,
-  Toolbar,
+  Divider,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   Chip,
   IconButton,
   Tooltip,
-  Alert,
-  Skeleton,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
   Snackbar,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  Card,
-  CardContent,
-  CardActions,
-  Divider,
+  Alert,
+  Skeleton,
   Switch,
   FormControlLabel,
-  Stack,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
   Avatar,
-  Badge,
+  Stack,
+  Zoom,
   LinearProgress,
   Fade,
-  Zoom,
-  TableSortLabel,
-  Checkbox,
-  Menu,
-  ListItemIcon,
-  ListItemText,
-  CircularProgress,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  EditOutlined as EditIcon,
-  DeleteOutline as DeleteIcon,
-  VisibilityOutlined as ViewIcon,
-  Search as SearchIcon,
-  FilterList as FilterIcon,
-  Refresh as RefreshIcon,
-  Save as SaveIcon,
-  Cancel as CancelIcon,
   Home as HomeIcon,
-  Article as ArticleIcon,
   NavigateNext as NavigateNextIcon,
-  MoreVert as MoreVertIcon,
-  DragIndicator as DragIcon,
-  Visibility as VisibilityIcon,
+  Save as SaveIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  ExpandMore as ExpandMoreIcon,
+  Dashboard as DashboardIcon,
   Schedule as ScheduleIcon,
-  Public as PublicIcon,
-  Lock as LockIcon,
-  Star as StarIcon,
+  CheckCircle as CheckCircleIcon,
+  Warning as WarningIcon,
+  Assignment as AssignmentIcon,
+  AttachMoney as AttachMoneyIcon,
   TrendingUp as TrendingUpIcon,
-  ContentCopy as CopyIcon,
-  Share as ShareIcon,
+  Visibility as VisibilityIcon,
+  Refresh as RefreshIcon,
+  Store as StoreIcon,
+  ShoppingCart as ShoppingCartIcon,
+  Public as PublicIcon,
+  Star as StarIcon,
+  Speed as SpeedIcon,
+  Security as SecurityIcon,
+  Support as SupportIcon,
 } from '@mui/icons-material';
 
 const Homepage = () => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
-  const [sortBy, setSortBy] = useState('lastModified');
-  const [sortOrder, setSortOrder] = useState('desc');
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [viewMode, setViewMode] = useState('table'); // 'table' or 'grid'
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // بيانات تجريبية محسنة للمحتوى
-  const homepageData = [
+  // Stats data
+  const homepageStats = [
     {
-      id: 1,
-      title: 'قسم البطل',
-      type: 'لافتة',
-      status: 'تم النشر',
-      lastModified: '2024-01-15',
-      author: 'مدير',
-      priority: 'عالي',
-      views: 1250,
-      clicks: 89,
-      description: 'لافتة البطل الرئيسي مع دعوة للعمل',
-      tags: ['بطل', 'لافتة', 'دعوة'],
-      featured: true,
-      position: 1,
+      title: 'زوار اليوم',
+      value: '2,450',
+      color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+      icon: VisibilityIcon,
+      change: '+12%',
     },
     {
-      id: 2,
-      title: 'المنتجات المميزة',
-      type: 'شبكة المنتجات',
-      status: 'مسودة',
-      lastModified: '2024-01-14',
-      author: 'محرر',
-      priority: 'متوسط',
-      views: 0,
-      clicks: 0,
-      description: 'عرض أفضل المنتجات مبيعاً',
-      tags: ['منتجات', 'مميز', 'شبكة'],
-      featured: false,
-      position: 2,
+      title: 'الطلبات الجديدة',
+      value: '156',
+      color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+      icon: ShoppingCartIcon,
+      change: '+8%',
     },
     {
-      id: 3,
-      title: 'اشتراك النشرة الإخبارية',
-      type: 'نموذج',
-      status: 'تم النشر',
-      lastModified: '2024-01-13',
-      author: 'مدير',
-      priority: 'منخفض',
-      views: 890,
-      clicks: 45,
-      description: 'نموذج الاشتراك في البريد الإلكتروني',
-      tags: ['نشرة', 'نموذج', 'اشتراك'],
-      featured: false,
-      position: 3,
+      title: 'معدل التحويل',
+      value: '3.2%',
+      color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      icon: TrendingUpIcon,
+      change: '+0.5%',
     },
     {
-      id: 4,
-      title: 'شهادات العملاء',
-      type: 'شهادات',
-      status: 'تم النشر',
-      lastModified: '2024-01-12',
-      author: 'مدير',
-      priority: 'متوسط',
-      views: 650,
-      clicks: 23,
-      description: 'آراء وشهادات العملاء',
-      tags: ['شهادات', 'آراء', 'دليل اجتماعي'],
-      featured: true,
-      position: 4,
-    },
-    {
-      id: 5,
-      title: 'أحدث المقالات',
-      type: 'تغذية المدونة',
-      status: 'مجدول',
-      lastModified: '2024-01-11',
-      author: 'محرر',
-      priority: 'متوسط',
-      views: 0,
-      clicks: 0,
-      description: 'أحدث المقالات والتدوينات',
-      tags: ['مدونة', 'محتوى', 'مقالات'],
-      featured: false,
-      position: 5,
+      title: 'وقت التحميل',
+      value: '1.2s',
+      color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      icon: SpeedIcon,
+      change: '-0.3s',
     },
   ];
 
-  useEffect(() => {
-    // محاكاة تحميل البيانات الأولي
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => {
+      setIsRefreshing(false);
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
-    return () => clearTimeout(timer);
+  };
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 800);
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const [formData, setFormData] = useState({
+    title: 'الصفحة الرئيسية',
+    content: '',
+    isActive: true,
+    language: 'ar',
+    lastUpdated: new Date().toISOString().split('T')[0],
+    heroTitle: 'مرحباً بك في متجر كونتينار',
+    heroSubtitle: 'اكتشف أفضل المنتجات بأسعار مذهلة',
+    heroButtonText: 'تسوق الآن',
+    heroImage: '/images/hero-banner.jpg',
+    featuredProducts: true,
+    testimonials: true,
+    newsletter: true,
+    socialLinks: true,
+  });
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const handleSelectAll = (event) => {
-    if (event.target.checked) {
-      setSelectedItems(homepageData.map((item) => item.id));
-    } else {
-      setSelectedItems([]);
-    }
-  };
-
-  const handleSelectItem = (itemId) => {
-    setSelectedItems((prev) =>
-      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
-    );
-  };
-
-  const handleBulkAction = (action) => {
-    console.log(`إجراء جماعي ${action} للعناصر:`, selectedItems);
-    setSnackbar({
-      open: true,
-      message: `تم إكمال ${action} لـ ${selectedItems.length} عنصر`,
-      severity: 'success',
-    });
-    setSelectedItems([]);
-  };
+  const [sections, setSections] = useState([
+    {
+      id: 1,
+      title: 'قسم المنتجات المميزة',
+      content: 'عرض أفضل المنتجات والأكثر مبيعاً في المقدمة لجذب انتباه الزوار وزيادة المبيعات.',
+      isExpanded: true,
+    },
+    {
+      id: 2,
+      title: 'قسم العروض الخاصة',
+      content: 'إبراز العروض والخصومات الحالية لتحفيز العملاء على الشراء وزيادة معدل التحويل.',
+      isExpanded: false,
+    },
+    {
+      id: 3,
+      title: 'قسم الشهادات والتقييمات',
+      content: 'عرض آراء العملاء وتقييماتهم لبناء الثقة وزيادة مصداقية المتجر لدى الزوار الجدد.',
+      isExpanded: false,
+    },
+    {
+      id: 4,
+      title: 'قسم النشرة الإخبارية',
+      content: 'تسجيل الزوار في النشرة الإخبارية للحصول على تحديثات المنتجات والعروض الجديدة.',
+      isExpanded: false,
+    },
+  ]);
 
   const handleSave = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      setOpenDialog(false);
-      setSnackbar({ open: true, message: 'تم تحديث الصفحة الرئيسية بنجاح', severity: 'success' });
+      setSnackbar({
+        open: true,
+        message: 'تم تحديث الصفحة الرئيسية بنجاح',
+        severity: 'success',
+      });
     }, 1000);
   };
 
-  const handleRefresh = async () => {
-    setIsRefreshing(true);
-    setLoading(true);
-    // محاكاة استدعاء API
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsRefreshing(false);
-    setLoading(false);
-    setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
+  const handleAddSection = () => {
+    const newSection = {
+      id: sections.length + 1,
+      title: 'قسم جديد',
+      content: '',
+      isExpanded: false,
+    };
+    setSections([...sections, newSection]);
   };
 
-  const handleSort = (property) => {
-    const isAsc = sortBy === property && sortOrder === 'asc';
-    setSortOrder(isAsc ? 'desc' : 'asc');
-    setSortBy(property);
+  const handleDeleteSection = (id) => {
+    setSections(sections.filter((section) => section.id !== id));
   };
 
-  const handleMenuClick = (event, item) => {
-    setAnchorEl(event.currentTarget);
-    setSelectedItem(item);
+  const handleSectionChange = (id, field, value) => {
+    setSections(
+      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
+    );
   };
 
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-    setSelectedItem(null);
+  const handleToggleExpanded = (id) => {
+    setSections(
+      sections.map((section) =>
+        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
+      ),
+    );
   };
-
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case 'تم النشر':
-        return 'success';
-      case 'مسودة':
-        return 'warning';
-      case 'مجدول':
-        return 'info';
-      case 'مؤرشف':
-        return 'default';
-      default:
-        return 'default';
-    }
-  };
-
-  const getPriorityColor = (priority) => {
-    switch (priority.toLowerCase()) {
-      case 'عالي':
-        return 'error';
-      case 'متوسط':
-        return 'warning';
-      case 'منخفض':
-        return 'success';
-      default:
-        return 'default';
-    }
-  };
-
-  const filteredData = homepageData.filter((item) => {
-    const matchesSearch =
-      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.type.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.tags.some((tag) => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesStatus =
-      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
-    return matchesSearch && matchesStatus;
-  });
-
-  const sortedData = [...filteredData].sort((a, b) => {
-    let aValue = a[sortBy];
-    let bValue = b[sortBy];
-
-    if (typeof aValue === 'string') {
-      aValue = aValue.toLowerCase();
-      bValue = bValue.toLowerCase();
-    }
-
-    if (sortOrder === 'asc') {
-      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-    } else {
-      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-    }
-  });
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Enhanced Header with Stats */}
+      {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
+          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}
         >
           <Box>
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
+            <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
               إدارة الصفحة الرئيسية
             </Typography>
-            <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              إدارة محتوى وتخطيط وأداء الصفحة الرئيسية
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              تخصيص وإدارة الصفحة الرئيسية للمتجر لتحسين تجربة المستخدم وزيادة المبيعات
             </Typography>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
+            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
                 color="inherit"
-                href="/system"
+                href="/main-store"
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                لوحة التحكم
+                المتجر الرئيسي
               </Link>
-              <Link color="inherit" href="/system/cms">
+              <Link color="inherit" href="/main-store/cms">
                 إدارة المحتوى
               </Link>
               <Typography color="text.primary">الصفحة الرئيسية</Typography>
             </Breadcrumbs>
           </Box>
-
           <Stack direction="row" spacing={2}>
             <Button
               variant="outlined"
-              startIcon={<RefreshIcon />}
+              startIcon={isRefreshing ? null : <RefreshIcon />}
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
               {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              إضافة محتوى
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={handleSave}
+              disabled={loading}
+            >
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
 
-        {/* Enhanced Stats Cards */}
+        {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          {homepageStats.map((stat, index) => (
+            <Grid key={index} size={{ xs: 12, sm: 6, md: 3 }}>
+              <Zoom in={true} style={{ transitionDelay: `${index * 100}ms` }}>
             <Card
               sx={{
-                p: 3,
-                textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-                border: '1px solid rgba(25, 118, 210, 0.2)',
-                borderRadius: 3,
-                transition: 'all 0.3s ease',
+                    background: stat.color,
+                    color: 'white',
+                    position: 'relative',
+                    overflow: 'hidden',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
-                },
-              }}
-            >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                      transform: 'translateY(-8px)',
+                      boxShadow: 6,
+                    },
+                    transition: 'all 0.3s ease',
+                    cursor: 'pointer',
+                  }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <ArticleIcon />
-                  </Avatar>
-                </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  {homepageData.length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي الأقسام
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <Card
+                  <CardContent>
+                    <Box
               sx={{
-                p: 3,
-                textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
-                border: '1px solid rgba(46, 125, 50, 0.2)',
-                borderRadius: 3,
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(46, 125, 50, 0.15)',
-                },
-              }}
-            >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <PublicIcon />
-                  </Avatar>
-                </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  {homepageData.filter((item) => item.status === 'تم النشر').length}
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-start',
+                      }}
+                    >
+                      <Box>
+                        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+                          {stat.value}
                 </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  منشور
+                        <Typography variant="body2" sx={{ opacity: 0.9, mb: 1 }}>
+                          {stat.title}
                 </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <Card
+                        <Chip
+                          label={stat.change}
+                          size="small"
               sx={{
-                p: 3,
-                textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
-                borderRadius: 3,
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
-                },
-              }}
-            >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <LockIcon />
-                  </Avatar>
+                            backgroundColor: 'rgba(255,255,255,0.2)',
+                            color: 'white',
+                            fontWeight: 600,
+                          }}
+                        />
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  {homepageData.filter((item) => item.status === 'مسودة').length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  مسودات
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-            <Card
+                      <Avatar
               sx={{
-                p: 3,
-                textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
-                borderRadius: 3,
-                transition: 'all 0.3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
-                },
-              }}
-            >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <VisibilityIcon />
+                          width: 56,
+                          height: 56,
+                          backgroundColor: 'rgba(255,255,255,0.2)',
+                        }}
+                      >
+                        <stat.icon sx={{ fontSize: 30 }} />
                   </Avatar>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  {homepageData.reduce((sum, item) => sum + item.views, 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي المشاهدات
-                </Typography>
               </CardContent>
             </Card>
+              </Zoom>
           </Grid>
+          ))}
         </Grid>
       </Box>
 
-      {/* Enhanced Filters */}
-      <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            الفلاتر والبحث
-          </Typography>
-          <Stack direction="row" spacing={1}>
-            <Button
-              variant="outlined"
-              size="small"
-              startIcon={<FilterIcon />}
-              onClick={() => {
-                setSearchTerm('');
-                setStatusFilter('all');
-              }}
-            >
-              مسح الفلاتر
-            </Button>
-          </Stack>
-        </Box>
+      {/* Loading State */}
+      {loading && <LinearProgress sx={{ mb: 2 }} />}
 
-        <Grid container spacing={3} alignItems="center">
-          <Grid size={{ xs: 12, md: 4 }}>
+      {/* Filters */}
+      <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+          <Avatar sx={{ bgcolor: 'info.main' }}>
+            <DashboardIcon />
+          </Avatar>
+          <Box>
+            <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
+              إعدادات الصفحة الرئيسية
+            </Typography>
+            <Typography variant="body2" color="text.secondary">
+              تخصيص وإدارة محتوى الصفحة الرئيسية
+          </Typography>
+          </Box>
+        </Box>
+        <Grid container spacing={2} alignItems="center">
+          <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
+              label="البحث في الأقسام"
               size="small"
-              placeholder="البحث في المحتوى، العلامات، أو الأوصاف..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              InputProps={{
-                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
-              }}
+              placeholder="البحث في أقسام الصفحة الرئيسية..."
             />
           </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
+          <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
               <InputLabel>الحالة</InputLabel>
-              <Select
-                value={statusFilter}
-                label="الحالة"
-                onChange={(e) => setStatusFilter(e.target.value)}
-              >
-                <MenuItem value="all">جميع الحالات</MenuItem>
-                <MenuItem value="تم النشر">تم النشر</MenuItem>
-                <MenuItem value="مسودة">مسودة</MenuItem>
-                <MenuItem value="مجدول">مجدول</MenuItem>
-                <MenuItem value="مؤرشف">مؤرشف</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel>الأولوية</InputLabel>
-              <Select value="all" label="الأولوية" onChange={() => {}}>
-                <MenuItem value="all">جميع الأولويات</MenuItem>
-                <MenuItem value="عالي">عالي</MenuItem>
-                <MenuItem value="متوسط">متوسط</MenuItem>
-                <MenuItem value="منخفض">منخفض</MenuItem>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              تم العثور على {sortedData.length} عنصر
-            </Typography>
+            <FormControl fullWidth size="small">
+              <InputLabel>اللغة</InputLabel>
+              <Select value="ar" label="اللغة">
+                <MenuItem value="ar">العربية</MenuItem>
+                <MenuItem value="en">الإنجليزية</MenuItem>
+                <MenuItem value="fr">الفرنسية</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid size={{ xs: 12, md: 2 }}>
+            <Button variant="outlined" size="small" fullWidth>
+              إعادة تعيين الفلاتر
+            </Button>
+          </Grid>
+          <Grid size={{ xs: 12, md: 3 }}>
+            <Box sx={{ display: 'flex', gap: 1 }}>
+                <Button
+                variant="contained"
+                startIcon={<SaveIcon />}
+                onClick={handleSave}
+                disabled={loading}
+                  size="small"
+                >
+                حفظ الصفحة
+                </Button>
+                <Button
+                variant="outlined"
+                startIcon={<AddIcon />}
+                onClick={handleAddSection}
+                  size="small"
+                >
+                إضافة قسم
+                </Button>
+              </Box>
           </Grid>
         </Grid>
       </Paper>
 
-      {/* Enhanced Content Table */}
-      <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
-        <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
-          <Typography variant="h6" sx={{ flex: 1, fontWeight: 600 }}>
-            محتوى الصفحة الرئيسية
-          </Typography>
-          {selectedItems.length > 0 && (
-            <Fade in={selectedItems.length > 0}>
-              <Box sx={{ mr: 2, display: 'flex', gap: 1 }}>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  startIcon={<PublicIcon />}
-                  onClick={() => handleBulkAction('نشر')}
-                >
-                  نشر ({selectedItems.length})
-                </Button>
-                <Button
-                  size="small"
-                  variant="outlined"
-                  color="error"
-                  startIcon={<DeleteIcon />}
-                  onClick={() => handleBulkAction('حذف')}
-                >
-                  حذف ({selectedItems.length})
-                </Button>
-              </Box>
-            </Fade>
-          )}
-        </Toolbar>
-
-        {loading ? (
-          <Box sx={{ p: 3 }}>
-            <LinearProgress sx={{ mb: 2 }} />
-            {[...Array(5)].map((_, index) => (
-              <Skeleton key={index} height={80} sx={{ mb: 2, borderRadius: 1 }} />
-            ))}
-          </Box>
-        ) : sortedData.length === 0 ? (
-          <Box sx={{ p: 6, textAlign: 'center' }}>
-            <ArticleIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
-            <Typography variant="h6" color="text.secondary" gutterBottom>
-              لم يتم العثور على محتوى للصفحة الرئيسية
-            </Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              أنشئ أول كتلة محتوى للبدء
-            </Typography>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              إضافة أول محتوى
-            </Button>
-          </Box>
-        ) : (
-          <>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedItems.length === sortedData.length && sortedData.length > 0}
-                      indeterminate={
-                        selectedItems.length > 0 && selectedItems.length < sortedData.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'title'}
-                      direction={sortBy === 'title' ? sortOrder : 'asc'}
-                      onClick={() => handleSort('title')}
-                    >
-                      المحتوى
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'type'}
-                      direction={sortBy === 'type' ? sortOrder : 'asc'}
-                      onClick={() => handleSort('type')}
-                    >
-                      النوع
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'status'}
-                      direction={sortBy === 'status' ? sortOrder : 'asc'}
-                      onClick={() => handleSort('status')}
-                    >
-                      الحالة
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>الأولوية</TableCell>
-                  <TableCell>الأداء</TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'lastModified'}
-                      direction={sortBy === 'lastModified' ? sortOrder : 'asc'}
-                      onClick={() => handleSort('lastModified')}
-                    >
-                      آخر تعديل
-                    </TableSortLabel>
-                  </TableCell>
-                  <TableCell>المؤلف</TableCell>
-                  <TableCell align="right">الإجراءات</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => (
-                    <TableRow
-                      key={item.id}
-                      hover
-                      sx={{ '&:hover': { backgroundColor: 'action.hover' } }}
-                    >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={selectedItems.includes(item.id)}
-                          onChange={() => handleSelectItem(item.id)}
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                          <Avatar sx={{ width: 40, height: 40, bgcolor: 'primary.light' }}>
-                            {item.type.charAt(0)}
-                          </Avatar>
-                          <Box>
-                            <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                              {item.title}
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary" noWrap>
-                              {item.description}
-                            </Typography>
-                            <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5 }}>
-                              {item.tags.slice(0, 2).map((tag, index) => (
-                                <Chip key={index} label={tag} size="small" variant="outlined" />
-                              ))}
-                              {item.tags.length > 2 && (
-                                <Chip
-                                  label={`+${item.tags.length - 2}`}
-                                  size="small"
-                                  variant="outlined"
-                                />
-                              )}
-                            </Box>
-                          </Box>
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        <Chip label={item.type} size="small" variant="outlined" color="primary" />
-                      </TableCell>
-                      <TableCell>
-                        <Chip
-                          label={item.status}
-                          size="small"
-                          color={getStatusColor(item.status)}
-                          icon={
-                            item.status === 'Published' ? (
-                              <PublicIcon />
-                            ) : item.status === 'Draft' ? (
-                              <LockIcon />
-                            ) : item.status === 'Scheduled' ? (
-                              <ScheduleIcon />
-                            ) : (
-                              <VisibilityIcon />
-                            )
-                          }
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Chip
-                          label={item.priority}
-                          size="small"
-                          color={getPriorityColor(item.priority)}
-                          variant="outlined"
-                        />
-                      </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-                          <Typography
-                            variant="body2"
-                            sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
-                          >
-                            <VisibilityIcon fontSize="small" />
-                            {item.views.toLocaleString()}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
-                          >
-                            <TrendingUpIcon fontSize="small" />
-                            {item.clicks}
-                          </Typography>
-                        </Box>
-                      </TableCell>
-                      <TableCell>
-                        <Typography variant="body2">{item.lastModified}</Typography>
-                      </TableCell>
-                      <TableCell>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Avatar sx={{ width: 24, height: 24, fontSize: '0.75rem' }}>
-                            {item.author.charAt(0)}
-                          </Avatar>
-                          {item.author}
-                        </Box>
-                      </TableCell>
-                      <TableCell align="right">
-                        <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title="عرض التفاصيل" arrow>
-                            <IconButton size="small" color="primary">
-                              <ViewIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="تعديل المحتوى" arrow>
-                            <IconButton size="small" color="primary">
-                              <EditIcon />
-                            </IconButton>
-                          </Tooltip>
-                          <Tooltip title="المزيد من الإجراءات" arrow>
-                            <IconButton size="small" onClick={(e) => handleMenuClick(e, item)}>
-                              <MoreVertIcon />
-                            </IconButton>
-                          </Tooltip>
-                        </Stack>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, 50]}
-              component="div"
-              count={sortedData.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              sx={{ borderTop: 1, borderColor: 'divider' }}
-            />
-          </>
-        )}
-      </Paper>
-
-      {/* Enhanced Edit Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="lg" fullWidth>
-        <DialogTitle sx={{ pb: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ bgcolor: 'primary.main' }}>
-              <AddIcon />
-            </Avatar>
-            <Box>
-              <Typography variant="h6">إضافة محتوى الصفحة الرئيسية</Typography>
-              <Typography variant="body2" color="text.secondary">
-                إنشاء قسم محتوى جديد للصفحة الرئيسية
+      {/* Content */}
+      <Grid container spacing={3}>
+        {/* Homepage Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات الصفحة الرئيسية
               </Typography>
-            </Box>
-          </Box>
-        </DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
-          <Grid container spacing={3}>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="عنوان المحتوى"
-                placeholder="أدخل عنواناً وصفياً لمحتواك"
-                helperText="سيتم عرض هذا في واجهة إدارة المحتوى"
+                    label="عنوان الصفحة"
+                    value={formData.title}
+                    onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                    size="small"
               />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>نوع المحتوى</InputLabel>
-                <Select label="نوع المحتوى">
-                  <MenuItem value="banner">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <ArticleIcon />
-                      لافتة
-                    </Box>
-                  </MenuItem>
-                  <MenuItem value="product-grid">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <StarIcon />
-                      شبكة المنتجات
-                    </Box>
-                  </MenuItem>
-                  <MenuItem value="form">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <EditIcon />
-                      نموذج
-                    </Box>
-                  </MenuItem>
-                  <MenuItem value="testimonials">
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <StarIcon />
-                      شهادات
-                    </Box>
-                  </MenuItem>
-                </Select>
-              </FormControl>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="الصفحة نشطة"
+                  />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الأولوية</InputLabel>
-                <Select label="الأولوية">
-                  <MenuItem value="high">أولوية عالية</MenuItem>
-                  <MenuItem value="medium">أولوية متوسطة</MenuItem>
-                  <MenuItem value="low">أولوية منخفضة</MenuItem>
-                </Select>
-              </FormControl>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="عنوان البانر الرئيسي"
+                    value={formData.heroTitle}
+                    onChange={(e) => setFormData({ ...formData, heroTitle: e.target.value })}
+                    size="small"
+                  />
             </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الحالة</InputLabel>
-                <Select label="الحالة">
-                  <MenuItem value="draft">مسودة</MenuItem>
-                  <MenuItem value="published">منشور</MenuItem>
-                  <MenuItem value="scheduled">مجدول</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                type="datetime-local"
-                label="تاريخ النشر"
-                InputLabelProps={{ shrink: true }}
+                    label="النص الفرعي للبانر"
+                    value={formData.heroSubtitle}
+                    onChange={(e) => setFormData({ ...formData, heroSubtitle: e.target.value })}
+                    size="small"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                multiline
-                rows={4}
-                label="وصف المحتوى"
-                placeholder="اوصف ما سيحتويه قسم المحتوى هذا"
-                helperText="هذا يساعدك وفريقك على فهم الغرض من هذا المحتوى"
+                    label="نص زر العمل"
+                    value={formData.heroButtonText}
+                    onChange={(e) => setFormData({ ...formData, heroButtonText: e.target.value })}
+                    size="small"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="العلامات"
-                placeholder="أدخل العلامات مفصولة بفواصل"
-                helperText="العلامات تساعد في تنظيم وتصنيف المحتوى"
+                    label="صورة البانر"
+                    value={formData.heroImage}
+                    onChange={(e) => setFormData({ ...formData, heroImage: e.target.value })}
+                    size="small"
+                    placeholder="/images/hero-banner.jpg"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.featuredProducts}
+                        onChange={(e) =>
+                          setFormData({ ...formData, featuredProducts: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض المنتجات المميزة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.testimonials}
+                        onChange={(e) =>
+                          setFormData({ ...formData, testimonials: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض الشهادات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.newsletter}
+                        onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
+                      />
+                    }
+                    label="النشرة الإخبارية"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <Stack direction="row" spacing={2}>
-                <FormControlLabel control={<Switch />} label="محتوى مميز" />
-                <FormControlLabel control={<Switch />} label="إظهار في الصفحة الرئيسية" />
-              </Stack>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.socialLinks}
+                        onChange={(e) =>
+                          setFormData({ ...formData, socialLinks: e.target.checked })
+                        }
+                      />
+                    }
+                    label="روابط التواصل الاجتماعي"
+                  />
             </Grid>
           </Grid>
-        </DialogContent>
-        <DialogActions sx={{ p: 3, pt: 1 }}>
-          <Button onClick={() => setOpenDialog(false)} variant="outlined">
-            إلغاء
-          </Button>
-          <Button variant="outlined" startIcon={<SaveIcon />} onClick={() => handleSave()}>
-            حفظ كمسودة
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={loading ? <CircularProgress size={20} /> : <PublicIcon />}
-          >
-            {loading ? 'جاري النشر...' : 'نشر'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+            </CardContent>
+          </Card>
+        </Grid>
 
-      {/* Action Menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleMenuClose}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-      >
-        <MenuItem onClick={handleMenuClose}>
-          <ListItemIcon>
-            <ViewIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>عرض التفاصيل</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <ListItemIcon>
-            <EditIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>تعديل المحتوى</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <ListItemIcon>
-            <CopyIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>نسخ</ListItemText>
-        </MenuItem>
-        <MenuItem onClick={handleMenuClose}>
-          <ListItemIcon>
-            <ShareIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>مشاركة</ListItemText>
-        </MenuItem>
-        <Divider />
-        <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
-          <ListItemIcon>
-            <DeleteIcon fontSize="small" color="error" />
-          </ListItemIcon>
-          <ListItemText>حذف</ListItemText>
-        </MenuItem>
-      </Menu>
+        {/* Homepage Sections */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Card>
+            <CardContent>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6">أقسام الصفحة الرئيسية</Typography>
+                <Chip label={`${sections.length} أقسام`} color="primary" size="small" />
+              </Box>
+              <Divider sx={{ mb: 2 }} />
 
-      {/* Enhanced Snackbar */}
+              {sections.map((section) => (
+                <Accordion
+                  key={section.id}
+                  expanded={section.isExpanded}
+                  onChange={() => handleToggleExpanded(section.id)}
+                  sx={{ mb: 1 }}
+                >
+                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                      <DashboardIcon sx={{ mr: 1, color: 'primary.main' }} />
+                      <TextField
+                        value={section.title}
+                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+                        size="small"
+                        sx={{ flexGrow: 1, mr: 2 }}
+                        onClick={(e) => e.stopPropagation()}
+                      />
+                      <Box sx={{ display: 'flex', gap: 1 }}>
+                        <Tooltip title="حذف القسم">
+                          <Box
+                            sx={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              width: 32,
+                              height: 32,
+                              borderRadius: '50%',
+                              cursor: 'pointer',
+                              '&:hover': {
+                                backgroundColor: 'action.hover',
+                              },
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteSection(section.id);
+                            }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </Box>
+                        </Tooltip>
+                      </Box>
+                    </Box>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <TextField
+                      fullWidth
+                      multiline
+                      rows={4}
+                      value={section.content}
+                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
+                      placeholder="أدخل محتوى القسم..."
+                      size="small"
+                    />
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+
+              {sections.length === 0 && (
+                <Box sx={{ textAlign: 'center', py: 4 }}>
+                  <DashboardIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                  <Typography variant="h6" color="text.secondary">
+                    لا توجد أقسام بعد
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    أضف أول قسم للصفحة الرئيسية للبدء
+                  </Typography>
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
+                    إضافة أول قسم
+                  </Button>
+                </Box>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       >
         <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           severity={snackbar.severity}
-          variant="filled"
-          sx={{ borderRadius: 2 }}
         >
           {snackbar.message}
         </Alert>

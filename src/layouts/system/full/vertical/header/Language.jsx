@@ -1,11 +1,9 @@
-import React, { useContext } from 'react';
-import { Avatar, IconButton, Menu, MenuItem, Typography } from '@mui/material';
+import React, { useContext, useEffect } from 'react';
+import { Avatar, IconButton, Menu, MenuItem, Typography, Stack } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 import { CustomizerContext } from '../../../../../context/CustomizerContext.jsx';
 import FlagEn from '../../../../../assets/images/flag/icon-flag-en.svg';
 import FlagSa from '../../../../../assets/images/flag/icon-flag-sa.svg';
-import { Stack } from '@mui/system';
-import { useTranslation } from 'react-i18next';
-import { useEffect } from 'react';
 
 const Languages = [
   {

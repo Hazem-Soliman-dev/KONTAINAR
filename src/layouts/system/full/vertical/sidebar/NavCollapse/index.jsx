@@ -1,17 +1,11 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
-// mui imports
+import { useTranslation } from 'react-i18next';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import { ListItemIcon, ListItem, Collapse, styled, ListItemText, useTheme } from '@mui/material';
 import { CustomizerContext } from '../../../../../../context/CustomizerContext.jsx';
-
-// custom imports
 import NavItem from '../NavItem/index.jsx';
-
-// plugins
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import { useTranslation } from 'react-i18next';
 
 // FC Component For Dropdown Menu
 const NavCollapse = ({ menu, level, pathWithoutLastPart, pathDirect, onClick, hideMenu }) => {

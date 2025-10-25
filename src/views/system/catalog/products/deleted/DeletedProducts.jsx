@@ -52,55 +52,23 @@ import {
   ListItem,
   ListItemAvatar,
   ListItemText as MuiListItemText,
-  ListItemSecondaryAction,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  EditOutlined as EditIcon,
   DeleteOutline as DeleteIcon,
   VisibilityOutlined as ViewIcon,
   Search as SearchIcon,
   FilterList as FilterIcon,
-  Save as SaveIcon,
   Home as HomeIcon,
   NavigateNext as NavigateNextIcon,
   MoreVert as MoreVertIcon,
-  DragIndicator as DragIcon,
   Visibility as VisibilityIcon,
-  Schedule as ScheduleIcon,
-  Public as PublicIcon,
-  Lock as LockIcon,
-  Star as StarIcon,
   TrendingUp as TrendingUpIcon,
   ContentCopy as CopyIcon,
-  Share as ShareIcon,
-  Inventory as InventoryIcon,
-  ShoppingCart as CartIcon,
-  AttachMoney as PriceIcon,
-  Analytics as AnalyticsIcon,
-  Warning as WarningIcon,
-  CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
   Refresh as RefreshIcon,
   Restore as RestoreIcon,
   DeleteForever as DeleteForeverIcon,
   Archive as ArchiveIcon,
   History as HistoryIcon,
-  Undo as UndoIcon,
-  Redo as RedoIcon,
-  Settings as SettingsIcon,
-  Timeline as TimelineIcon,
-  Assessment as AssessmentIcon,
-  ExpandMore as ExpandMoreIcon,
-  ArrowForward as ArrowForwardIcon,
-  ArrowBack as ArrowBackIcon,
-  Check as CheckIcon,
-  Error as ErrorIcon,
-  Info as InfoIcon,
-  RestoreFromTrash as RestoreFromTrashIcon,
 } from '@mui/icons-material';
 
 const DeletedProducts = () => {
@@ -127,128 +95,128 @@ const DeletedProducts = () => {
   const deletedProductsData = [
     {
       id: 1,
-      name: 'iPhone 14 Pro Max 256GB',
+      name: 'ايفون 14 برو ماكس 256 جيجابايت',
       sku: 'IPH14PM-256',
-      status: 'Deleted',
+      status: 'محذوف',
       deletedDate: '2024-01-15',
-      deletedBy: 'Admin',
-      reason: 'Product Discontinued',
-      priority: 'High',
+      deletedBy: 'مدير',
+      reason: 'توقف المنتج',
+      priority: 'عالي',
       views: 1250,
       clicks: 89,
       price: 1099.99,
       stock: 0,
       originalStock: 45,
-      category: 'Smartphones',
-      brand: 'Apple',
-      tags: ['smartphone', 'apple', 'discontinued'],
+      category: 'الهواتف الذكية',
+      brand: 'آبل',
+      tags: ['هاتف ذكي', 'آبل', 'متوقف'],
       featured: true,
       position: 1,
-      description: 'Previous generation iPhone with advanced camera system',
+      description: 'ايفون الجيل السابق مع نظام الكاميرا المتقدم',
       lastModified: '2024-01-10',
       canRestore: true,
       restoreDate: null,
-      deletionType: 'Soft Delete',
+      deletionType: 'حذف مؤقت',
     },
     {
       id: 2,
       name: 'Samsung Galaxy S23 Ultra 512GB',
       sku: 'SGS23U-512',
-      status: 'Deleted',
+      status: 'محذوف',
       deletedDate: '2024-01-14',
-      deletedBy: 'Editor',
-      reason: 'Low Performance',
-      priority: 'Medium',
+      deletedBy: 'مصمم',
+      reason: 'أداء منخفض',
+      priority: 'متوسط',
       views: 890,
       clicks: 67,
       price: 1199.99,
       stock: 0,
       originalStock: 32,
-      category: 'Smartphones',
-      brand: 'Samsung',
-      tags: ['smartphone', 'samsung', 'low-performance'],
+      category: 'الهواتف الذكية',
+      brand: 'سامسونج',
+      tags: ['هاتف ذكي', 'سامسونج', 'أداء منخفض'],
       featured: false,
       position: 2,
-      description: 'Samsung flagship with S Pen and advanced camera',
+      description: 'سامسونج الرائد مع S Pen ونظام الكاميرا المتقدم',
       lastModified: '2024-01-08',
       canRestore: true,
       restoreDate: null,
-      deletionType: 'Soft Delete',
+      deletionType: 'حذف مؤقت',
     },
     {
       id: 3,
-      name: 'MacBook Pro M2 16" 1TB',
+      name: 'ماك بوك برو M2 16" 1TB',
       sku: 'MBP-M2-16-1TB',
-      status: 'Deleted',
+      status: 'محذوف',
       deletedDate: '2024-01-13',
-      deletedBy: 'Admin',
-      reason: 'Replaced by M3',
-      priority: 'High',
+      deletedBy: 'مدير',
+      reason: 'تم استبدال بـ M3',
+      priority: 'عالي',
       views: 650,
       clicks: 23,
       price: 2499.99,
       stock: 0,
       originalStock: 12,
-      category: 'Laptops',
-      brand: 'Apple',
-      tags: ['laptop', 'apple', 'macbook', 'replaced'],
+      category: 'اللابتوبات',
+      brand: 'آبل',
+      tags: ['لابتوب', 'آبل', 'ماك بوك', 'مستبدل'],
       featured: true,
       position: 3,
-      description: 'Previous generation MacBook Pro with M2 chip',
+      description: 'الجيل السابق من MacBook Pro مع معالج M2',
       lastModified: '2024-01-05',
       canRestore: false,
       restoreDate: null,
-      deletionType: 'Hard Delete',
+      deletionType: 'حذف نهائي',
     },
     {
       id: 4,
-      name: 'Dell XPS 13 Plus 1TB',
+      name: 'ديل XPS 13 بلس 1 طن',
       sku: 'DXP13P-1TB',
-      status: 'Deleted',
+      status: 'محذوف',
       deletedDate: '2024-01-12',
-      deletedBy: 'Editor',
-      reason: 'Quality Issues',
-      priority: 'Medium',
+      deletedBy: 'مصمم',
+      reason: 'مشاكل الجودة',
+      priority: 'متوسط',
       views: 420,
       clicks: 15,
       price: 1599.99,
       stock: 0,
       originalStock: 8,
-      category: 'Laptops',
-      brand: 'Dell',
-      tags: ['laptop', 'dell', 'quality-issues'],
+      category: 'اللابتوبات',
+      brand: 'ديل',
+      tags: ['لابتوب', 'ديل', 'مشاكل الجودة'],
       featured: false,
       position: 4,
-      description: 'Ultrabook with premium design and performance',
+      description: 'لابتوب سماك جدا مع نمط عالي الجودة والأداء',
       lastModified: '2024-01-03',
       canRestore: true,
       restoreDate: null,
-      deletionType: 'Soft Delete',
+      deletionType: 'حذف مؤقت',
     },
     {
       id: 5,
-      name: 'Sony WH-1000XM4 Headphones',
+      name: 'سوني WH-1000XM4 سماعات',
       sku: 'SNY-WH1000XM4',
-      status: 'Deleted',
+      status: 'محذوف',
       deletedDate: '2024-01-11',
-      deletedBy: 'Admin',
-      reason: 'Replaced by XM5',
-      priority: 'Low',
+      deletedBy: 'مدير',
+      reason: 'تم استبدال بـ XM5',
+      priority: 'منخفط',
       views: 320,
       clicks: 12,
       price: 349.99,
       stock: 0,
       originalStock: 25,
-      category: 'Audio',
-      brand: 'Sony',
-      tags: ['headphones', 'sony', 'replaced'],
+      category: 'الصوتيات',
+      brand: 'سوني',
+      tags: ['سماعات', 'سوني', 'مستبدل'],
       featured: false,
       position: 5,
-      description: 'Previous generation noise-canceling headphones',
+      description: 'الجيل السابق من سماعات الإلغاء الضوضاء',
       lastModified: '2024-01-01',
       canRestore: true,
       restoreDate: null,
-      deletionType: 'Soft Delete',
+      deletionType: 'حذف مؤقت',
     },
   ];
 
@@ -304,14 +272,14 @@ const DeletedProducts = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsRefreshing(false);
     setLoading(false);
-    setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+    setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
   };
 
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for items:`, selectedItems);
     setSnackbar({
       open: true,
-      message: `${action} completed for ${selectedItems.length} items`,
+      message: `تم ${action} لـ ${selectedItems.length} عنصر`,
       severity: 'success',
     });
     setSelectedItems([]);
@@ -332,7 +300,7 @@ const DeletedProducts = () => {
     setTimeout(() => {
       setLoading(false);
       setOpenDialog(false);
-      setSnackbar({ open: true, message: 'Product restored successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم استعادة المنتج بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -410,10 +378,10 @@ const DeletedProducts = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Deleted Products
+              المنتجات المحذوفة
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Manage deleted products, restore items, or permanently remove them
+              إدارة المنتجات المحذوفة، استعادة العناصر، أو حذفها نهائياً
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -422,15 +390,15 @@ const DeletedProducts = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/catalog">
-                Catalog
+                الكتالوج
               </Link>
               <Link color="inherit" href="/main-store/catalog/products">
-                Products
+                المنتجات
               </Link>
-              <Typography color="text.primary">Deleted Products</Typography>
+              <Typography color="text.primary">المنتجات المحذوفة</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -441,7 +409,7 @@ const DeletedProducts = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -449,7 +417,7 @@ const DeletedProducts = () => {
               startIcon={<RestoreIcon />}
               onClick={() => setOpenRestoreDialog(true)}
             >
-              Bulk Restore
+              استعادة جماعية
             </Button>
           </Stack>
         </Box>
@@ -484,7 +452,7 @@ const DeletedProducts = () => {
                   {deletedProductsData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Deleted Products
+                  المنتجات المحذوفة
                 </Typography>
               </CardContent>
             </Card>
@@ -517,7 +485,7 @@ const DeletedProducts = () => {
                   {deletedProductsData.filter((item) => item.canRestore).length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Can Restore
+                  يمكن الاستعادة
                 </Typography>
               </CardContent>
             </Card>
@@ -550,7 +518,7 @@ const DeletedProducts = () => {
                   {deletedProductsData.filter((item) => item.deletionType === 'Soft Delete').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Soft Deleted
+                  محذوف مؤقتاً
                 </Typography>
               </CardContent>
             </Card>
@@ -583,7 +551,7 @@ const DeletedProducts = () => {
                   {deletedProductsData.reduce((sum, item) => sum + item.views, 0).toLocaleString()}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Views
+                  إجمالي المشاهدات
                 </Typography>
               </CardContent>
             </Card>
@@ -595,7 +563,7 @@ const DeletedProducts = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
           <Stack direction="row" spacing={1}>
             <Button
@@ -607,7 +575,7 @@ const DeletedProducts = () => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              مسح الفلاتر
             </Button>
           </Stack>
         </Box>
@@ -617,7 +585,7 @@ const DeletedProducts = () => {
             <TextField
               fullWidth
               size="small"
-              placeholder="Search deleted products, SKUs, or reasons..."
+              placeholder="البحث في المنتجات المحذوفة، الرموز، أو الأسباب..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -627,32 +595,32 @@ const DeletedProducts = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Deletion Type</InputLabel>
+              <InputLabel>نوع الحذف</InputLabel>
               <Select
                 value={statusFilter}
-                label="Deletion Type"
+                label="نوع الحذف"
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="soft delete">Soft Delete</MenuItem>
-                <MenuItem value="hard delete">Hard Delete</MenuItem>
-                <MenuItem value="archived">Archived</MenuItem>
+                <MenuItem value="all">جميع الأنواع</MenuItem>
+                <MenuItem value="soft delete">حذف مؤقت</MenuItem>
+                <MenuItem value="hard delete">حذف نهائي</MenuItem>
+                <MenuItem value="archived">مؤرشف</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Can Restore</InputLabel>
-              <Select value="all" label="Can Restore" onChange={() => {}}>
-                <MenuItem value="all">All Products</MenuItem>
-                <MenuItem value="yes">Can Restore</MenuItem>
-                <MenuItem value="no">Cannot Restore</MenuItem>
+              <InputLabel>يمكن الاستعادة</InputLabel>
+              <Select value="all" label="يمكن الاستعادة" onChange={() => {}}>
+                <MenuItem value="all">جميع المنتجات</MenuItem>
+                <MenuItem value="yes">يمكن الاستعادة</MenuItem>
+                <MenuItem value="no">لا يمكن الاستعادة</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              {sortedData.length} products found
+              تم العثور على {sortedData.length} منتج
             </Typography>
           </Grid>
         </Grid>
@@ -662,7 +630,7 @@ const DeletedProducts = () => {
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Typography variant="h6" sx={{ flex: 1, fontWeight: 600 }}>
-            Deleted Products
+            المنتجات المحذوفة
           </Typography>
           {selectedItems.length > 0 && (
             <Fade in={selectedItems.length > 0}>
@@ -672,18 +640,18 @@ const DeletedProducts = () => {
                   variant="outlined"
                   color="success"
                   startIcon={<RestoreIcon />}
-                  onClick={() => handleBulkAction('Restore')}
+                  onClick={() => handleBulkAction('استعادة')}
                 >
-                  Restore ({selectedItems.length})
+                  استعادة ({selectedItems.length})
                 </Button>
                 <Button
                   size="small"
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteForeverIcon />}
-                  onClick={() => handleBulkAction('Permanent Delete')}
+                  onClick={() => handleBulkAction('حذف نهائي')}
                 >
-                  Delete Forever ({selectedItems.length})
+                  حذف نهائي ({selectedItems.length})
                 </Button>
               </Box>
             </Fade>
@@ -701,10 +669,10 @@ const DeletedProducts = () => {
           <Box sx={{ p: 6, textAlign: 'center' }}>
             <DeleteIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              No deleted products found
+              لم يتم العثور على منتجات محذوفة
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Deleted products will appear here for management and restoration
+              ستظهر المنتجات المحذوفة هنا للإدارة والاستعادة
             </Typography>
           </Box>
         ) : (
@@ -727,31 +695,31 @@ const DeletedProducts = () => {
                       direction={sortBy === 'name' ? sortOrder : 'asc'}
                       onClick={() => handleSort('name')}
                     >
-                      Product Details
+                      تفاصيل المنتج
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Deletion Info</TableCell>
+                  <TableCell>معلومات الحذف</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'price'}
                       direction={sortBy === 'price' ? sortOrder : 'asc'}
                       onClick={() => handleSort('price')}
                     >
-                      Price
+                      السعر
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Stock</TableCell>
+                  <TableCell>المخزون</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'deletedDate'}
                       direction={sortBy === 'deletedDate' ? sortOrder : 'asc'}
                       onClick={() => handleSort('deletedDate')}
                     >
-                      Deleted Date
+                      تاريخ الحذف
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Performance</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>الأداء</TableCell>
+                  <TableCell align="right">الإجراءات</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -814,16 +782,16 @@ const DeletedProducts = () => {
                       </TableCell>
                       <TableCell>
                         <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                          ${item.price.toFixed(2)}
+                          {item.price.toFixed(2)} ر.س
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                           <Typography variant="body2" sx={{ fontWeight: 500, color: 'error.main' }}>
-                            0 units
+                            0 وحدة
                           </Typography>
                           <Typography variant="caption" color="text.secondary">
-                            (was {item.originalStock})
+                            (كان {item.originalStock})
                           </Typography>
                         </Box>
                       </TableCell>
@@ -850,13 +818,17 @@ const DeletedProducts = () => {
                       </TableCell>
                       <TableCell align="right">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title="View Details" arrow>
-                            <IconButton size="small" color="primary">
+                          <Tooltip title="عرض التفاصيل" arrow>
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              onClick={() => setOpenViewDialog(true)}
+                            >
                               <ViewIcon />
                             </IconButton>
                           </Tooltip>
                           {item.canRestore && (
-                            <Tooltip title="Restore Product" arrow>
+                            <Tooltip title="استعادة المنتج" arrow>
                               <IconButton
                                 size="small"
                                 color="success"
@@ -866,7 +838,7 @@ const DeletedProducts = () => {
                               </IconButton>
                             </Tooltip>
                           )}
-                          <Tooltip title="More Actions" arrow>
+                          <Tooltip title="المزيد من الإجراءات" arrow>
                             <IconButton size="small" onClick={(e) => handleMenuClick(e, item)}>
                               <MoreVertIcon />
                             </IconButton>
@@ -1028,6 +1000,223 @@ const DeletedProducts = () => {
         </DialogActions>
       </Dialog>
 
+      {/* View Details Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'info.main' }}>
+              <ViewIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="h6">تفاصيل المنتج المحذوف</Typography>
+              <Typography variant="body2" color="text.secondary">
+                عرض جميع تفاصيل المنتج المحذوف
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  معلومات المنتج الأساسية
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      اسم المنتج:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      ايفون 14 برو ماكس 256 جيجابايت
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      رمز المنتج:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      IPH14PM-256
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الفئة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      الهواتف الذكية
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الماركة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      آبل
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  معلومات الحذف
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      تاريخ الحذف:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      2024-01-15
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      تم الحذف بواسطة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      مدير
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      سبب الحذف:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      توقف المنتج
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      نوع الحذف:
+                    </Typography>
+                    <Chip label="حذف مؤقت" color="warning" size="small" />
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  معلومات التسعير والمخزون
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      السعر:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                      1099.99 ر.س
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المخزون الحالي:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500, color: 'error.main' }}>
+                      0 وحدة
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المخزون الأصلي:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      45 وحدة
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      يمكن الاستعادة:
+                    </Typography>
+                    <Chip label="نعم" color="success" size="small" />
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  إحصائيات الأداء
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المشاهدات:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                      1,250
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      النقرات:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
+                      89
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      آخر تعديل:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      2024-01-10
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الأولوية:
+                    </Typography>
+                    <Chip label="عالي" color="error" size="small" />
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  الوصف والعلامات
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  الوصف:
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  ايفون 14 برو ماكس 256 جيجابايت مع نظام الكاميرا المتقدم
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  العلامات:
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {['هاتف ذكي', 'آبل', 'متوقف'].map((tag, index) => (
+                    <Chip key={index} label={tag} size="small" variant="outlined" />
+                  ))}
+                </Box>
+              </Card>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button onClick={() => setOpenViewDialog(false)} variant="outlined">
+            إغلاق
+          </Button>
+          <Button variant="contained" color="success" startIcon={<RestoreIcon />}>
+            استعادة المنتج
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Action Menu */}
       <Menu
         anchorEl={anchorEl}
@@ -1036,38 +1225,43 @@ const DeletedProducts = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem
+          onClick={() => {
+            setOpenViewDialog(true);
+            handleMenuClose();
+          }}
+        >
           <ListItemIcon>
             <ViewIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View Details</ListItemText>
+          <ListItemText>عرض التفاصيل</ListItemText>
         </MenuItem>
         {selectedItem?.canRestore && (
           <MenuItem onClick={handleMenuClose}>
             <ListItemIcon>
               <RestoreIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Restore Product</ListItemText>
+            <ListItemText>استعادة المنتج</ListItemText>
           </MenuItem>
         )}
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <CopyIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Duplicate</ListItemText>
+          <ListItemText>نسخ</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <HistoryIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View History</ListItemText>
+          <ListItemText>عرض السجل</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
           <ListItemIcon>
             <DeleteForeverIcon fontSize="small" color="error" />
           </ListItemIcon>
-          <ListItemText>Delete Forever</ListItemText>
+          <ListItemText>حذف نهائي</ListItemText>
         </MenuItem>
       </Menu>
 

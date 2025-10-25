@@ -35,6 +35,13 @@ import {
   LinearProgress,
   Checkbox,
   TableSortLabel,
+  Divider,
+  Switch,
+  FormControlLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Badge,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -49,6 +56,13 @@ import {
   TrendingUp as TrendingUpIcon,
   Schedule as ScheduleIcon,
   CheckCircle as CheckCircleIcon,
+  ExpandMore as ExpandMoreIcon,
+  FilterList as FilterListIcon,
+  Analytics as AnalyticsIcon,
+  PriceCheck as PriceCheckIcon,
+  LocalOffer as LocalOfferIcon,
+  Group as GroupIcon,
+  AutoAwesome as AutoAwesomeIcon,
 } from '@mui/icons-material';
 
 const PricingLists = () => {
@@ -67,72 +81,111 @@ const PricingLists = () => {
   const [viewDrawer, setViewDrawer] = useState(false);
   const [selectedPricing, setSelectedPricing] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState(false);
 
-  // Mock data
   const pricingData = [
     {
       id: 1,
       listId: 'PL-001',
       name: 'التسعير القياسي',
+      description: 'قائمة الأسعار الأساسية لجميع المنتجات',
       type: 'standard',
       productsCount: 150,
       status: 'active',
       startDate: '2024-01-01',
       endDate: null,
       lastUpdated: '2024-01-15',
+      createdDate: '2023-12-01',
+      tags: ['Standard', 'Default'],
+      avgPrice: 250.0,
+      totalValue: 37500.0,
+      currency: 'SAR',
     },
     {
       id: 2,
       listId: 'PL-002',
-      name: 'Seasonal Sale',
+      name: 'عروض الصيف',
+      description: 'عروض خاصة لفصل الصيف',
       type: 'promotional',
       productsCount: 50,
       status: 'scheduled',
       startDate: '2024-02-01',
       endDate: '2024-02-28',
       lastUpdated: '2024-01-10',
+      createdDate: '2024-01-01',
+      tags: ['Summer', 'Promo'],
+      avgPrice: 180.0,
+      totalValue: 9000.0,
+      currency: 'SAR',
     },
     {
       id: 3,
       listId: 'PL-003',
-      name: 'VIP Customers',
+      name: 'عملاء VIP',
+      description: 'أسعار خاصة للعملاء المميزين',
       type: 'customer-group',
       productsCount: 200,
       status: 'active',
       startDate: '2024-01-01',
       endDate: null,
       lastUpdated: '2024-01-12',
+      createdDate: '2023-11-15',
+      tags: ['VIP', 'Premium'],
+      avgPrice: 200.0,
+      totalValue: 40000.0,
+      currency: 'SAR',
+    },
+    {
+      id: 4,
+      listId: 'PL-004',
+      name: 'عروض الجمعة البيضاء',
+      description: 'عروض خاصة لحدث الجمعة البيضاء',
+      type: 'promotional',
+      productsCount: 75,
+      status: 'scheduled',
+      startDate: '2024-11-29',
+      endDate: '2024-11-30',
+      lastUpdated: '2024-01-08',
+      createdDate: '2024-01-05',
+      tags: ['Black Friday', 'Sale'],
+      avgPrice: 120.0,
+      totalValue: 9000.0,
+      currency: 'SAR',
     },
   ];
 
   const pricingStats = [
     {
-      title: 'Total Lists',
+      title: 'إجمالي القوائم',
       value: pricingData.length.toString(),
       color: 'primary',
-      icon: AttachMoneyIcon,
+      icon: PriceCheckIcon,
       change: '+12%',
+      description: 'زيادة في عدد قوائم الأسعار',
     },
     {
-      title: 'Active',
+      title: 'القوائم النشطة',
       value: pricingData.filter((p) => p.status === 'active').length.toString(),
       color: 'success',
       icon: CheckCircleIcon,
-      change: '2 active',
+      change: '2 نشطة',
+      description: 'قوائم الأسعار المطبقة حالياً',
     },
     {
-      title: 'Scheduled',
+      title: 'المجدولة',
       value: pricingData.filter((p) => p.status === 'scheduled').length.toString(),
       color: 'warning',
       icon: ScheduleIcon,
-      change: '1 upcoming',
+      change: '2 مجدولة',
+      description: 'قوائم الأسعار المجدولة للمستقبل',
     },
     {
-      title: 'Total Products',
+      title: 'إجمالي المنتجات',
       value: pricingData.reduce((sum, p) => sum + p.productsCount, 0).toString(),
       color: 'info',
       icon: TrendingUpIcon,
-      change: '400 items',
+      change: '475 منتج',
+      description: 'عدد المنتجات في جميع القوائم',
     },
   ];
 
@@ -142,7 +195,7 @@ const PricingLists = () => {
       setIsRefreshing(false);
       setSnackbar({
         open: true,
-        message: 'Pricing lists refreshed successfully',
+        message: 'تم تحديث قوائم الأسعار بنجاح',
         severity: 'success',
       });
     }, 1000);
@@ -183,7 +236,7 @@ const PricingLists = () => {
   const handleDelete = (pricing) => {
     setSnackbar({
       open: true,
-      message: `Pricing list ${pricing.listId} deleted successfully`,
+      message: `تم حذف قائمة الأسعار ${pricing.listId} بنجاح`,
       severity: 'success',
     });
   };
@@ -197,7 +250,8 @@ const PricingLists = () => {
   const filteredData = pricingData.filter((pricing) => {
     const matchesSearch =
       pricing.listId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      pricing.name.toLowerCase().includes(searchTerm.toLowerCase());
+      pricing.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pricing.description.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || pricing.status === statusFilter;
     const matchesType = typeFilter === 'all' || pricing.type === typeFilter;
     return matchesSearch && matchesStatus && matchesType;
@@ -221,8 +275,51 @@ const PricingLists = () => {
         return 'warning';
       case 'inactive':
         return 'default';
+      case 'expired':
+        return 'error';
       default:
         return 'default';
+    }
+  };
+
+  const getTypeColor = (type) => {
+    switch (type) {
+      case 'standard':
+        return 'primary';
+      case 'promotional':
+        return 'warning';
+      case 'customer-group':
+        return 'info';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'active':
+        return 'نشط';
+      case 'scheduled':
+        return 'مجدول';
+      case 'inactive':
+        return 'غير نشط';
+      case 'expired':
+        return 'منتهي الصلاحية';
+      default:
+        return status;
+    }
+  };
+
+  const getTypeText = (type) => {
+    switch (type) {
+      case 'standard':
+        return 'قياسي';
+      case 'promotional':
+        return 'ترويجي';
+      case 'customer-group':
+        return 'مجموعة عملاء';
+      default:
+        return type;
     }
   };
 
@@ -232,16 +329,17 @@ const PricingLists = () => {
 
   return (
     <Box sx={{ p: 3 }}>
+      {/* Header Section */}
       <Box sx={{ mb: 4 }}>
         <Box
           sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Pricing Lists Management
+              إدارة قوائم الأسعار
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              إدارة قوائم واستراتيجيات التسعير لمتجرك
+              إدارة وتنظيم قوائم الأسعار المختلفة للمنتجات والعملاء
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -250,17 +348,14 @@ const PricingLists = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/pricing">
-                Pricing
+                التسعير
               </Link>
-              <Link color="inherit" href="/main-store/pricing/lists">
-                Lists
-              </Link>
+              <Typography color="text.primary">قوائم الأسعار</Typography>
             </Breadcrumbs>
           </Box>
-
           <Stack direction="row" spacing={2}>
             <Button
               variant="outlined"
@@ -268,14 +363,15 @@ const PricingLists = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Pricing List
+              إضافة قائمة أسعار جديدة
             </Button>
           </Stack>
         </Box>
 
+        {/* Statistics Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           {pricingStats.map((stat, index) => {
             const IconComponent = stat.icon;
@@ -321,8 +417,14 @@ const PricingLists = () => {
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       {stat.title}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: theme.palette[color].main }}>
+                    <Typography variant="caption" sx={{ color: theme.palette[color].main, mb: 1 }}>
                       {stat.change}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: 'text.secondary', display: 'block' }}
+                    >
+                      {stat.description}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -332,31 +434,42 @@ const PricingLists = () => {
         </Grid>
       </Box>
 
+      {/* Filters Section */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            البحث والتصفية
           </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              setSearchTerm('');
-              setStatusFilter('all');
-              setTypeFilter('all');
-            }}
-          >
-            Clear Filters
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<FilterListIcon />}
+              onClick={() => setAdvancedFilters(!advancedFilters)}
+            >
+              {advancedFilters ? 'إخفاء المرشحات المتقدمة' : 'مرشحات متقدمة'}
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('all');
+                setTypeFilter('all');
+              }}
+            >
+              مسح المرشحات
+            </Button>
+          </Stack>
         </Box>
 
         <Grid container spacing={2} alignItems="center">
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField
               fullWidth
-              label="Search Pricing Lists"
+              label="البحث في قوائم الأسعار"
               size="small"
-              placeholder="Search by ID or name..."
+              placeholder="البحث بالمعرف أو الاسم أو الوصف..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -366,45 +479,94 @@ const PricingLists = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
-                label="Status"
+                label="الحالة"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="scheduled">Scheduled</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="scheduled">مجدول</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
+                <MenuItem value="expired">منتهي الصلاحية</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Type</InputLabel>
+              <InputLabel>النوع</InputLabel>
               <Select
-                label="Type"
+                label="النوع"
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value)}
               >
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="standard">Standard</MenuItem>
-                <MenuItem value="promotional">Promotional</MenuItem>
-                <MenuItem value="customer-group">Customer Group</MenuItem>
+                <MenuItem value="all">جميع الأنواع</MenuItem>
+                <MenuItem value="standard">قياسي</MenuItem>
+                <MenuItem value="promotional">ترويجي</MenuItem>
+                <MenuItem value="customer-group">مجموعة عملاء</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              {filteredData.length} results found
+              {filteredData.length} نتيجة
             </Typography>
           </Grid>
         </Grid>
+
+        {/* Advanced Filters */}
+        {advancedFilters && (
+          <Box sx={{ mt: 3 }}>
+            <Divider sx={{ mb: 2 }} />
+            <Typography variant="subtitle2" sx={{ mb: 2 }}>
+              مرشحات متقدمة
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأدنى للمنتجات"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 10"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأقصى للمنتجات"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 500"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="تاريخ البداية"
+                  type="date"
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="تاريخ النهاية"
+                  type="date"
+                  size="small"
+                  InputLabelProps={{ shrink: true }}
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        )}
       </Paper>
 
+      {/* Data Table */}
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         {loading && <LinearProgress />}
-
         <Table>
           <TableHead>
             <TableRow>
@@ -423,16 +585,21 @@ const PricingLists = () => {
                   direction={sortBy === 'listId' ? sortOrder : 'asc'}
                   onClick={() => handleSort('listId')}
                 >
-                  List ID
+                  معرف القائمة
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Name</TableCell>
-              <TableCell>Type</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Products</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Start Date</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>End Date</TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>الاسم</TableCell>
+              <TableCell>النوع</TableCell>
+              <TableCell>عدد المنتجات</TableCell>
+              <TableCell>الحالة</TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+                تاريخ البداية
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
+                تاريخ النهاية
+              </TableCell>
+              <TableCell sx={{ display: { xs: 'none', lg: 'table-cell' } }}>متوسط السعر</TableCell>
+              <TableCell align="center">الإجراءات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -452,17 +619,30 @@ const PricingLists = () => {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2">{pricing.name}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Chip label={pricing.type} variant="outlined" size="small" />
-                  </TableCell>
-                  <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                    <Typography variant="body2">{pricing.productsCount}</Typography>
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {pricing.name}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {pricing.description}
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={pricing.status}
+                      label={getTypeText(pricing.type)}
+                      color={getTypeColor(pricing.type)}
+                      size="small"
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2">
+                      {pricing.productsCount.toLocaleString()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={getStatusText(pricing.status)}
                       color={getStatusColor(pricing.status)}
                       size="small"
                     />
@@ -474,35 +654,40 @@ const PricingLists = () => {
                   </TableCell>
                   <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
                     <Typography variant="body2" color="text.secondary">
-                      {pricing.endDate || 'N/A'}
+                      {pricing.endDate || 'غير محدد'}
+                    </Typography>
+                  </TableCell>
+                  <TableCell sx={{ display: { xs: 'none', lg: 'table-cell' } }}>
+                    <Typography variant="body2" color="success.main">
+                      {pricing.avgPrice.toLocaleString()} {pricing.currency}
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
                     <Stack direction="row" spacing={1} justifyContent="center">
-                      <Tooltip title="View Details" arrow>
+                      <Tooltip title="عرض التفاصيل" arrow>
                         <IconButton
                           size="small"
                           onClick={() => handleView(pricing)}
-                          aria-label="view pricing"
+                          aria-label="عرض القائمة"
                         >
                           <VisibilityOutlined />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Edit List" arrow>
+                      <Tooltip title="تعديل القائمة" arrow>
                         <IconButton
                           size="small"
                           onClick={() => handleEdit(pricing)}
-                          aria-label="edit pricing"
+                          aria-label="تعديل القائمة"
                         >
                           <EditOutlined />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete List" arrow>
+                      <Tooltip title="حذف القائمة" arrow>
                         <IconButton
                           size="small"
                           color="error"
                           onClick={() => handleDelete(pricing)}
-                          aria-label="delete pricing"
+                          aria-label="حذف القائمة"
                         >
                           <DeleteOutline />
                         </IconButton>
@@ -513,7 +698,6 @@ const PricingLists = () => {
               ))}
           </TableBody>
         </Table>
-
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
@@ -525,124 +709,226 @@ const PricingLists = () => {
         />
       </Paper>
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{selectedPricing ? 'Edit Pricing List' : 'Add New Pricing List'}</DialogTitle>
+      {/* Add/Edit Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>
+          {selectedPricing ? 'تعديل قائمة الأسعار' : 'إضافة قائمة أسعار جديدة'}
+        </DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12 }}>
+          <Grid container spacing={3} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label="List ID"
+                label="معرف القائمة"
                 value={selectedPricing?.listId || ''}
                 size="small"
                 disabled
+                helperText="يتم إنشاء المعرف تلقائياً"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel>النوع</InputLabel>
+                <Select value={selectedPricing?.type || 'standard'} label="النوع">
+                  <MenuItem value="standard">قياسي</MenuItem>
+                  <MenuItem value="promotional">ترويجي</MenuItem>
+                  <MenuItem value="customer-group">مجموعة عملاء</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="اسم القائمة"
+                value={selectedPricing?.name || ''}
+                size="small"
+                required
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <TextField fullWidth label="Name" value={selectedPricing?.name || ''} size="small" />
+              <TextField
+                fullWidth
+                label="وصف القائمة"
+                multiline
+                rows={3}
+                value={selectedPricing?.description || ''}
+                size="small"
+              />
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ البداية"
+                type="date"
+                value={selectedPricing?.startDate || ''}
+                size="small"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ النهاية"
+                type="date"
+                value={selectedPricing?.endDate || ''}
+                size="small"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth size="small">
-                <InputLabel>Type</InputLabel>
-                <Select value={selectedPricing?.type || 'standard'} label="Type">
-                  <MenuItem value="standard">Standard</MenuItem>
-                  <MenuItem value="promotional">Promotional</MenuItem>
-                  <MenuItem value="customer-group">Customer Group</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+                <Select value={selectedPricing?.status || 'active'} label="الحالة">
+                  <MenuItem value="active">نشط</MenuItem>
+                  <MenuItem value="scheduled">مجدول</MenuItem>
+                  <MenuItem value="inactive">غير نشط</MenuItem>
+                  <MenuItem value="expired">منتهي الصلاحية</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel>العملة</InputLabel>
+                <Select value={selectedPricing?.currency || 'SAR'} label="العملة">
+                  <MenuItem value="SAR">ريال سعودي</MenuItem>
+                  <MenuItem value="USD">دولار أمريكي</MenuItem>
+                  <MenuItem value="EUR">يورو</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>Status</InputLabel>
-                <Select value={selectedPricing?.status || 'active'} label="Status">
-                  <MenuItem value="active">Active</MenuItem>
-                  <MenuItem value="scheduled">Scheduled</MenuItem>
-                  <MenuItem value="inactive">Inactive</MenuItem>
-                </Select>
-              </FormControl>
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="تفعيل التحديث التلقائي للأسعار"
+              />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
           <Button
             variant="contained"
             onClick={() => {
               setSnackbar({
                 open: true,
-                message: 'Pricing list saved successfully',
+                message: 'تم حفظ قائمة الأسعار بنجاح',
                 severity: 'success',
               });
               setOpenDialog(false);
             }}
           >
-            Save
+            حفظ
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={viewDrawer} onClose={() => setViewDrawer(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Pricing List Details</DialogTitle>
+      {/* View Details Dialog */}
+      <Dialog open={viewDrawer} onClose={() => setViewDrawer(false)} maxWidth="md" fullWidth>
+        <DialogTitle>تفاصيل قائمة الأسعار</DialogTitle>
         <DialogContent>
           {selectedPricing && (
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid size={{ xs: 12 }}>
+            <Grid container spacing={3} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  List ID
+                  معرف القائمة
                 </Typography>
                 <Typography variant="body1">{selectedPricing.listId}</Typography>
               </Grid>
-              <Grid size={{ xs: 12 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Name
-                </Typography>
-                <Typography variant="body1">{selectedPricing.name}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Type
-                </Typography>
-                <Chip label={selectedPricing.type} variant="outlined" size="small" />
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Status
+                  النوع
                 </Typography>
                 <Chip
-                  label={selectedPricing.status}
-                  color={getStatusColor(selectedPricing.status)}
+                  label={getTypeText(selectedPricing.type)}
+                  color={getTypeColor(selectedPricing.type)}
                   size="small"
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Products Count
+                  الاسم
                 </Typography>
-                <Typography variant="body1">{selectedPricing.productsCount}</Typography>
+                <Typography variant="body1">{selectedPricing.name}</Typography>
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Start Date
+                  الوصف
+                </Typography>
+                <Typography variant="body1">{selectedPricing.description}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  عدد المنتجات
+                </Typography>
+                <Typography variant="body1">
+                  {selectedPricing.productsCount.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  الحالة
+                </Typography>
+                <Chip
+                  label={getStatusText(selectedPricing.status)}
+                  color={getStatusColor(selectedPricing.status)}
+                  size="small"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  العملة
+                </Typography>
+                <Typography variant="body1">{selectedPricing.currency}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  تاريخ البداية
                 </Typography>
                 <Typography variant="body1">{selectedPricing.startDate}</Typography>
               </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  تاريخ النهاية
+                </Typography>
+                <Typography variant="body1">{selectedPricing.endDate || 'غير محدد'}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  متوسط السعر
+                </Typography>
+                <Typography variant="body1" color="success.main">
+                  {selectedPricing.avgPrice.toLocaleString()} {selectedPricing.currency}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  القيمة الإجمالية
+                </Typography>
+                <Typography variant="body1" color="primary.main">
+                  {selectedPricing.totalValue.toLocaleString()} {selectedPricing.currency}
+                </Typography>
+              </Grid>
               <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  End Date
+                  آخر تحديث
                 </Typography>
-                <Typography variant="body1">{selectedPricing.endDate || 'N/A'}</Typography>
+                <Typography variant="body1">{selectedPricing.lastUpdated}</Typography>
               </Grid>
             </Grid>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setViewDrawer(false)}>Close</Button>
+          <Button onClick={() => setViewDrawer(false)}>إغلاق</Button>
+          <Button variant="contained" onClick={() => handleEdit(selectedPricing)}>
+            تعديل
+          </Button>
         </DialogActions>
       </Dialog>
 
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={2500}
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >

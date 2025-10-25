@@ -1,5 +1,5 @@
-import { memo } from "react";
-import "./spinner.css";
+import { memo } from 'react';
+import './spinner.css';
 
 const Spinner = memo(() => (
   <div className="fallback-spinner">

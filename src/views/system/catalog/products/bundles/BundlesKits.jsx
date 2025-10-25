@@ -101,8 +101,6 @@ const BundlesKits = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedBundle, setSelectedBundle] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -115,12 +113,12 @@ const BundlesKits = () => {
   const bundlesData = [
     {
       id: 1,
-      name: 'iPhone 15 Pro Complete Bundle',
-      type: 'Bundle',
-      status: 'Active',
+      name: 'ايفون 15 برو كامل',
+      type: 'حزمة',
+      status: 'نشط',
       lastModified: '2024-01-15',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 1250,
       clicks: 89,
       price: 1299.99,
@@ -128,25 +126,25 @@ const BundlesKits = () => {
       savings: 200.0,
       stock: 45,
       items: [
-        { name: 'iPhone 15 Pro 128GB', price: 999.99, quantity: 1 },
-        { name: 'AirPods Pro 2nd Gen', price: 249.99, quantity: 1 },
-        { name: 'MagSafe Charger', price: 39.99, quantity: 1 },
-        { name: 'Clear Case', price: 49.99, quantity: 1 },
+        { name: 'ايفون 15 برو 128 جيجابايت', price: 999.99, quantity: 1 },
+        { name: 'ايربودس برو 2nd Gen', price: 249.99, quantity: 1 },
+        { name: 'ماج سيف كهربائي', price: 39.99, quantity: 1 },
+        { name: 'كلير كايس', price: 49.99, quantity: 1 },
       ],
       featured: true,
       position: 1,
-      description: 'Complete iPhone 15 Pro setup with accessories',
-      tags: ['bundle', 'iphone', 'accessories'],
+      description: 'ايفون 15 برو كامل مع الملحقات',
+      tags: ['حزمة', 'ايفون', 'ملحقات'],
       discount: 13.3,
     },
     {
       id: 2,
-      name: 'MacBook Pro Workstation Kit',
-      type: 'Kit',
-      status: 'Active',
+      name: 'ماكبوك برو وركستاتيون كيت',
+      type: 'مجموعة',
+      status: 'نشط',
       lastModified: '2024-01-14',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 890,
       clicks: 67,
       price: 2499.99,
@@ -154,26 +152,26 @@ const BundlesKits = () => {
       savings: 400.0,
       stock: 12,
       items: [
-        { name: 'MacBook Pro M3 14"', price: 1999.99, quantity: 1 },
-        { name: 'Magic Mouse', price: 79.99, quantity: 1 },
-        { name: 'Magic Keyboard', price: 99.99, quantity: 1 },
-        { name: 'USB-C Hub', price: 89.99, quantity: 1 },
-        { name: 'Laptop Stand', price: 129.99, quantity: 1 },
+        { name: 'ماكبوك برو M3 14 بوصة', price: 1999.99, quantity: 1 },
+        { name: 'ماج سيف ماوس', price: 79.99, quantity: 1 },
+        { name: 'ماج سيف لوحية', price: 99.99, quantity: 1 },
+        { name: 'USB-C هاب', price: 89.99, quantity: 1 },
+        { name: 'لابتوب استاند', price: 129.99, quantity: 1 },
       ],
       featured: true,
       position: 2,
-      description: 'Professional MacBook setup for productivity',
-      tags: ['kit', 'macbook', 'workstation'],
+      description: 'ماكبوك برو وركستاتيون كامل مع الملحقات',
+      tags: ['مجموعة', 'ماكبوك', 'وركستاتيون'],
       discount: 13.8,
     },
     {
       id: 3,
-      name: 'Gaming Setup Bundle',
-      type: 'Bundle',
-      status: 'Draft',
+      name: 'حزمة العب المجموعة',
+      type: 'حزمة',
+      status: 'مسودة',
       lastModified: '2024-01-13',
-      author: 'Editor',
-      priority: 'Medium',
+      author: 'مصمم',
+      priority: 'متوسط',
       views: 0,
       clicks: 0,
       price: 899.99,
@@ -181,25 +179,25 @@ const BundlesKits = () => {
       savings: 200.0,
       stock: 0,
       items: [
-        { name: 'Gaming Laptop', price: 799.99, quantity: 1 },
-        { name: 'Gaming Mouse', price: 79.99, quantity: 1 },
-        { name: 'Gaming Keyboard', price: 99.99, quantity: 1 },
-        { name: 'Gaming Headset', price: 119.99, quantity: 1 },
+        { name: 'لابتوب العاب', price: 799.99, quantity: 1 },
+        { name: 'ماوس العاب', price: 79.99, quantity: 1 },
+        { name: 'لوحية العاب', price: 99.99, quantity: 1 },
+        { name: 'ماوس العاب', price: 119.99, quantity: 1 },
       ],
       featured: false,
       position: 3,
-      description: 'Complete gaming setup for enthusiasts',
-      tags: ['bundle', 'gaming', 'setup'],
+      description: 'حزمة العب المجموعة كامل مع الملحقات',
+      tags: ['حزمة', 'العاب', 'مجموعة'],
       discount: 18.2,
     },
     {
       id: 4,
-      name: 'Home Office Essentials',
-      type: 'Kit',
-      status: 'Active',
+      name: 'العناصر الأساسية لتثبيت المكتب المنزلي',
+      type: 'مجموعة',
+      status: 'نشط',
       lastModified: '2024-01-12',
-      author: 'Admin',
-      priority: 'Medium',
+      author: 'مدير',
+      priority: 'متوسط',
       views: 650,
       clicks: 23,
       price: 399.99,
@@ -207,26 +205,26 @@ const BundlesKits = () => {
       savings: 100.0,
       stock: 25,
       items: [
-        { name: 'Monitor 24"', price: 199.99, quantity: 1 },
-        { name: 'Wireless Mouse', price: 29.99, quantity: 1 },
-        { name: 'Wireless Keyboard', price: 49.99, quantity: 1 },
-        { name: 'Desk Lamp', price: 39.99, quantity: 1 },
-        { name: 'Cable Management', price: 19.99, quantity: 1 },
+        { name: 'شاشة 24 بوصة', price: 199.99, quantity: 1 },
+        { name: 'ماوس بلوتوث', price: 29.99, quantity: 1 },
+        { name: 'لوحية بلوتوث', price: 49.99, quantity: 1 },
+        { name: 'لمبة مكتب', price: 39.99, quantity: 1 },
+        { name: 'كابلات الإدارة', price: 19.99, quantity: 1 },
       ],
       featured: false,
       position: 4,
-      description: 'Essential items for home office setup',
-      tags: ['kit', 'office', 'essentials'],
+      description: 'العناصر الأساسية لتثبيت المكتب المنزلي',
+      tags: ['مجموعة', 'مكتب', 'أساسية'],
       discount: 20.0,
     },
     {
       id: 5,
-      name: 'Photography Starter Pack',
-      type: 'Bundle',
-      status: 'Scheduled',
+      name: 'حزمة التصوير المبتدئ',
+      type: 'حزمة',
+      status: 'مجدول',
       lastModified: '2024-01-11',
-      author: 'Editor',
-      priority: 'Low',
+      author: 'مصمم',
+      priority: 'متوسط',
       views: 0,
       clicks: 0,
       price: 599.99,
@@ -234,16 +232,16 @@ const BundlesKits = () => {
       savings: 200.0,
       stock: 0,
       items: [
-        { name: 'DSLR Camera', price: 399.99, quantity: 1 },
-        { name: 'Camera Bag', price: 49.99, quantity: 1 },
-        { name: 'Memory Card 64GB', price: 29.99, quantity: 2 },
-        { name: 'Tripod', price: 79.99, quantity: 1 },
-        { name: 'Lens Cleaning Kit', price: 19.99, quantity: 1 },
+        { name: 'دي سي ال آي كاميرا', price: 399.99, quantity: 1 },
+        { name: 'كاميرا باقة', price: 49.99, quantity: 1 },
+        { name: 'كارت ذاكرة 64 جيجابايت', price: 29.99, quantity: 2 },
+        { name: 'ميزان ثقل', price: 79.99, quantity: 1 },
+        { name: 'مجموعة مسح العدسات', price: 19.99, quantity: 1 },
       ],
       featured: false,
       position: 5,
-      description: 'Complete photography starter kit',
-      tags: ['bundle', 'photography', 'starter'],
+      description: 'حزمة التصوير المبتدئ كامل مع الملحقات',
+      tags: ['حزمة', 'تصوير', 'مبتدئ'],
       discount: 25.0,
     },
   ];
@@ -300,14 +298,14 @@ const BundlesKits = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsRefreshing(false);
     setLoading(false);
-    setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+    setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
   };
 
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for items:`, selectedItems);
     setSnackbar({
       open: true,
-      message: `${action} completed for ${selectedItems.length} items`,
+      message: `تم ${action} لـ ${selectedItems.length} عنصر`,
       severity: 'success',
     });
     setSelectedItems([]);
@@ -318,7 +316,7 @@ const BundlesKits = () => {
     setTimeout(() => {
       setLoading(false);
       setOpenDialog(false);
-      setSnackbar({ open: true, message: 'Bundle updated successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث الحزمة بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -392,10 +390,10 @@ const BundlesKits = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Bundles & Kits Manager
+              مدير الحزم والمجموعات
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Create and manage product bundles, kits, and special offers to increase sales
+              إنشاء وإدارة حزم المنتجات والمجموعات والعروض الخاصة لزيادة المبيعات
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -404,15 +402,15 @@ const BundlesKits = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/catalog">
-                Catalog
+                الكتالوج
               </Link>
               <Link color="inherit" href="/main-store/catalog/products">
-                Products
+                المنتجات
               </Link>
-              <Typography color="text.primary">Bundles & Kits</Typography>
+              <Typography color="text.primary">الحزم والمجموعات</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -423,10 +421,10 @@ const BundlesKits = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Create Bundle
+              إنشاء حزمة
             </Button>
           </Stack>
         </Box>
@@ -461,7 +459,7 @@ const BundlesKits = () => {
                   {bundlesData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Bundles
+                  إجمالي الحزم
                 </Typography>
               </CardContent>
             </Card>
@@ -494,7 +492,7 @@ const BundlesKits = () => {
                   {bundlesData.filter((item) => item.status === 'Active').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Active Bundles
+                  الحزم النشطة
                 </Typography>
               </CardContent>
             </Card>
@@ -530,7 +528,7 @@ const BundlesKits = () => {
                   %
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Avg Discount
+                  متوسط الخصم
                 </Typography>
               </CardContent>
             </Card>
@@ -560,10 +558,10 @@ const BundlesKits = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  ${bundlesData.reduce((sum, item) => sum + item.savings, 0).toLocaleString()}
+                  {bundlesData.reduce((sum, item) => sum + item.savings, 0).toLocaleString()} ر.س
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Savings
+                  إجمالي التوفير
                 </Typography>
               </CardContent>
             </Card>
@@ -575,7 +573,7 @@ const BundlesKits = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
           <Stack direction="row" spacing={1}>
             <Button
@@ -587,7 +585,7 @@ const BundlesKits = () => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              مسح الفلاتر
             </Button>
           </Stack>
         </Box>
@@ -597,7 +595,7 @@ const BundlesKits = () => {
             <TextField
               fullWidth
               size="small"
-              placeholder="Search bundles, kits, or products..."
+              placeholder="البحث في الحزم والمجموعات أو المنتجات..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -607,34 +605,34 @@ const BundlesKits = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
                 value={statusFilter}
-                label="Status"
+                label="الحالة"
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="scheduled">Scheduled</MenuItem>
-                <MenuItem value="archived">Archived</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="draft">مسودة</MenuItem>
+                <MenuItem value="scheduled">مجدول</MenuItem>
+                <MenuItem value="archived">مؤرشف</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Type</InputLabel>
-              <Select value="all" label="Type" onChange={() => {}}>
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="bundle">Bundle</MenuItem>
-                <MenuItem value="kit">Kit</MenuItem>
-                <MenuItem value="offer">Special Offer</MenuItem>
+              <InputLabel>النوع</InputLabel>
+              <Select value="all" label="النوع" onChange={() => {}}>
+                <MenuItem value="all">جميع الأنواع</MenuItem>
+                <MenuItem value="bundle">حزمة</MenuItem>
+                <MenuItem value="kit">مجموعة</MenuItem>
+                <MenuItem value="offer">عرض خاص</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              {sortedData.length} bundles found
+              تم العثور على {sortedData.length} حزمة
             </Typography>
           </Grid>
         </Grid>
@@ -644,7 +642,7 @@ const BundlesKits = () => {
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Typography variant="h6" sx={{ flex: 1, fontWeight: 600 }}>
-            Product Bundles & Kits
+            حزم ومجموعات المنتجات
           </Typography>
           {selectedItems.length > 0 && (
             <Fade in={selectedItems.length > 0}>
@@ -653,18 +651,18 @@ const BundlesKits = () => {
                   size="small"
                   variant="outlined"
                   startIcon={<PublicIcon />}
-                  onClick={() => handleBulkAction('Activate')}
+                  onClick={() => handleBulkAction('تفعيل')}
                 >
-                  Activate ({selectedItems.length})
+                  تفعيل ({selectedItems.length})
                 </Button>
                 <Button
                   size="small"
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteIcon />}
-                  onClick={() => handleBulkAction('Delete')}
+                  onClick={() => handleBulkAction('حذف')}
                 >
-                  Delete ({selectedItems.length})
+                  حذف ({selectedItems.length})
                 </Button>
               </Box>
             </Fade>
@@ -682,13 +680,13 @@ const BundlesKits = () => {
           <Box sx={{ p: 6, textAlign: 'center' }}>
             <BundleIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              No bundles or kits found
+              لم يتم العثور على حزم أو مجموعات
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Create your first bundle to increase sales and customer value
+              قم بإنشاء أول حزمة لزيادة المبيعات وقيمة العملاء
             </Typography>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Create First Bundle
+              إنشاء أول حزمة
             </Button>
           </Box>
         ) : (
@@ -711,32 +709,32 @@ const BundlesKits = () => {
                       direction={sortBy === 'name' ? sortOrder : 'asc'}
                       onClick={() => handleSort('name')}
                     >
-                      Bundle Details
+                      تفاصيل الحزمة
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Items</TableCell>
+                  <TableCell>العناصر</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'price'}
                       direction={sortBy === 'price' ? sortOrder : 'asc'}
                       onClick={() => handleSort('price')}
                     >
-                      Pricing
+                      التسعير
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Savings</TableCell>
-                  <TableCell>Stock</TableCell>
+                  <TableCell>التوفير</TableCell>
+                  <TableCell>المخزون</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'status'}
                       direction={sortBy === 'status' ? sortOrder : 'asc'}
                       onClick={() => handleSort('status')}
                     >
-                      Status
+                      الحالة
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Performance</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>الأداء</TableCell>
+                  <TableCell align="right">الإجراءات</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -801,13 +799,13 @@ const BundlesKits = () => {
                               variant="h6"
                               sx={{ fontWeight: 600, color: 'success.main' }}
                             >
-                              ${item.price.toFixed(2)}
+                              {item.price.toFixed(2)} ر.س
                             </Typography>
                             <Typography
                               variant="body2"
                               sx={{ textDecoration: 'line-through', color: 'text.secondary' }}
                             >
-                              ${item.originalPrice.toFixed(2)}
+                              {item.originalPrice.toFixed(2)} ر.س
                             </Typography>
                           </Box>
                         </TableCell>
@@ -824,7 +822,7 @@ const BundlesKits = () => {
                               color="success.main"
                               sx={{ fontWeight: 500 }}
                             >
-                              Save ${item.savings.toFixed(2)}
+                              وفر {item.savings.toFixed(2)} ر.س
                             </Typography>
                           </Box>
                         </TableCell>
@@ -879,17 +877,21 @@ const BundlesKits = () => {
                         </TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            <Tooltip title="View Details" arrow>
-                              <IconButton size="small" color="primary">
+                            <Tooltip title="عرض التفاصيل" arrow>
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() => setOpenViewDialog(true)}
+                              >
                                 <ViewIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Edit Bundle" arrow>
+                            <Tooltip title="تعديل الحزمة" arrow>
                               <IconButton size="small" color="primary">
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="More Actions" arrow>
+                            <Tooltip title="المزيد من الإجراءات" arrow>
                               <IconButton size="small" onClick={(e) => handleMenuClick(e, item)}>
                                 <MoreVertIcon />
                               </IconButton>
@@ -1090,6 +1092,222 @@ const BundlesKits = () => {
         </DialogActions>
       </Dialog>
 
+      {/* View Details Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'info.main' }}>
+              <ViewIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="h6">تفاصيل الحزمة</Typography>
+              <Typography variant="body2" color="text.secondary">
+                عرض جميع تفاصيل الحزمة المحددة
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  المعلومات الأساسية
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      اسم الحزمة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      iPhone 15 Pro Complete Bundle
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      نوع الحزمة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      Bundle
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الحالة:
+                    </Typography>
+                    <Chip label="نشط" color="success" size="small" />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      عدد العناصر:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      4 عناصر
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  التسعير والتوفير
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      سعر الحزمة:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
+                      1299.99 ر.س
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      السعر الأصلي:
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{ textDecoration: 'line-through', color: 'text.secondary' }}
+                    >
+                      1499.99 ر.س
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      نسبة الخصم:
+                    </Typography>
+                    <Chip label="13.3% OFF" color="success" size="small" />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المبلغ الموفّر:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500, color: 'success.main' }}>
+                      200.00 ر.س
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  عناصر الحزمة
+                </Typography>
+                <List>
+                  {[
+                    { name: 'iPhone 15 Pro 128GB', price: '999.99 ر.س', quantity: 1 },
+                    { name: 'AirPods Pro 2nd Gen', price: '249.99 ر.س', quantity: 1 },
+                    { name: 'MagSafe Charger', price: '39.99 ر.س', quantity: 1 },
+                    { name: 'Clear Case', price: '49.99 ر.س', quantity: 1 },
+                  ].map((item, index) => (
+                    <ListItem key={index} sx={{ px: 0 }}>
+                      <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: 'primary.light', width: 32, height: 32 }}>
+                          <InventoryIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <MuiListItemText
+                        primary={item.name}
+                        secondary={`${item.price} × ${item.quantity}`}
+                      />
+                      <ListItemSecondaryAction>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                          {item.price}
+                        </Typography>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                </List>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  المخزون والأداء
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المخزون:
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Chip label="متوفر" color="success" size="small" />
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        (45)
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المشاهدات:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      1,250
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      النقرات:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      89
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      آخر تعديل:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      2024-01-15
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  الوصف والعلامات
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  الوصف:
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  Complete iPhone 15 Pro setup with accessories
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  العلامات:
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {['bundle', 'iphone', 'accessories'].map((tag, index) => (
+                    <Chip key={index} label={tag} size="small" variant="outlined" />
+                  ))}
+                </Box>
+              </Card>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button onClick={() => setOpenViewDialog(false)} variant="outlined">
+            إغلاق
+          </Button>
+          <Button variant="contained" startIcon={<EditIcon />}>
+            تعديل الحزمة
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Action Menu */}
       <Menu
         anchorEl={anchorEl}
@@ -1098,36 +1316,41 @@ const BundlesKits = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem
+          onClick={() => {
+            setOpenViewDialog(true);
+            handleMenuClose();
+          }}
+        >
           <ListItemIcon>
             <ViewIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View Details</ListItemText>
+          <ListItemText>عرض التفاصيل</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Edit Bundle</ListItemText>
+          <ListItemText>تعديل الحزمة</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <CopyIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Duplicate</ListItemText>
+          <ListItemText>نسخ</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <ShareIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Share</ListItemText>
+          <ListItemText>مشاركة</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" color="error" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>حذف</ListItemText>
         </MenuItem>
       </Menu>
 

@@ -24,23 +24,23 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
+  Fade,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Avatar,
-  Stack,
-  Zoom,
-  LinearProgress,
-  Fade,
+  List,
+  ListItem,
+  ListItemText,
+  Drawer,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,61 +50,154 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
+  LocalOffer as LocalOfferIcon,
   CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
   TrendingUp as TrendingUpIcon,
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  LocalOffer as LocalOfferIcon,
+  Schedule as ScheduleIcon,
 } from '@mui/icons-material';
 
 const UpcomingOffers = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [selectedOffer, setSelectedOffer] = useState(null);
 
   // Stats data
   const offersStats = [
     {
-      title: 'Total Offers',
-      value: '12',
+      title: 'إجمالي العروض',
+      value: '156',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       icon: LocalOfferIcon,
-      change: '+2',
+      change: '+12',
     },
     {
-      title: 'Active Offers',
-      value: '8',
+      title: 'العروض النشطة',
+      value: '89',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       icon: CheckCircleIcon,
-      change: '66.7%',
+      change: '57%',
     },
     {
-      title: 'Upcoming',
-      value: '4',
+      title: 'العروض القادمة',
+      value: '45',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '33.3%',
+      icon: ScheduleIcon,
+      change: '+8',
     },
     {
-      title: 'Revenue Impact',
-      value: '$15.2K',
+      title: 'معدل النجاح',
+      value: '94.2%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: AttachMoneyIcon,
-      change: '+18%',
+      icon: TrendingUpIcon,
+      change: '+3.1%',
     },
+  ];
+
+  // Mock data for upcoming offers
+  const offersData = [
+    {
+      id: 1,
+      title: 'عرض الجمعة البيضاء',
+      description: 'خصم يصل إلى 70% على جميع المنتجات الإلكترونية',
+      category: 'إلكترونيات',
+      status: 'active',
+      startDate: '2024-01-25',
+      endDate: '2024-01-27',
+      discount: 70,
+      originalPrice: 1000,
+      salePrice: 300,
+      currency: 'ريال',
+      views: 1250,
+      clicks: 89,
+      conversions: 23,
+      conversionRate: 25.8,
+      createdAt: '2024-01-15',
+      lastUpdated: '2024-01-20',
+      tags: ['خصم', 'إلكترونيات', 'جمعة بيضاء'],
+      image: '/images/offer1.jpg',
+      isFeatured: true,
+      isUrgent: false,
+    },
+    {
+      id: 2,
+      title: 'عرض نهاية الموسم',
+      description: 'تخفيضات كبيرة على الأزياء والملابس',
+      category: 'أزياء',
+      status: 'upcoming',
+      startDate: '2024-02-01',
+      endDate: '2024-02-15',
+      discount: 50,
+      originalPrice: 500,
+      salePrice: 250,
+      currency: 'ريال',
+      views: 0,
+      clicks: 0,
+      conversions: 0,
+      conversionRate: 0,
+      createdAt: '2024-01-18',
+      lastUpdated: '2024-01-22',
+      tags: ['أزياء', 'نهاية الموسم', 'خصم'],
+      image: '/images/offer2.jpg',
+      isFeatured: false,
+      isUrgent: true,
+    },
+    {
+      id: 3,
+      title: 'عرض العودة للمدرسة',
+      description: 'خصومات على الكتب والقرطاسية',
+      category: 'تعليم',
+      status: 'draft',
+      startDate: '2024-08-15',
+      endDate: '2024-09-15',
+      discount: 30,
+      originalPrice: 200,
+      salePrice: 140,
+      currency: 'ريال',
+      views: 0,
+      clicks: 0,
+      conversions: 0,
+      conversionRate: 0,
+      createdAt: '2024-01-20',
+      lastUpdated: '2024-01-25',
+      tags: ['تعليم', 'كتب', 'قرطاسية'],
+      image: '/images/offer3.jpg',
+      isFeatured: false,
+      isUrgent: false,
+    },
+  ];
+
+  const categories = [
+    'إلكترونيات',
+    'أزياء',
+    'تعليم',
+    'صحة',
+    'رياضة',
+    'طعام',
+    'منزل',
+    'سيارات',
+    'أخرى',
+  ];
+
+  const statuses = [
+    { value: 'draft', label: 'مسودة', color: 'default' },
+    { value: 'upcoming', label: 'قادم', color: 'info' },
+    { value: 'active', label: 'نشط', color: 'success' },
+    { value: 'expired', label: 'منتهي', color: 'error' },
+    { value: 'paused', label: 'معلق', color: 'warning' },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,44 +207,24 @@ const UpcomingOffers = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'Upcoming Offers',
+    title: 'العروض القادمة',
     content: '',
     isActive: true,
-    offerType: 'discount',
-    discountValue: 20,
-    startDate: new Date().toISOString().split('T')[0],
-    endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    showDiscounts: true,
+    showCountdown: true,
+    showCategories: true,
+    showTags: true,
+    allowSharing: true,
+    allowNotifications: true,
+    autoStart: false,
+    autoEnd: false,
+    requireApproval: true,
+    maxOffers: 50,
   });
-
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'Offer Details',
-      content: 'Get 20% off on all items with code SAVE20.',
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'Terms & Conditions',
-      content: 'Offer valid for limited time only. Cannot be combined with other offers.',
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'Eligibility',
-      content: 'Available to all customers. Minimum purchase may apply.',
-      isExpanded: false,
-    },
-    {
-      id: 4,
-      title: 'Redemption',
-      content: 'Use code at checkout to redeem the offer.',
-      isExpanded: false,
-    },
-  ]);
 
   const handleSave = () => {
     setLoading(true);
@@ -159,38 +232,50 @@ const UpcomingOffers = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Upcoming offers updated successfully',
+        message: 'تم تحديث إعدادات العروض بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'New Section',
-      content: '',
-      isExpanded: false,
-    };
-    setSections([...sections, newSection]);
+  const handleAddOffer = () => {
+    setOpenDialog(true);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteOffer = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف العرض بنجاح',
+      severity: 'success',
+    });
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleViewOffer = (offer) => {
+    setSelectedOffer(offer);
+    setOpenDrawer(true);
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
-    );
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getStatusColor = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.color : 'default';
+  };
+
+  const getStatusLabel = (status) => {
+    const statusObj = statuses.find((s) => s.value === status);
+    return statusObj ? statusObj.label : 'غير محدد';
+  };
+
+  const formatCurrency = (amount, currency) => {
+    return `${amount.toLocaleString()} ${currency}`;
   };
 
   return (
@@ -202,10 +287,10 @@ const UpcomingOffers = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Upcoming Offers Management
+              إدارة العروض القادمة
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage your store's upcoming offers and promotions
+              إدارة وتخصيص العروض والخصومات القادمة
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -214,12 +299,12 @@ const UpcomingOffers = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+            إدارة المحتوى
               </Link>
-              <Typography color="text.primary">Upcoming Offers</Typography>
+          <Typography color="text.primary">العروض القادمة</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -229,7 +314,7 @@ const UpcomingOffers = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -237,7 +322,7 @@ const UpcomingOffers = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              Save Offers
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -311,14 +396,14 @@ const UpcomingOffers = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <LocalOfferIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Offers Management
+              إعدادات العروض
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Configure and manage your upcoming offers
+              تخصيص وإدارة العروض والخصومات
             </Typography>
           </Box>
         </Box>
@@ -326,35 +411,40 @@ const UpcomingOffers = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search offers"
+              label="البحث في العروض"
               size="small"
-              placeholder="Search upcoming offers..."
+                placeholder="البحث في العروض..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                {statuses.map((status) => (
+                    <MenuItem key={status.value} value={status.value}>
+                      {status.label}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Offer Type</InputLabel>
-              <Select value="all" label="Offer Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="discount">Discount</MenuItem>
-                <MenuItem value="free_shipping">Free Shipping</MenuItem>
-                <MenuItem value="buy_one_get_one">BOGO</MenuItem>
+              <InputLabel>الفئة</InputLabel>
+              <Select value="all" label="الفئة">
+                <MenuItem value="all">الكل</MenuItem>
+                {categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                    </MenuItem>
+                  ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -366,15 +456,15 @@ const UpcomingOffers = () => {
                 disabled={loading}
                 size="small"
               >
-                Save Offers
+                حفظ الإعدادات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddOffer}
                 size="small"
               >
-                Add Offer
+                إضافة عرض
               </Button>
             </Box>
           </Grid>
@@ -383,12 +473,12 @@ const UpcomingOffers = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Offer Settings */}
+        {/* Offers Settings */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Offer Settings
+                إعدادات العروض
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -396,7 +486,7 @@ const UpcomingOffers = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Offer Title"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -410,66 +500,130 @@ const UpcomingOffers = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Offer Active"
+                    label="العروض نشطة"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Offer Type</InputLabel>
-                    <Select
-                      value={formData.offerType}
-                      label="Offer Type"
-                      onChange={(e) => setFormData({ ...formData, offerType: e.target.value })}
-                    >
-                      <MenuItem value="discount">Discount</MenuItem>
-                      <MenuItem value="free_shipping">Free Shipping</MenuItem>
-                      <MenuItem value="buy_one_get_one">Buy One Get One</MenuItem>
-                      <MenuItem value="cashback">Cashback</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showDiscounts}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showDiscounts: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض الخصومات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showCountdown}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showCountdown: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض العد التنازلي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showCategories}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showCategories: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض الفئات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showTags}
+                        onChange={(e) => setFormData({ ...formData, showTags: e.target.checked })}
+                      />
+                    }
+                    label="عرض العلامات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowSharing}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowSharing: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بالمشاركة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowNotifications}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowNotifications: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بالإشعارات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoStart}
+                        onChange={(e) => setFormData({ ...formData, autoStart: e.target.checked })}
+                      />
+                    }
+                    label="البدء التلقائي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoEnd}
+                        onChange={(e) => setFormData({ ...formData, autoEnd: e.target.checked })}
+                      />
+                    }
+                    label="الانتهاء التلقائي"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireApproval}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireApproval: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الموافقة"
+                  />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Discount Value (%)"
+                    label="الحد الأقصى للعروض"
                     type="number"
-                    value={formData.discountValue}
-                    onChange={(e) => setFormData({ ...formData, discountValue: e.target.value })}
+                    value={formData.maxOffers}
+                    onChange={(e) =>
+                      setFormData({ ...formData, maxOffers: parseInt(e.target.value) })
+                    }
                     size="small"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Start Date"
-                    type="date"
-                    value={formData.startDate}
-                    onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="End Date"
-                    type="date"
-                    value={formData.endDate}
-                    onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Contact Information"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="Customer service contact details..."
                   />
                 </Grid>
               </Grid>
@@ -477,9 +631,9 @@ const UpcomingOffers = () => {
           </Card>
         </Grid>
 
-        {/* Offer Sections */}
+        {/* Offers Table */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
             <CardContent>
               <Box
                 sx={{
@@ -489,86 +643,310 @@ const UpcomingOffers = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Offer Sections</Typography>
-                <Chip label={`${sections.length} sections`} color="primary" size="small" />
+                <Typography variant="h6">قائمة العروض</Typography>
+                <Chip label={`${offersData.length} عرض`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                        size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Section">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>العرض</TableCell>
+                    <TableCell>الفئة</TableCell>
+                    <TableCell>الخصم</TableCell>
+                    <TableCell>السعر</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell>المشاهدات</TableCell>
+                  <TableCell align="right">الإجراءات</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                  {offersData
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((offer) => (
+                      <TableRow key={offer.id} hover>
+                      <TableCell>
+                        <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                {offer.title}
+                          </Typography>
+                              {offer.isFeatured && (
+                                <Chip label="مميز" size="small" color="primary" />
+                              )}
+                              {offer.isUrgent && <Chip label="عاجل" size="small" color="error" />}
+                            </Box>
+                          <Typography variant="caption" color="text.secondary">
+                              {offer.description}
+                          </Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                          <Chip label={offer.category} size="small" color="primary" />
+                      </TableCell>
+                      <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500, color: 'error.main' }}>
+                            {offer.discount}%
+                          </Typography>
+                      </TableCell>
+                      <TableCell>
+                          <Box>
+                            <Typography
+                              variant="body2"
+                              sx={{ textDecoration: 'line-through', color: 'text.secondary' }}
+                            >
+                              {formatCurrency(offer.originalPrice, offer.currency)}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              sx={{ fontWeight: 500, color: 'success.main' }}
+                            >
+                              {formatCurrency(offer.salePrice, offer.currency)}
+                            </Typography>
                           </Box>
-                        </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter section content..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No offer sections yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first offer section to get started
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Section
-                  </Button>
-                </Box>
-              )}
+                      </TableCell>
+                      <TableCell>
+                          <Chip
+                            label={getStatusLabel(offer.status)}
+                            size="small"
+                            color={getStatusColor(offer.status)}
+                          />
+                      </TableCell>
+                      <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {offer.views.toLocaleString()}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="right">
+                        <Stack direction="row" spacing={1} justifyContent="flex-end">
+                          <Tooltip title="عرض التفاصيل" arrow>
+                              <IconButton size="small" onClick={() => handleViewOffer(offer)}>
+                                <VisibilityIcon />
+                            </IconButton>
+                          </Tooltip>
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                            <IconButton
+                              size="small"
+                              color="error"
+                                onClick={() => handleDeleteOffer(offer.id)}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+              component="div"
+                count={offersData.length}
+              rowsPerPage={rowsPerPage}
+              page={page}
+              onPageChange={handleChangePage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add Offer Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>إضافة عرض جديد</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                label="عنوان العرض"
+                placeholder="عرض الجمعة البيضاء"
+                helperText="عنوان جذاب للعرض"
+                  />
+                </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="وصف العرض"
+                placeholder="خصم يصل إلى 70% على جميع المنتجات..."
+                multiline
+                rows={3}
+                helperText="وصف تفصيلي للعرض"
+                  />
+                </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الفئة</InputLabel>
+                <Select label="الفئة">
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  {statuses.map((status) => (
+                    <MenuItem key={status.value} value={status.value}>
+                      {status.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                label="نسبة الخصم (%)"
+                type="number"
+                placeholder="70"
+                inputProps={{ min: 0, max: 100 }}
+                  />
+                </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="السعر الأصلي" type="number" placeholder="1000" />
+                </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField fullWidth label="السعر بعد الخصم" type="number" placeholder="300" />
+              </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>العملة</InputLabel>
+                <Select label="العملة">
+                  <MenuItem value="ريال">ريال سعودي</MenuItem>
+                  <MenuItem value="دولار">دولار أمريكي</MenuItem>
+                  <MenuItem value="يورو">يورو</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                      <TextField
+                fullWidth
+                label="تاريخ البداية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+                    <TextField
+                      fullWidth
+                label="تاريخ النهاية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="العلامات"
+                placeholder="خصم, إلكترونيات, جمعة بيضاء"
+                helperText="افصل العلامات بفاصلة"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel control={<Switch />} label="عرض مميز" />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel control={<Switch />} label="عرض عاجل" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة العرض
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Offer Details Drawer */}
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        sx={{ '& .MuiDrawer-paper': { width: 400 } }}
+      >
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            تفاصيل العرض
+          </Typography>
+          {selectedOffer && (
+            <Box>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                {selectedOffer.title}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    {selectedOffer.description}
+                  </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <List>
+                <ListItem>
+                  <ListItemText primary="الفئة" secondary={selectedOffer.category} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="الحالة" secondary={getStatusLabel(selectedOffer.status)} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="نسبة الخصم" secondary={`${selectedOffer.discount}%`} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="السعر الأصلي"
+                    secondary={formatCurrency(selectedOffer.originalPrice, selectedOffer.currency)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="السعر بعد الخصم"
+                    secondary={formatCurrency(selectedOffer.salePrice, selectedOffer.currency)}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="تاريخ البداية" secondary={selectedOffer.startDate} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="تاريخ النهاية" secondary={selectedOffer.endDate} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="المشاهدات"
+                    secondary={selectedOffer.views.toLocaleString()}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="النقرات"
+                    secondary={selectedOffer.clicks.toLocaleString()}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="التحويلات"
+                    secondary={selectedOffer.conversions.toLocaleString()}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="معدل التحويل"
+                    secondary={`${selectedOffer.conversionRate}%`}
+                  />
+                </ListItem>
+              </List>
+                </Box>
+              )}
+        </Box>
+      </Drawer>
 
       {/* Snackbar */}
       <Snackbar

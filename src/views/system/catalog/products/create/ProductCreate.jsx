@@ -684,7 +684,7 @@ const ProductCreate = () => {
     },
     {
       title: 'الإيرادات الكلية',
-      value: '$45,678',
+      value: '45,678 ر.س',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       icon: AttachMoneyIcon,
       change: '+8.2%',
@@ -694,7 +694,7 @@ const ProductCreate = () => {
       value: '4.3',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
       icon: StarIcon,
-      change: 'Excellent',
+      change: 'ممتاز',
     },
   ];
 
@@ -729,11 +729,11 @@ const ProductCreate = () => {
     manufacturer: '',
 
     // Pricing
-    price: '',
+    cost: '', // سعر التكلفة (سعر الشراء) - من ERP
+    wholesalePrice: '', // الجملة (الحد الأدنى للبيع) - من ERP
+    storeCostPrice: '', // سعر تكلفة المتجر (سعر اقتراح البيع) - يظهر في الرئيسي
+    branchPrice: '', // سعر بيع المتجر الفرعي - يظهر في الفرعي
     comparePrice: '',
-    cost: '',
-    wholesalePrice: '',
-    retailPrice: '',
     discount: '',
     discountType: 'percentage', // percentage or fixed
     discountStartDate: '',
@@ -1383,11 +1383,11 @@ const ProductCreate = () => {
             {/* Pricing Tab */}
             {activeTab === 1 && (
               <Grid container spacing={3}>
-                {/* Main Pricing */}
+                {/* ERP Pricing */}
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
                     <MoneyIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    التسعير الرئيسي
+                    التسعير من نظام ERP
                   </Typography>
                 </Grid>
 
@@ -1395,14 +1395,67 @@ const ProductCreate = () => {
                   <TextField
                     fullWidth
                     type="number"
-                    label="سعر البيع"
-                    value={formData.price}
-                    onChange={handleInputChange('price')}
+                    label="سعر التكلفة (سعر الشراء)"
+                    value={formData.cost}
+                    onChange={handleInputChange('cost')}
+                    placeholder="0.00"
+                    helperText="سعر الشراء من المورد"
+                    InputProps={{
+                      startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
+                    }}
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="سعر الجملة (الحد الأدنى للبيع)"
+                    value={formData.wholesalePrice}
+                    onChange={handleInputChange('wholesalePrice')}
+                    placeholder="0.00"
+                    helperText="الحد الأدني للبيع"
+                    InputProps={{
+                      startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
+                    }}
+                  />
+                </Grid>
+
+                {/* Store Pricing */}
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
+                    <StoreIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    تسعير المتاجر
+                  </Typography>
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="سعر تكلفة المتجر (سعر اقتراح البيع)"
+                    value={formData.storeCostPrice}
+                    onChange={handleInputChange('storeCostPrice')}
                     placeholder="0.00"
                     required
-                    helperText="سعر البيع الذي سيدفعه العميل"
+                    helperText="سعر اقتراح البيع - يظهر في المتجر الرئيسي"
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                      startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
+                    }}
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="سعر بيع المتجر الفرعي"
+                    value={formData.branchPrice}
+                    onChange={handleInputChange('branchPrice')}
+                    placeholder="0.00"
+                    helperText="سعر البيع في المتجر الفرعي - يحدده الفرعي"
+                    InputProps={{
+                      startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                     }}
                   />
                 </Grid>
@@ -1417,37 +1470,7 @@ const ProductCreate = () => {
                     placeholder="0.00"
                     helperText="سعر المقارنة الذي سيظهر في المنتج"
                     InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="سعر التكلفة"
-                    value={formData.cost}
-                    onChange={handleInputChange('cost')}
-                    placeholder="0.00"
-                    helperText="تكلفة الشراء/إنتاج هذا المنتج"
-                    InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="سعر الجملة"
-                    value={formData.wholesalePrice}
-                    onChange={handleInputChange('wholesalePrice')}
-                    placeholder="0.00"
-                    helperText="سعر الجملة/التسويق الجملي"
-                    InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                      startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                     }}
                   />
                 </Grid>
@@ -1464,11 +1487,23 @@ const ProductCreate = () => {
                   <TextField
                     fullWidth
                     type="number"
-                    label="مبلغ الخصم"
+                    label={formData.discountType === 'percentage' ? 'نسبة الخصم (%)' : 'مبلغ الخصم'}
                     value={formData.discount}
                     onChange={handleInputChange('discount')}
                     placeholder="0"
-                    helperText="قيمة الخصم"
+                    helperText={
+                      formData.discountType === 'percentage'
+                        ? 'نسبة الخصم المئوية'
+                        : 'مبلغ الخصم بالريال السعودي'
+                    }
+                    InputProps={{
+                      endAdornment:
+                        formData.discountType === 'percentage' ? (
+                          <Typography sx={{ ml: 1 }}>%</Typography>
+                        ) : (
+                          <Typography sx={{ ml: 1 }}>ر.س</Typography>
+                        ),
+                    }}
                   />
                 </Grid>
 
@@ -1527,44 +1562,58 @@ const ProductCreate = () => {
                 <Grid size={{ xs: 12 }}>
                   <Card sx={{ p: 2 }}>
                     <Typography variant="h6" gutterBottom>
-                      تحليل الربح
+                      تحليل الربح والأسعار
                     </Typography>
                     <Grid container spacing={2}>
-                      <Grid size={{ xs: 12, md: 4 }}>
+                      <Grid size={{ xs: 12, md: 3 }}>
                         <Typography variant="body2" color="text.secondary">
-                          هامش الربح:
+                          هامش الربح الرئيسي:
                         </Typography>
                         <Typography variant="h6" color="success.main">
-                          {formData.price && formData.cost
+                          {formData.storeCostPrice && formData.cost
                             ? `${(
-                                ((parseFloat(formData.price) - parseFloat(formData.cost)) /
-                                  parseFloat(formData.price)) *
+                                ((parseFloat(formData.storeCostPrice) - parseFloat(formData.cost)) /
+                                  parseFloat(formData.storeCostPrice)) *
                                 100
                               ).toFixed(2)}%`
                             : '0%'}
                         </Typography>
                       </Grid>
-                      <Grid size={{ xs: 12, md: 4 }}>
+                      <Grid size={{ xs: 12, md: 3 }}>
                         <Typography variant="body2" color="text.secondary">
-                          مبلغ الربح:
+                          ربح المتجر الرئيسي:
                         </Typography>
                         <Typography variant="h6" color="success.main">
-                          $
-                          {formData.price && formData.cost
-                            ? (parseFloat(formData.price) - parseFloat(formData.cost)).toFixed(2)
-                            : '0.00'}
+                          {formData.storeCostPrice && formData.cost
+                            ? `${(
+                                parseFloat(formData.storeCostPrice) - parseFloat(formData.cost)
+                              ).toFixed(2)} ر.س`
+                            : '0.00 ر.س'}
                         </Typography>
                       </Grid>
-                      <Grid size={{ xs: 12, md: 4 }}>
+                      <Grid size={{ xs: 12, md: 3 }}>
                         <Typography variant="body2" color="text.secondary">
-                          مبلغ الخصم:
+                          ربح المتجر الفرعي:
+                        </Typography>
+                        <Typography variant="h6" color="info.main">
+                          {formData.branchPrice && formData.cost
+                            ? `${(
+                                parseFloat(formData.branchPrice) - parseFloat(formData.cost)
+                              ).toFixed(2)} ر.س`
+                            : '0.00 ر.س'}
+                        </Typography>
+                      </Grid>
+                      <Grid size={{ xs: 12, md: 3 }}>
+                        <Typography variant="body2" color="text.secondary">
+                          الفرق بين المتاجر:
                         </Typography>
                         <Typography variant="h6" color="warning.main">
-                          {formData.comparePrice && formData.price
-                            ? `$${(
-                                parseFloat(formData.comparePrice) - parseFloat(formData.price)
-                              ).toFixed(2)}`
-                            : '$0.00'}
+                          {formData.branchPrice && formData.storeCostPrice
+                            ? `${(
+                                parseFloat(formData.branchPrice) -
+                                parseFloat(formData.storeCostPrice)
+                              ).toFixed(2)} ر.س`
+                            : '0.00 ر.س'}
                         </Typography>
                       </Grid>
                     </Grid>
@@ -2483,19 +2532,26 @@ const ProductCreate = () => {
                 {/* Store-specific Pricing */}
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="subtitle1" gutterBottom>
-                    تسعير مخصص للمتجر
+                    تسعير مخصص للمتاجر
                   </Typography>
+                  <Alert severity="info" sx={{ mb: 2 }}>
+                    <Typography variant="body2">
+                      <strong>ملاحظة:</strong> الأسعار الأساسية من ERP (سعر التكلفة والجملة) يمكن
+                      تعديلها. يمكنك تحديد أسعار البيع لكل متجر.
+                    </Typography>
+                  </Alert>
+
                   {formData.availableStores.map((store) => (
                     <Card key={store} sx={{ p: 2, mb: 2 }}>
                       <Typography variant="h6" gutterBottom>
-                        {store} تسعير
+                        {store} - التسعير والمخزون
                       </Typography>
                       <Grid container spacing={2}>
-                        <Grid size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                           <TextField
                             fullWidth
                             type="number"
-                            label={`سعر في ${store}`}
+                            label={`سعر البيع في ${store}`}
                             value={formData.storeSpecificPricing[store] || ''}
                             onChange={(e) => {
                               setFormData((prev) => ({
@@ -2507,12 +2563,17 @@ const ProductCreate = () => {
                               }));
                             }}
                             placeholder="0.00"
+                            helperText={
+                              store === 'المتجر الرئيسي'
+                                ? 'سعر البيع في المتجر الرئيسي'
+                                : 'سعر البيع في المتجر الفرعي'
+                            }
                             InputProps={{
-                              startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                              startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                             }}
                           />
                         </Grid>
-                        <Grid size={{ xs: 12, md: 6 }}>
+                        <Grid size={{ xs: 12, md: 4 }}>
                           <TextField
                             fullWidth
                             type="number"
@@ -2528,7 +2589,21 @@ const ProductCreate = () => {
                               }));
                             }}
                             placeholder="0"
+                            helperText="كمية المخزون المتاحة"
                           />
+                        </Grid>
+                        <Grid size={{ xs: 12, md: 4 }}>
+                          <Box sx={{ p: 1, bgcolor: 'grey.50', borderRadius: 1 }}>
+                            <Typography variant="body2" color="text.secondary" gutterBottom>
+                              معلومات من ERP (قابلة للتعديل):
+                            </Typography>
+                            <Typography variant="body2">
+                              سعر التكلفة: {formData.cost || '0.00'} ر.س
+                            </Typography>
+                            <Typography variant="body2">
+                              سعر الجملة: {formData.wholesalePrice || '0.00'} ر.س
+                            </Typography>
+                          </Box>
                         </Grid>
                       </Grid>
                     </Card>
@@ -3018,10 +3093,28 @@ const ProductCreate = () => {
 
                 <Box>
                   <Typography variant="body2" color="text.secondary">
-                    السعر:
+                    سعر التكلفة:
                   </Typography>
                   <Typography variant="h6" color="primary">
-                    ${formData.price || '0.00'}
+                    {formData.cost || '0.00'} ر.س
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    سعر المتجر الرئيسي:
+                  </Typography>
+                  <Typography variant="h6" color="success.main">
+                    {formData.storeCostPrice || '0.00'} ر.س
+                  </Typography>
+                </Box>
+
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    سعر المتجر الفرعي:
+                  </Typography>
+                  <Typography variant="h6" color="info.main">
+                    {formData.branchPrice || '0.00'} ر.س
                   </Typography>
                 </Box>
 

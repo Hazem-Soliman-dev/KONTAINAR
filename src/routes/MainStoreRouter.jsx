@@ -1,4 +1,4 @@
-import React, { lazy } from 'react';
+import { lazy } from 'react';
 import { createBrowserRouter } from 'react-router-dom';
 
 import Loadable from '../layouts/shared/loadable/Loadable.jsx';

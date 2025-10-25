@@ -24,23 +24,18 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Avatar,
-  Stack,
-  Zoom,
-  LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,16 +45,12 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
-  CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
-  TrendingUp as TrendingUpIcon,
-  Visibility as VisibilityIcon,
-  Refresh as RefreshIcon,
   Search as SeoIcon,
+  CheckCircle as CheckCircleIcon,
+  TrendingUp as TrendingUpIcon,
+  Refresh as RefreshIcon,
+  Link as LinkIcon,
+  Speed as SpeedIcon,
 } from '@mui/icons-material';
 
 const SeoRedirects = () => {
@@ -67,36 +58,75 @@ const SeoRedirects = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   // Stats data
   const seoStats = [
     {
-      title: 'Total Redirects',
-      value: '47',
+      title: 'إجمالي التوجيهات',
+      value: '156',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: SeoIcon,
-      change: '+5',
+      icon: LinkIcon,
+      change: '+12',
     },
     {
-      title: 'Active Redirects',
-      value: '42',
+      title: 'التوجيهات النشطة',
+      value: '142',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
       icon: CheckCircleIcon,
-      change: '89.4%',
+      change: '91%',
     },
     {
-      title: 'Redirects Used',
-      value: '1,234',
+      title: 'الزيارات المحولة',
+      value: '2,450',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '+156',
+      icon: TrendingUpIcon,
+      change: '+18%',
     },
     {
-      title: 'SEO Score',
-      value: '92',
+      title: 'معدل النجاح',
+      value: '98.5%',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: TrendingUpIcon,
-      change: '+3',
+      icon: SpeedIcon,
+      change: '+2.1%',
+    },
+  ];
+
+  // Mock data for redirects
+  const redirectsData = [
+    {
+      id: 1,
+      fromUrl: '/old-product-page',
+      toUrl: '/products/new-product',
+      statusCode: 301,
+      isActive: true,
+      createdAt: '2024-01-15',
+      lastUsed: '2024-01-20',
+      hitCount: 45,
+      description: 'توجيه صفحة المنتج القديم',
+    },
+    {
+      id: 2,
+      fromUrl: '/blog/old-post',
+      toUrl: '/blog/new-post',
+      statusCode: 302,
+      isActive: true,
+      createdAt: '2024-01-14',
+      lastUsed: '2024-01-19',
+      hitCount: 23,
+      description: 'توجيه مقال المدونة',
+    },
+    {
+      id: 3,
+      fromUrl: '/category/old-category',
+      toUrl: '/categories/new-category',
+      statusCode: 301,
+      isActive: false,
+      createdAt: '2024-01-13',
+      lastUsed: '2024-01-18',
+      hitCount: 12,
+      description: 'توجيه فئة المنتجات',
     },
   ];
 
@@ -104,7 +134,7 @@ const SeoRedirects = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,43 +144,20 @@ const SeoRedirects = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'SEO Redirects',
+    title: 'توجيهات SEO',
     content: '',
     isActive: true,
-    redirectType: '301',
-    sourceUrl: '',
-    targetUrl: '',
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    autoRedirect: true,
+    preserveQueryParams: true,
+    caseSensitive: false,
+    trailingSlash: true,
+    wildcardRedirects: false,
+    bulkRedirects: false,
   });
-
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'Redirect Rules',
-      content: 'Configure URL redirects to maintain SEO value and user experience.',
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'Redirect Types',
-      content: 'Use 301 redirects for permanent moves and 302 for temporary redirects.',
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'SEO Impact',
-      content: 'Proper redirects help maintain search engine rankings and link equity.',
-      isExpanded: false,
-    },
-    {
-      id: 4,
-      title: 'Monitoring',
-      content: 'Monitor redirect performance and fix any broken or inefficient redirects.',
-      isExpanded: false,
-    },
-  ]);
 
   const handleSave = () => {
     setLoading(true);
@@ -158,38 +165,57 @@ const SeoRedirects = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'SEO redirects updated successfully',
+        message: 'تم تحديث إعدادات التوجيهات بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'New Section',
-      content: '',
-      isExpanded: false,
-    };
-    setSections([...sections, newSection]);
+  const handleAddRedirect = () => {
+    setOpenDialog(true);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteRedirect = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف التوجيه بنجاح',
+      severity: 'success',
+    });
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
-    );
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getStatusCodeColor = (code) => {
+    switch (code) {
+      case 301:
+        return 'success';
+      case 302:
+        return 'warning';
+      case 404:
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getStatusCodeLabel = (code) => {
+    switch (code) {
+      case 301:
+        return 'توجيه دائم';
+      case 302:
+        return 'توجيه مؤقت';
+      case 404:
+        return 'غير موجود';
+      default:
+        return 'غير محدد';
+    }
   };
 
   return (
@@ -201,10 +227,10 @@ const SeoRedirects = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              SEO Redirects Management
+              إدارة توجيهات SEO
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage your store's SEO redirects and URL structure
+              إدارة توجيهات الروابط وتحسين محركات البحث لضمان عدم فقدان الزيارات
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -213,12 +239,12 @@ const SeoRedirects = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+                إدارة المحتوى
               </Link>
-              <Typography color="text.primary">SEO Redirects</Typography>
+              <Typography color="text.primary">توجيهات SEO</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -228,7 +254,7 @@ const SeoRedirects = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -236,7 +262,7 @@ const SeoRedirects = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              Save SEO
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -310,14 +336,14 @@ const SeoRedirects = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <SeoIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              SEO Management
+              إعدادات التوجيهات
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Configure and manage your SEO redirects
+              تخصيص وإدارة توجيهات الروابط
             </Typography>
           </Box>
         </Box>
@@ -325,35 +351,35 @@ const SeoRedirects = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search redirects"
+              label="البحث في التوجيهات"
               size="small"
-              placeholder="Search redirect rules..."
+              placeholder="البحث في التوجيهات..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Redirect Type</InputLabel>
-              <Select value="all" label="Redirect Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="301">301 Permanent</MenuItem>
-                <MenuItem value="302">302 Temporary</MenuItem>
-                <MenuItem value="307">307 Temporary</MenuItem>
+              <InputLabel>نوع التوجيه</InputLabel>
+              <Select value="all" label="نوع التوجيه">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="301">301 - دائم</MenuItem>
+                <MenuItem value="302">302 - مؤقت</MenuItem>
+                <MenuItem value="404">404 - غير موجود</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -365,15 +391,15 @@ const SeoRedirects = () => {
                 disabled={loading}
                 size="small"
               >
-                Save Redirects
+                حفظ الإعدادات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddRedirect}
                 size="small"
               >
-                Add Redirect
+                إضافة توجيه
               </Button>
             </Box>
           </Grid>
@@ -382,12 +408,12 @@ const SeoRedirects = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Redirect Settings */}
+        {/* SEO Settings */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Redirect Settings
+                إعدادات SEO
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -395,7 +421,7 @@ const SeoRedirects = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Redirect Title"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -409,54 +435,85 @@ const SeoRedirects = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Redirects Active"
+                    label="التوجيهات نشطة"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Redirect Type</InputLabel>
-                    <Select
-                      value={formData.redirectType}
-                      label="Redirect Type"
-                      onChange={(e) => setFormData({ ...formData, redirectType: e.target.value })}
-                    >
-                      <MenuItem value="301">301 Permanent</MenuItem>
-                      <MenuItem value="302">302 Temporary</MenuItem>
-                      <MenuItem value="307">307 Temporary</MenuItem>
-                      <MenuItem value="308">308 Permanent</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Source URL"
-                    value={formData.sourceUrl}
-                    onChange={(e) => setFormData({ ...formData, sourceUrl: e.target.value })}
-                    size="small"
-                    placeholder="/old-page"
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.autoRedirect}
+                        onChange={(e) =>
+                          setFormData({ ...formData, autoRedirect: e.target.checked })
+                        }
+                      />
+                    }
+                    label="التوجيه التلقائي"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Target URL"
-                    value={formData.targetUrl}
-                    onChange={(e) => setFormData({ ...formData, targetUrl: e.target.value })}
-                    size="small"
-                    placeholder="/new-page"
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.preserveQueryParams}
+                        onChange={(e) =>
+                          setFormData({ ...formData, preserveQueryParams: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الحفاظ على معاملات الاستعلام"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Contact Information"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="Technical support contact details..."
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.caseSensitive}
+                        onChange={(e) =>
+                          setFormData({ ...formData, caseSensitive: e.target.checked })
+                        }
+                      />
+                    }
+                    label="حساسية الأحرف"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.trailingSlash}
+                        onChange={(e) =>
+                          setFormData({ ...formData, trailingSlash: e.target.checked })
+                        }
+                      />
+                    }
+                    label="الشرطة المائلة في النهاية"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.wildcardRedirects}
+                        onChange={(e) =>
+                          setFormData({ ...formData, wildcardRedirects: e.target.checked })
+                        }
+                      />
+                    }
+                    label="التوجيهات العامة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.bulkRedirects}
+                        onChange={(e) =>
+                          setFormData({ ...formData, bulkRedirects: e.target.checked })
+                        }
+                      />
+                    }
+                    label="التوجيهات المجمعة"
                   />
                 </Grid>
               </Grid>
@@ -464,7 +521,7 @@ const SeoRedirects = () => {
           </Card>
         </Grid>
 
-        {/* Redirect Sections */}
+        {/* Redirects Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
             <CardContent>
@@ -476,86 +533,141 @@ const SeoRedirects = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Redirect Rules</Typography>
-                <Chip label={`${sections.length} rules`} color="primary" size="small" />
+                <Typography variant="h6">قائمة التوجيهات</Typography>
+                <Chip label={`${redirectsData.length} توجيه`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>من URL</TableCell>
+                    <TableCell>إلى URL</TableCell>
+                    <TableCell>نوع التوجيه</TableCell>
+                    <TableCell>الحالة</TableCell>
+                    <TableCell>عدد الزيارات</TableCell>
+                    <TableCell>آخر استخدام</TableCell>
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {redirectsData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((redirect) => (
+                      <TableRow key={redirect.id} hover>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                            {redirect.fromUrl}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                            {redirect.toUrl}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={getStatusCodeLabel(redirect.statusCode)}
+                            size="small"
+                            color={getStatusCodeColor(redirect.statusCode)}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Chip
+                            label={redirect.isActive ? 'نشط' : 'غير نشط'}
                         size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Rule">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
+                            color={redirect.isActive ? 'success' : 'default'}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                            {redirect.hitCount}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{redirect.lastUsed}</Typography>
+                        </TableCell>
+                        <TableCell align="right">
+                          <Stack direction="row" spacing={1} justifyContent="flex-end">
+                            <Tooltip title="تعديل" arrow>
+                              <IconButton size="small">
+                                <EditIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                                size="small"
+                                color="error"
+                                onClick={() => handleDeleteRedirect(redirect.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
                         </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter redirect rule description..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No redirect rules yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first redirect rule to get started
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Rule
-                  </Button>
-                </Box>
-              )}
+                          </Stack>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={redirectsData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add Redirect Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>إضافة توجيه جديد</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="من URL"
+                placeholder="/old-page"
+                helperText="الرابط القديم الذي تريد توجيهه"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="إلى URL"
+                placeholder="/new-page"
+                helperText="الرابط الجديد الذي تريد التوجيه إليه"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>نوع التوجيه</InputLabel>
+                <Select label="نوع التوجيه">
+                  <MenuItem value={301}>301 - توجيه دائم</MenuItem>
+                  <MenuItem value={302}>302 - توجيه مؤقت</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControlLabel control={<Switch defaultChecked />} label="نشط" />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField fullWidth label="الوصف" multiline rows={2} placeholder="وصف للتوجيه..." />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة التوجيه
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar

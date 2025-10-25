@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -16,28 +16,26 @@ import {
   Select,
   MenuItem,
   Chip,
-  IconButton,
   Tooltip,
+  Snackbar,
+  Alert,
+  Switch,
+  FormControlLabel,
+  Stack,
+  Avatar,
   Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
-  Snackbar,
-  Alert,
-  Skeleton,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Stack,
-  Avatar,
+  IconButton,
+  Checkbox,
+  Skeleton,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -47,56 +45,196 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Tune as TuneIcon,
+  Refresh as RefreshIcon,
   Schedule as ScheduleIcon,
   CheckCircle as CheckCircleIcon,
   Warning as WarningIcon,
-  Refresh as RefreshIcon,
   TrendingUp as TrendingUpIcon,
-  TrendingDown as TrendingDownIcon,
   AttachMoney as AttachMoneyIcon,
+  Inventory as InventoryIcon,
+  Visibility as ViewIcon,
+  Search as SearchIcon,
+  LocalShipping as LocalShippingIcon,
+  TrendingFlat as TrendingFlatIcon,
+  AddCircle as AddCircleIcon,
+  RemoveCircle as RemoveCircleIcon,
 } from '@mui/icons-material';
 
 const Adjustments = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [typeFilter, setTypeFilter] = useState('all');
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [sortBy, setSortBy] = useState('createdAt');
+  const [sortOrder, setSortOrder] = useState('desc');
+  const [selectedAdjustment, setSelectedAdjustment] = useState(null);
   const [formData, setFormData] = useState({
-    title: 'التعديلات',
+    title: 'إدارة التعديلات',
     content: '',
     isActive: true,
-    adjustmentStatus: 'pending',
+    adjustmentStatus: 'في الانتظار',
     adjustmentDate: new Date().toISOString().split('T')[0],
-    adjustmentReason: '',
     lastUpdated: new Date().toISOString().split('T')[0],
+    warehouse: '',
+    priority: 'متوسط',
+    description: '',
+    adjustmentType: 'زيادة',
+    adjustmentValue: 0,
   });
+
+  // بيانات وهمية شاملة للتعديلات
+  const adjustmentData = [
+    {
+      id: 1,
+      adjustmentNumber: 'ADJ-001',
+      title: 'تعديل زيادة الإلكترونيات',
+      status: 'مكتمل',
+      priority: 'عالي',
+      type: 'زيادة',
+      warehouse: 'المستودع الرئيسي',
+      items: 15,
+      totalValue: 25000.0,
+      createdBy: 'أحمد محمد',
+      createdAt: '2024-01-15',
+      completedAt: '2024-01-16',
+      description: 'تعديل زيادة للمنتجات الإلكترونية',
+      notes: 'تم التعديل بنجاح',
+      itemsList: [
+        { name: 'سماعات لاسلكية', qty: 50, value: 2500.0 },
+        { name: 'ساعات ذكية', qty: 30, value: 7500.0 },
+        { name: 'لوحات مفاتيح', qty: 100, value: 5000.0 },
+      ],
+    },
+    {
+      id: 2,
+      adjustmentNumber: 'ADJ-002',
+      title: 'تعديل نقص الأجهزة المنزلية',
+      status: 'قيد التقدم',
+      priority: 'متوسط',
+      type: 'نقص',
+      warehouse: 'مستودع الأجهزة',
+      items: 8,
+      totalValue: -15000.0,
+      createdBy: 'فاطمة علي',
+      createdAt: '2024-01-14',
+      completedAt: null,
+      description: 'تعديل نقص للأجهزة المنزلية',
+      notes: 'التعديل قيد التنفيذ',
+      itemsList: [
+        { name: 'ماكينات قهوة', qty: -20, value: -8000.0 },
+        { name: 'خلاطات', qty: -30, value: -7000.0 },
+      ],
+    },
+    {
+      id: 3,
+      adjustmentNumber: 'ADJ-003',
+      title: 'تعديل إعادة تقييم الملابس',
+      status: 'في الانتظار',
+      priority: 'منخفض',
+      type: 'إعادة تقييم',
+      warehouse: 'مستودع الملابس',
+      items: 25,
+      totalValue: 8000.0,
+      createdBy: 'محمد عبدالله',
+      createdAt: '2024-01-13',
+      completedAt: null,
+      description: 'إعادة تقييم ملابس موسمية',
+      notes: 'في انتظار الموافقة',
+      itemsList: [
+        { name: 'قمصان رجالية', qty: 100, value: 3000.0 },
+        { name: 'فساتين نسائية', qty: 80, value: 5000.0 },
+      ],
+    },
+    {
+      id: 4,
+      adjustmentNumber: 'ADJ-004',
+      title: 'تعديل إلغاء الكتب',
+      status: 'ملغي',
+      priority: 'متوسط',
+      type: 'إلغاء',
+      warehouse: 'مستودع الكتب',
+      items: 5,
+      totalValue: 0.0,
+      createdBy: 'نورا السعيد',
+      createdAt: '2024-01-12',
+      completedAt: null,
+      description: 'إلغاء تعديل كتب تعليمية',
+      notes: 'تم إلغاء التعديل',
+      itemsList: [{ name: 'كتب تعليمية', qty: 0, value: 0.0 }],
+    },
+    {
+      id: 5,
+      adjustmentNumber: 'ADJ-005',
+      title: 'تعديل نقل الألعاب',
+      status: 'مكتمل',
+      priority: 'عالي',
+      type: 'نقل',
+      warehouse: 'مستودع الألعاب',
+      items: 12,
+      totalValue: 12000.0,
+      createdBy: 'خالد أحمد',
+      createdAt: '2024-01-11',
+      completedAt: '2024-01-12',
+      description: 'نقل ألعاب أطفال',
+      notes: 'تم النقل بنجاح',
+      itemsList: [
+        { name: 'ألعاب تعليمية', qty: 40, value: 6000.0 },
+        { name: 'دمى', qty: 60, value: 6000.0 },
+      ],
+    },
+  ];
+
+  const warehouses = [
+    'المستودع الرئيسي',
+    'مستودع الأجهزة',
+    'مستودع الملابس',
+    'مستودع الكتب',
+    'مستودع الألعاب',
+  ];
+  const statuses = ['في الانتظار', 'قيد التقدم', 'مكتمل', 'ملغي'];
+  const priorities = ['عالي', 'متوسط', 'منخفض'];
+  const types = ['زيادة', 'نقص', 'إعادة تقييم', 'نقل', 'إلغاء'];
 
   const [sections, setSections] = useState([
     {
       id: 1,
-      title: 'عملية التعديل',
-      content: 'إدارة تعديلات وتصحيحات المخزون.',
+      title: 'عملية التعديلات',
+      content: 'إدارة تعديلات المخزون مع التتبع التفصيلي والتحليلات المتقدمة.',
       isExpanded: true,
     },
     {
       id: 2,
-      title: 'قواعد التعديل',
-      content: 'تكوين قواعد التعديل وسير عمل الموافقة.',
+      title: 'قواعد التعديلات',
+      content: 'تكوين قواعد وسياسات التعديلات مع التنبيهات التلقائية والموافقات.',
       isExpanded: false,
     },
     {
       id: 3,
-      title: 'تتبع التعديل',
-      content: 'تتبع تقدم وحالة التعديل.',
+      title: 'تتبع التعديلات',
+      content: 'تتبع تقدم وحالة التعديلات مع التقارير التفصيلية والتحليلات.',
       isExpanded: false,
     },
     {
       id: 4,
-      title: 'تحليلات التعديل',
-      content: 'عرض أداء وتحليلات التعديل.',
+      title: 'تحليلات التعديلات',
+      content: 'عرض أداء وتحليلات التعديلات مع الرسوم البيانية والتقارير.',
       isExpanded: false,
     },
   ]);
+
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
 
   const handleSave = () => {
     setLoading(true);
@@ -104,7 +242,7 @@ const Adjustments = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Adjustment settings updated successfully',
+        message: 'تم تحديث إعدادات التعديلات بنجاح',
         severity: 'success',
       });
     }, 1000);
@@ -113,7 +251,7 @@ const Adjustments = () => {
   const handleAddSection = () => {
     const newSection = {
       id: sections.length + 1,
-      title: 'New Section',
+      title: 'قسم جديد',
       content: '',
       isExpanded: false,
     };
@@ -144,14 +282,160 @@ const Adjustments = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Adjustments refreshed successfully',
+        message: 'تم تحديث التعديلات بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const handleSelectAll = (event) => {
+    if (event.target.checked) {
+      setSelectedItems(filteredData.map((item) => item.id));
+    } else {
+      setSelectedItems([]);
+    }
+  };
+
+  const handleSelectItem = (itemId) => {
+    setSelectedItems((prev) =>
+      prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
+    );
+  };
+
+  const handleBulkAction = (action) => {
+    setSnackbar({
+      open: true,
+      message: `تم ${action} لـ ${selectedItems.length} تعديل`,
+      severity: 'success',
+    });
+    setSelectedItems([]);
+  };
+
+  const handleView = (adjustment) => {
+    setSelectedAdjustment(adjustment);
+    setOpenViewDialog(true);
+  };
+
+  const handleEdit = (adjustment) => {
+    setSelectedAdjustment(adjustment);
+    setOpenDialog(true);
+  };
+
+  const handleDelete = (adjustment) => {
+    setSelectedAdjustment(adjustment);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setOpenDeleteDialog(false);
+      setSnackbar({ open: true, message: 'تم حذف التعديل بنجاح', severity: 'success' });
+    }, 1000);
+  };
+
+  const getStatusColor = (status) => {
+    switch (status) {
+      case 'مكتمل':
+        return 'success';
+      case 'قيد التقدم':
+        return 'warning';
+      case 'في الانتظار':
+        return 'info';
+      case 'ملغي':
+        return 'error';
+      default:
+        return 'default';
+    }
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'عالي':
+        return 'error';
+      case 'متوسط':
+        return 'warning';
+      case 'منخفض':
+        return 'success';
+      default:
+        return 'default';
+    }
+  };
+
+  const getTypeColor = (type) => {
+    switch (type) {
+      case 'زيادة':
+        return 'success';
+      case 'نقص':
+        return 'error';
+      case 'إعادة تقييم':
+        return 'info';
+      case 'نقل':
+        return 'warning';
+      case 'إلغاء':
+        return 'default';
+      default:
+        return 'default';
+    }
+  };
+
+  const getTypeIcon = (type) => {
+    switch (type) {
+      case 'زيادة':
+        return <AddCircleIcon />;
+      case 'نقص':
+        return <RemoveCircleIcon />;
+      case 'إعادة تقييم':
+        return <TrendingFlatIcon />;
+      case 'نقل':
+        return <LocalShippingIcon />;
+      case 'إلغاء':
+        return <DeleteIcon />;
+      default:
+        return <InventoryIcon />;
+    }
+  };
+
+  const filteredData = adjustmentData.filter((item) => {
+    const matchesSearch =
+      item.adjustmentNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.warehouse.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      item.createdBy.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus =
+      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
+    const matchesType = typeFilter === 'all' || item.type === typeFilter;
+    return matchesSearch && matchesStatus && matchesType;
+  });
+
+  const sortedData = [...filteredData].sort((a, b) => {
+    let aValue = a[sortBy];
+    let bValue = b[sortBy];
+
+    if (typeof aValue === 'string') {
+      aValue = aValue.toLowerCase();
+      bValue = bValue.toLowerCase();
+    }
+
+    if (sortOrder === 'asc') {
+      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+    } else {
+      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+    }
+  });
+
   return (
-    <Box sx={{ p: 3 }}>
+    <Box sx={{ p: 3 }} role="main" aria-label="إدارة التعديلات" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -159,24 +443,29 @@ const Adjustments = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Adjustments Management
+              إدارة التعديلات
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Manage inventory adjustments and corrections with detailed tracking
+              أتمتة عمليات تعديل المخزون مع التتبع التفصيلي والتحليلات المتقدمة
             </Typography>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
+            <Breadcrumbs
+              separator={<NavigateNextIcon fontSize="small" />}
+              sx={{ mt: 1 }}
+              aria-label="مسار التنقل"
+            >
               <Link
                 color="inherit"
-                href="/main-store"
+                href="/system"
                 sx={{ display: 'flex', alignItems: 'center' }}
+                aria-label="الذهاب إلى لوحة التحكم"
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
-              <Link color="inherit" href="/main-store/operations">
-                Operations
+              <Link color="inherit" href="/system/operations" aria-label="الذهاب إلى العمليات">
+                العمليات
               </Link>
-              <Typography color="text.primary">Adjustments</Typography>
+              <Typography color="text.primary">التعديلات</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -186,11 +475,21 @@ const Adjustments = () => {
               startIcon={<RefreshIcon />}
               onClick={handleRefresh}
               disabled={loading}
+              aria-label="تحديث البيانات"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              {loading ? 'Refreshing...' : 'Refresh'}
+              {loading ? 'جاري التحديث...' : 'تحديث'}
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-              Add Process
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenDialog(true)}
+              aria-label="إضافة تعديل جديد"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إضافة تعديل
             </Button>
           </Stack>
         </Box>
@@ -218,14 +517,14 @@ const Adjustments = () => {
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
                   <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <TuneIcon />
+                    <InventoryIcon />
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  156
+                  {adjustmentData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Adjustments
+                  إجمالي التعديلات
                 </Typography>
               </CardContent>
             </Card>
@@ -255,10 +554,10 @@ const Adjustments = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  89
+                  {adjustmentData.filter((item) => item.status === 'مكتمل').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Completed
+                  مكتمل
                 </Typography>
               </CardContent>
             </Card>
@@ -288,10 +587,10 @@ const Adjustments = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  45
+                  {adjustmentData.filter((item) => item.status === 'قيد التقدم').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Pending
+                  قيد التقدم
                 </Typography>
               </CardContent>
             </Card>
@@ -317,14 +616,14 @@ const Adjustments = () => {
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
                   <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <AttachMoneyIcon />
+                    <WarningIcon />
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  $12,456
+                  {adjustmentData.filter((item) => item.status === 'في الانتظار').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Value
+                  في الانتظار
                 </Typography>
               </CardContent>
             </Card>
@@ -333,40 +632,72 @@ const Adjustments = () => {
       </Box>
 
       {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Paper sx={{ p: 2, mb: 3 }} aria-hidden="false">
         <Grid container spacing={2} alignItems="center">
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search Adjustments"
+              label="البحث في التعديلات"
               size="small"
-              placeholder="Search adjustments..."
+              placeholder="البحث في التعديلات..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              InputProps={{
+                startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+              }}
+              aria-label="البحث في التعديلات"
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select
+                value={statusFilter}
+                label="الحالة"
+                onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="فلتر الحالة"
+              >
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                <MenuItem value="قيد التقدم">قيد التقدم</MenuItem>
+                <MenuItem value="مكتمل">مكتمل</MenuItem>
+                <MenuItem value="ملغي">ملغي</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Adjustment Status</InputLabel>
-              <Select value="all" label="Adjustment Status">
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="approved">Approved</MenuItem>
-                <MenuItem value="completed">Completed</MenuItem>
+              <InputLabel>النوع</InputLabel>
+              <Select
+                value={typeFilter}
+                label="النوع"
+                onChange={(e) => setTypeFilter(e.target.value)}
+                aria-label="فلتر النوع"
+              >
+                <MenuItem value="all">جميع الأنواع</MenuItem>
+                {types.map((type) => (
+                  <MenuItem key={type} value={type}>
+                    {type}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
-            <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+            <Button
+              variant="outlined"
+              size="small"
+              fullWidth
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('all');
+                setTypeFilter('all');
+              }}
+              aria-label="إعادة تعيين الفلاتر"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -377,16 +708,22 @@ const Adjustments = () => {
                 onClick={handleSave}
                 disabled={loading}
                 size="small"
+                aria-label="حفظ التعديلات"
+                aria-hidden="false"
+                tabIndex={0}
               >
-                Save Adjustment
+                حفظ التعديلات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={() => setOpenDialog(true)}
                 size="small"
+                aria-label="إضافة تعديل"
+                aria-hidden="false"
+                tabIndex={0}
               >
-                Add Process
+                إضافة تعديل
               </Button>
             </Box>
           </Grid>
@@ -400,37 +737,39 @@ const Adjustments = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Adjustment Settings
+                إعدادات التعديلات
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
               <Grid container spacing={2}>
                 <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth size="small">
-                    <InputLabel>Adjustment Status</InputLabel>
+                    <InputLabel>حالة التعديل</InputLabel>
                     <Select
                       value={formData.adjustmentStatus}
-                      label="Adjustment Status"
+                      label="حالة التعديل"
                       onChange={(e) =>
                         setFormData({ ...formData, adjustmentStatus: e.target.value })
                       }
+                      aria-label="حالة التعديل"
                     >
-                      <MenuItem value="pending">Pending</MenuItem>
-                      <MenuItem value="approved">Approved</MenuItem>
-                      <MenuItem value="completed">Completed</MenuItem>
-                      <MenuItem value="cancelled">Cancelled</MenuItem>
+                      <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                      <MenuItem value="قيد التقدم">قيد التقدم</MenuItem>
+                      <MenuItem value="مكتمل">مكتمل</MenuItem>
+                      <MenuItem value="ملغي">ملغي</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Adjustment Date"
+                    label="تاريخ التعديل"
                     type="date"
                     value={formData.adjustmentDate}
                     onChange={(e) => setFormData({ ...formData, adjustmentDate: e.target.value })}
                     size="small"
                     InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ التعديل"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
@@ -441,17 +780,85 @@ const Adjustments = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Adjustment Active"
+                    label="التعديل نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>نوع التعديل</InputLabel>
+                    <Select
+                      value={formData.adjustmentType}
+                      label="نوع التعديل"
+                      onChange={(e) => setFormData({ ...formData, adjustmentType: e.target.value })}
+                      aria-label="نوع التعديل"
+                    >
+                      {types.map((type) => (
+                        <MenuItem key={type} value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المستودع</InputLabel>
+                    <Select
+                      value={formData.warehouse}
+                      label="المستودع"
+                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
+                      aria-label="المستودع"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="قيمة التعديل"
+                    type="number"
+                    value={formData.adjustmentValue}
+                    onChange={(e) =>
+                      setFormData({ ...formData, adjustmentValue: parseFloat(e.target.value) || 0 })
+                    }
+                    size="small"
+                    placeholder="أدخل قيمة التعديل"
+                    aria-label="قيمة التعديل"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Adjustment Reason"
-                    value={formData.adjustmentReason}
-                    onChange={(e) => setFormData({ ...formData, adjustmentReason: e.target.value })}
+                    label="الوصف"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                     size="small"
-                    placeholder="Adjustment reason..."
+                    multiline
+                    rows={3}
+                    placeholder="وصف التعديل..."
+                    aria-label="الوصف"
                   />
                 </Grid>
               </Grid>
@@ -459,9 +866,9 @@ const Adjustments = () => {
           </Card>
         </Grid>
 
-        {/* Adjustment Sections */}
+        {/* Adjustment Table */}
         <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
             <CardContent>
               <Box
                 sx={{
@@ -471,86 +878,371 @@ const Adjustments = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Adjustment Processes</Typography>
-                <Chip label={`${sections.length} processes`} color="primary" size="small" />
+                <Typography variant="h6">قائمة التعديلات</Typography>
+                <Chip label={`${filteredData.length} تعديل`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <TuneIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                        size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Process">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
-                        </Tooltip>
-                      </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter process details..."
-                      size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <TuneIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No adjustment processes yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first adjustment process to get started
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Process
-                  </Button>
+              {loading ? (
+                <Box sx={{ p: 2 }}>
+                  {[...Array(3)].map((_, index) => (
+                    <Skeleton key={index} height={60} sx={{ mb: 1 }} />
+                  ))}
                 </Box>
+              ) : (
+                <>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={selectedItems.length === filteredData.length}
+                            onChange={handleSelectAll}
+                          />
+                        </TableCell>
+                        <TableCell>رقم التعديل</TableCell>
+                        <TableCell>العنوان</TableCell>
+                        <TableCell>النوع</TableCell>
+                        <TableCell>المستودع</TableCell>
+                        <TableCell>الحالة</TableCell>
+                        <TableCell>القيمة</TableCell>
+                        <TableCell>الإجراءات</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sortedData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((item) => (
+                          <TableRow key={item.id} hover>
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={selectedItems.includes(item.id)}
+                                onChange={() => handleSelectItem(item.id)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Box>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                                  {item.adjustmentNumber}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {item.items} عنصر
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ maxWidth: 200 }}>
+                                {item.title}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.type}
+                                size="small"
+                                color={getTypeColor(item.type)}
+                                icon={getTypeIcon(item.type)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{item.warehouse}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.status}
+                                size="small"
+                                color={getStatusColor(item.status)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Typography
+                                variant="body2"
+                                color={item.totalValue >= 0 ? 'success.main' : 'error.main'}
+                                sx={{ fontWeight: 600 }}
+                              >
+                                ${item.totalValue.toLocaleString()}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Stack direction="row" spacing={1}>
+                                <Tooltip title="عرض">
+                                  <IconButton size="small" onClick={() => handleView(item)}>
+                                    <ViewIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="تعديل">
+                                  <IconButton size="small" onClick={() => handleEdit(item)}>
+                                    <EditIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="حذف">
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleDelete(item)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </>
               )}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add/Edit Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>{selectedAdjustment ? 'تعديل التعديل' : 'إضافة تعديل جديد'}</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="رقم التعديل"
+                value={selectedAdjustment?.adjustmentNumber || ''}
+                placeholder="أدخل رقم التعديل"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="عنوان التعديل"
+                value={selectedAdjustment?.title || ''}
+                placeholder="أدخل عنوان التعديل"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>النوع</InputLabel>
+                <Select label="النوع">
+                  {types.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>المستودع</InputLabel>
+                <Select label="المستودع">
+                  {warehouses.map((warehouse) => (
+                    <MenuItem key={warehouse} value={warehouse}>
+                      {warehouse}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الحالة</InputLabel>
+                <Select label="الحالة">
+                  {statuses.map((status) => (
+                    <MenuItem key={status} value={status}>
+                      {status}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الأولوية</InputLabel>
+                <Select label="الأولوية">
+                  {priorities.map((priority) => (
+                    <MenuItem key={priority} value={priority}>
+                      {priority}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="القيمة الإجمالية"
+                type="number"
+                value={selectedAdjustment?.totalValue || 0}
+                placeholder="أدخل القيمة الإجمالية"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="عدد العناصر"
+                type="number"
+                value={selectedAdjustment?.items || 0}
+                placeholder="أدخل عدد العناصر"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ البداية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ النهاية"
+                type="date"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="الوصف"
+                multiline
+                rows={3}
+                value={selectedAdjustment?.description || ''}
+                placeholder="أدخل وصف التعديل"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="ملاحظات"
+                multiline
+                rows={2}
+                value={selectedAdjustment?.notes || ''}
+                placeholder="أدخل ملاحظات إضافية"
+              />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button
+            variant="contained"
+            onClick={handleSave}
+            disabled={loading}
+            startIcon={<SaveIcon />}
+          >
+            {loading ? 'جاري الحفظ...' : 'حفظ'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* View Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>تفاصيل التعديل</DialogTitle>
+        <DialogContent>
+          {selectedAdjustment && (
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  {selectedAdjustment.title}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  رقم التعديل: {selectedAdjustment.adjustmentNumber}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  النوع: {selectedAdjustment.type}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  المستودع: {selectedAdjustment.warehouse}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الحالة: {selectedAdjustment.status}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الأولوية: {selectedAdjustment.priority}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  العناصر: {selectedAdjustment.items}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  القيمة: ${selectedAdjustment.totalValue.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  أنشأه: {selectedAdjustment.createdBy}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  تاريخ الإنشاء: {selectedAdjustment.createdAt}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="body2" color="text.secondary">
+                  تاريخ الإكمال: {selectedAdjustment.completedAt || 'لم يكتمل بعد'}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الوصف: {selectedAdjustment.description}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="body2" color="text.secondary">
+                  الملاحظات: {selectedAdjustment.notes}
+                </Typography>
+              </Grid>
+            </Grid>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+        <DialogTitle>تأكيد الحذف</DialogTitle>
+        <DialogContent>
+          <Typography>
+            هل أنت متأكد من حذف التعديل "{selectedAdjustment?.title}"؟ هذا الإجراء لا يمكن التراجع
+            عنه.
+          </Typography>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
+            حذف
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       {/* Snackbar */}
       <Snackbar

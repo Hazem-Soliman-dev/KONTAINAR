@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 import TopCards from '../../../components/platform/system/dashboards/TopCards.jsx';
 import RevenueUpdates from '../../../components/platform/system/dashboards/RevenueUpdates.jsx';
@@ -19,15 +18,15 @@ const Modern = () => {
   return (
     <Box>
       <Grid container spacing={3}>
-        {/* column */}
+        {/* عمود */}
         <Grid size={12}>
           <TopCards />
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 8 }}>
           <RevenueUpdates />
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 4 }}>
           <Grid spacing={3} container columns={{ xs: 12, sm: 6 }}>
             <Grid size={12}>
@@ -38,11 +37,11 @@ const Modern = () => {
             </Grid>
           </Grid>
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 4 }}>
           <EmployeeSalary />
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 4 }}>
           <Grid spacing={3} container columns={{ xs: 12, sm: 6 }}>
             <Grid size={{ xs: 12, md: 6, lg: 'grow' }}>
@@ -56,20 +55,20 @@ const Modern = () => {
             </Grid>
           </Grid>
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 4 }}>
           <SellingProducts />
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 4 }}>
           <WeeklyStats />
         </Grid>
-        {/* column */}
+        {/* عمود */}
         <Grid size={{ xs: 12, lg: 8 }}>
           <TopPerformers />
         </Grid>
       </Grid>
-      {/* column */}
+      {/* عمود */}
       <Welcome />
     </Box>
   );

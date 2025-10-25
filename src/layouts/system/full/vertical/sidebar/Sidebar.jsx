@@ -1,9 +1,9 @@
 import { useMediaQuery, Box, Drawer, useTheme } from '@mui/material';
+import { useContext } from 'react';
 import SidebarItems from './SidebarItems.jsx';
 import Logo from '../../../../shared/logo/Logo.jsx';
 import config from '../../../../../context/config.js';
 import { CustomizerContext } from '../../../../../context/CustomizerContext.jsx';
-import { useContext } from 'react';
 import Scrollbar from '../../../../../components/custom-scroll/Scrollbar.jsx';
 import { Profile } from './SidebarProfile/Profile.jsx';
 

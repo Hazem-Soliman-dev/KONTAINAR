@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { IconSearch, IconX } from '@tabler/icons-react';
 import {
   IconButton,
   Dialog,
@@ -11,10 +13,8 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import { IconSearch, IconX } from '@tabler/icons-react';
 import Menuitems from '../sidebar/MenuItems.jsx';
 import CustomTextField from '../../../../../components/theme-elements/CustomTextField.jsx';
-import { Link } from 'react-router-dom';
 
 const Search = () => {
   // drawer top

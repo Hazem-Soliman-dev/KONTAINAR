@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import { Box, Typography, Avatar, Stack, ButtonGroup, Button, Divider } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
+import { Box, Typography, Avatar, Stack, ButtonGroup, Button, Divider } from '@mui/material';
 import emptyCart from '../../../../../assets/images/products/empty-shopping-cart.svg';
 import { ProductContext } from '../../../../../context/EcommerceContext/index.jsx';
 

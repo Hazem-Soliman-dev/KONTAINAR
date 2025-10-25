@@ -37,15 +37,12 @@ import {
   TableSortLabel,
   LinearProgress,
   Avatar,
-  Badge,
   Fade,
-  Zoom,
   Menu,
   ListItemIcon,
   ListItemText,
   Switch,
   FormControlLabel,
-  Autocomplete,
   Tabs,
   Tab,
   List,
@@ -53,9 +50,6 @@ import {
   ListItemAvatar,
   ListItemText as MuiListItemText,
   ListItemSecondaryAction,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -78,25 +72,10 @@ import {
   ContentCopy as CopyIcon,
   Share as ShareIcon,
   Inventory as InventoryIcon,
-  ShoppingCart as CartIcon,
-  AttachMoney as PriceIcon,
-  Analytics as AnalyticsIcon,
-  Warning as WarningIcon,
   CheckCircle as CheckCircleIcon,
-  Cancel as CancelIcon,
-  Refresh as RefreshIcon,
   Publish as PublishIcon,
   Store as StoreIcon,
-  Storefront as StorefrontIcon,
   Sync as SyncIcon,
-  CloudUpload as CloudUploadIcon,
-  CloudDownload as CloudDownloadIcon,
-  Settings as SettingsIcon,
-  Timeline as TimelineIcon,
-  Assessment as AssessmentIcon,
-  ExpandMore as ExpandMoreIcon,
-  ArrowForward as ArrowForwardIcon,
-  ArrowBack as ArrowBackIcon,
   Check as CheckIcon,
   Error as ErrorIcon,
   Info as InfoIcon,
@@ -111,8 +90,6 @@ const ProductPublishing = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [openViewDialog, setOpenViewDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -126,172 +103,172 @@ const ProductPublishing = () => {
   const publishingData = [
     {
       id: 1,
-      name: 'iPhone 15 Pro 128GB',
+      name: 'ايفون 15 برو 128 جيجابايت',
       sku: 'IPH15P-128',
-      status: 'Published',
+      status: 'منشور',
       lastModified: '2024-01-15',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 1250,
       clicks: 89,
       price: 999.99,
       stock: 45,
       stores: [
         {
-          name: 'Main Store',
-          status: 'Published',
+          name: 'المتجر الرئيسي',
+          status: 'منشور',
           lastSync: '2024-01-15 10:30',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Electronics Store',
-          status: 'Published',
+          name: 'متجر الإلكترونيات',
+          status: 'منشور',
           lastSync: '2024-01-15 10:32',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Mobile Store',
-          status: 'Draft',
+          name: 'متجر الموبايل',
+          status: 'مسودة',
           lastSync: '2024-01-14 15:20',
-          syncStatus: 'pending',
+          syncStatus: 'قيد الانتظار',
         },
         {
-          name: 'Premium Store',
-          status: 'Published',
+          name: 'المتجر المميز',
+          status: 'منشور',
           lastSync: '2024-01-15 10:35',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
       ],
       featured: true,
       position: 1,
-      description: 'Latest iPhone with advanced camera system',
-      tags: ['smartphone', 'apple', 'premium'],
+      description: 'أحدث ايفون مع نظام كاميرا متقدم',
+      tags: ['هاتف ذكي', 'آبل', 'مميز'],
       totalStores: 4,
       publishedStores: 3,
       pendingStores: 1,
     },
     {
       id: 2,
-      name: 'MacBook Air M3 13"',
+      name: 'ماكبوك إير M3 13 بوصة',
       sku: 'MBA-M3-13',
-      status: 'Draft',
+      status: 'مسودة',
       lastModified: '2024-01-14',
-      author: 'Editor',
-      priority: 'High',
+      author: 'مصمم',
+      priority: 'عالي',
       views: 890,
       clicks: 67,
       price: 1199.99,
       stock: 12,
       stores: [
         {
-          name: 'Main Store',
-          status: 'Draft',
+          name: 'المتجر الرئيسي',
+          status: 'مسودة',
           lastSync: '2024-01-14 14:20',
-          syncStatus: 'pending',
+          syncStatus: 'قيد الانتظار',
         },
         {
-          name: 'Electronics Store',
-          status: 'Draft',
+          name: 'متجر الإلكترونيات',
+          status: 'مسودة',
           lastSync: '2024-01-14 14:22',
-          syncStatus: 'pending',
+          syncStatus: 'قيد الانتظار',
         },
         {
-          name: 'Laptop Store',
-          status: 'Draft',
+          name: 'متجر اللابتوب',
+          status: 'مسودة',
           lastSync: '2024-01-14 14:25',
-          syncStatus: 'pending',
+          syncStatus: 'قيد الانتظار',
         },
       ],
       featured: false,
       position: 2,
-      description: 'Ultra-thin laptop with M3 chip',
-      tags: ['laptop', 'apple', 'macbook'],
+      description: 'لابتوب رفيع جداً مع معالج M3',
+      tags: ['لابتوب', 'آبل', 'ماكبوك'],
       totalStores: 3,
       publishedStores: 0,
       pendingStores: 3,
     },
     {
       id: 3,
-      name: 'Samsung Galaxy S24 256GB',
+      name: 'سامسونج جالاكسي S24 256 جيجابايت',
       sku: 'SGS24-256',
-      status: 'Published',
+      status: 'منشور',
       lastModified: '2024-01-13',
-      author: 'Admin',
-      priority: 'Medium',
+      author: 'مدير',
+      priority: 'متوسط',
       views: 650,
       clicks: 23,
       price: 899.99,
       stock: 25,
       stores: [
         {
-          name: 'Main Store',
-          status: 'Published',
+          name: 'المتجر الرئيسي',
+          status: 'منشور',
           lastSync: '2024-01-13 09:15',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Electronics Store',
-          status: 'Published',
+          name: 'متجر الإلكترونيات',
+          status: 'منشور',
           lastSync: '2024-01-13 09:18',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Mobile Store',
-          status: 'Published',
+          name: 'متجر الموبايل',
+          status: 'منشور',
           lastSync: '2024-01-13 09:20',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Android Store',
-          status: 'Published',
+          name: 'متجر أندرويد',
+          status: 'منشور',
           lastSync: '2024-01-13 09:22',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
       ],
       featured: true,
       position: 3,
-      description: 'Samsung flagship smartphone with AI features',
-      tags: ['smartphone', 'samsung', 'android'],
+      description: 'هاتف سامسونج الرائد مع ميزات الذكاء الاصطناعي',
+      tags: ['هاتف ذكي', 'سامسونج', 'أندرويد'],
       totalStores: 4,
       publishedStores: 4,
       pendingStores: 0,
     },
     {
       id: 4,
-      name: 'Dell XPS 15 Laptop',
+      name: 'ديل XPS 15 لابتوب',
       sku: 'DXP15-512',
-      status: 'Scheduled',
+      status: 'مجدول',
       lastModified: '2024-01-12',
-      author: 'Editor',
-      priority: 'Medium',
+      author: 'مصمم',
+      priority: 'متوسط',
       views: 0,
       clicks: 0,
       price: 1499.99,
       stock: 8,
       stores: [
         {
-          name: 'Main Store',
-          status: 'Scheduled',
+          name: 'المتجر الرئيسي',
+          status: 'مجدول',
           lastSync: '2024-01-12 16:30',
-          syncStatus: 'scheduled',
+          syncStatus: 'مجدول',
         },
         {
-          name: 'Electronics Store',
-          status: 'Scheduled',
+          name: 'متجر الإلكترونيات',
+          status: 'مجدول',
           lastSync: '2024-01-12 16:32',
-          syncStatus: 'scheduled',
+          syncStatus: 'مجدول',
         },
         {
-          name: 'Laptop Store',
-          status: 'Scheduled',
+          name: 'متجر اللابتوب',
+          status: 'مجدول',
           lastSync: '2024-01-12 16:35',
-          syncStatus: 'scheduled',
+          syncStatus: 'مجدول',
         },
       ],
       featured: false,
       position: 4,
-      description: 'High-performance laptop for professionals',
-      tags: ['laptop', 'dell', 'professional'],
+      description: 'لابتوب عالي الأداء للمحترفين',
+      tags: ['لابتوب', 'ديل', 'احترافي'],
       totalStores: 3,
       publishedStores: 0,
       pendingStores: 0,
@@ -299,40 +276,40 @@ const ProductPublishing = () => {
     },
     {
       id: 5,
-      name: 'Sony WH-1000XM5 Headphones',
+      name: 'سوني WH-1000XM5 سماعات',
       sku: 'SNY-WH1000XM5',
-      status: 'Published',
+      status: 'منشور',
       lastModified: '2024-01-11',
-      author: 'Admin',
-      priority: 'Low',
+      author: 'مدير',
+      priority: 'منخفض',
       views: 420,
       clicks: 15,
       price: 399.99,
       stock: 30,
       stores: [
         {
-          name: 'Main Store',
-          status: 'Published',
+          name: 'المتجر الرئيسي',
+          status: 'منشور',
           lastSync: '2024-01-11 11:45',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Electronics Store',
-          status: 'Published',
+          name: 'متجر الإلكترونيات',
+          status: 'منشور',
           lastSync: '2024-01-11 11:47',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
         {
-          name: 'Audio Store',
-          status: 'Published',
+          name: 'متجر الصوتيات',
+          status: 'منشور',
           lastSync: '2024-01-11 11:50',
-          syncStatus: 'success',
+          syncStatus: 'نجاح',
         },
       ],
       featured: false,
       position: 5,
-      description: 'Premium noise-canceling headphones',
-      tags: ['headphones', 'sony', 'audio'],
+      description: 'سماعات مميزة لإلغاء الضوضاء',
+      tags: ['سماعات', 'سوني', 'صوتيات'],
       totalStores: 3,
       publishedStores: 3,
       pendingStores: 0,
@@ -391,14 +368,14 @@ const ProductPublishing = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsRefreshing(false);
     setLoading(false);
-    setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+    setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
   };
 
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for items:`, selectedItems);
     setSnackbar({
       open: true,
-      message: `${action} completed for ${selectedItems.length} items`,
+      message: `تم ${action} لـ ${selectedItems.length} عنصر`,
       severity: 'success',
     });
     setSelectedItems([]);
@@ -411,7 +388,7 @@ const ProductPublishing = () => {
       setOpenDialog(false);
       setSnackbar({
         open: true,
-        message: 'Publishing settings updated successfully',
+        message: 'تم تحديث إعدادات النشر بنجاح',
         severity: 'success',
       });
     }, 1000);
@@ -423,13 +400,13 @@ const ProductPublishing = () => {
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-      case 'published':
+        case 'منشور':
         return 'success';
-      case 'draft':
+      case 'مسودة':
         return 'warning';
-      case 'scheduled':
+      case 'مجدول':
         return 'info';
-      case 'archived':
+      case 'محذوف':
         return 'default';
       default:
         return 'default';
@@ -438,11 +415,11 @@ const ProductPublishing = () => {
 
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
-      case 'high':
+      case 'عالي':
         return 'error';
-      case 'medium':
+      case 'متوسط':
         return 'warning';
-      case 'low':
+      case 'منخفض':
         return 'success';
       default:
         return 'default';
@@ -451,13 +428,13 @@ const ProductPublishing = () => {
 
   const getSyncStatusColor = (syncStatus) => {
     switch (syncStatus.toLowerCase()) {
-      case 'success':
+      case 'نجاح':
         return 'success';
-      case 'pending':
+      case 'قيد الانتظار':
         return 'warning';
-      case 'error':
+      case 'خطأ':
         return 'error';
-      case 'scheduled':
+      case 'مجدول':
         return 'info';
       default:
         return 'default';
@@ -466,13 +443,13 @@ const ProductPublishing = () => {
 
   const getSyncStatusIcon = (syncStatus) => {
     switch (syncStatus.toLowerCase()) {
-      case 'success':
+      case 'نجاح':
         return <CheckIcon />;
-      case 'pending':
+      case 'قيد الانتظار':
         return <ScheduleIcon />;
-      case 'error':
+      case 'خطأ':
         return <ErrorIcon />;
-      case 'scheduled':
+      case 'مجدول':
         return <InfoIcon />;
       default:
         return <InfoIcon />;
@@ -515,10 +492,10 @@ const ProductPublishing = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Product Publishing Manager
+              مدير نشر المنتجات
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Manage product publishing across all sub-stores and distribution channels
+              إدارة نشر المنتجات عبر جميع المتاجر الفرعية وقنوات التوزيع
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -527,15 +504,15 @@ const ProductPublishing = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/catalog">
-                Catalog
+                الكتالوج
               </Link>
               <Link color="inherit" href="/main-store/catalog/products">
-                Products
+                المنتجات
               </Link>
-              <Typography color="text.primary">Publishing</Typography>
+              <Typography color="text.primary">النشر</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -546,14 +523,14 @@ const ProductPublishing = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Syncing...' : 'Sync All'}
+              {isRefreshing ? 'جاري المزامنة...' : 'مزامنة الكل'}
             </Button>
             <Button
               variant="contained"
               startIcon={<PublishIcon />}
               onClick={() => setOpenDialog(true)}
             >
-              Publish Products
+              نشر المنتجات
             </Button>
           </Stack>
         </Box>
@@ -588,7 +565,7 @@ const ProductPublishing = () => {
                   {publishingData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Products
+                  إجمالي المنتجات
                 </Typography>
               </CardContent>
             </Card>
@@ -618,10 +595,10 @@ const ProductPublishing = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  {publishingData.filter((item) => item.status === 'Published').length}
+                  {publishingData.filter((item) => item.status === 'منشور').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Published
+                  منشور
                 </Typography>
               </CardContent>
             </Card>
@@ -654,7 +631,7 @@ const ProductPublishing = () => {
                   {publishingData.reduce((sum, item) => sum + item.totalStores, 0)}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Stores
+                  إجمالي المتاجر
                 </Typography>
               </CardContent>
             </Card>
@@ -687,7 +664,7 @@ const ProductPublishing = () => {
                   {publishingData.reduce((sum, item) => sum + item.publishedStores, 0)}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Published Stores
+                  المتاجر المنشورة
                 </Typography>
               </CardContent>
             </Card>
@@ -699,7 +676,7 @@ const ProductPublishing = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
           <Stack direction="row" spacing={1}>
             <Button
@@ -711,7 +688,7 @@ const ProductPublishing = () => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              مسح الفلاتر
             </Button>
           </Stack>
         </Box>
@@ -721,7 +698,7 @@ const ProductPublishing = () => {
             <TextField
               fullWidth
               size="small"
-              placeholder="Search products, SKUs, or stores..."
+              placeholder="البحث في المنتجات، الرموز، أو المتاجر..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -731,34 +708,34 @@ const ProductPublishing = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
                 value={statusFilter}
-                label="Status"
+                label="الحالة"
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="published">Published</MenuItem>
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="scheduled">Scheduled</MenuItem>
-                <MenuItem value="archived">Archived</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="published">منشور</MenuItem>
+                <MenuItem value="draft">مسودة</MenuItem>
+                <MenuItem value="scheduled">مجدول</MenuItem>
+                <MenuItem value="archived">مؤرشف</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Store Status</InputLabel>
-              <Select value="all" label="Store Status" onChange={() => {}}>
-                <MenuItem value="all">All Stores</MenuItem>
-                <MenuItem value="published">Published</MenuItem>
-                <MenuItem value="pending">Pending</MenuItem>
-                <MenuItem value="error">Sync Error</MenuItem>
+              <InputLabel>حالة المتجر</InputLabel>
+              <Select value="all" label="حالة المتجر" onChange={() => {}}>
+                <MenuItem value="all">جميع المتاجر</MenuItem>
+                <MenuItem value="published">منشور</MenuItem>
+                <MenuItem value="pending">معلق</MenuItem>
+                <MenuItem value="error">خطأ في المزامنة</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              {sortedData.length} products found
+              تم العثور على {sortedData.length} منتج
             </Typography>
           </Grid>
         </Grid>
@@ -768,7 +745,7 @@ const ProductPublishing = () => {
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Typography variant="h6" sx={{ flex: 1, fontWeight: 600 }}>
-            Product Publishing Status
+            حالة نشر المنتجات
           </Typography>
           {selectedItems.length > 0 && (
             <Fade in={selectedItems.length > 0}>
@@ -777,17 +754,17 @@ const ProductPublishing = () => {
                   size="small"
                   variant="outlined"
                   startIcon={<PublishIcon />}
-                  onClick={() => handleBulkAction('Publish')}
+                  onClick={() => handleBulkAction('نشر')}
                 >
-                  Publish ({selectedItems.length})
+                  نشر ({selectedItems.length})
                 </Button>
                 <Button
                   size="small"
                   variant="outlined"
                   startIcon={<SyncIcon />}
-                  onClick={() => handleBulkAction('Sync')}
+                  onClick={() => handleBulkAction('مزامنة')}
                 >
-                  Sync ({selectedItems.length})
+                  مزامنة ({selectedItems.length})
                 </Button>
               </Box>
             </Fade>
@@ -805,17 +782,17 @@ const ProductPublishing = () => {
           <Box sx={{ p: 6, textAlign: 'center' }}>
             <PublishIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              No products found for publishing
+              لم يتم العثور على منتجات للنشر
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Select products to publish across your sub-stores
+              اختر المنتجات للنشر عبر متاجرك الفرعية
             </Typography>
             <Button
               variant="contained"
               startIcon={<PublishIcon />}
               onClick={() => setOpenDialog(true)}
             >
-              Publish Products
+              نشر المنتجات
             </Button>
           </Box>
         ) : (
@@ -838,31 +815,31 @@ const ProductPublishing = () => {
                       direction={sortBy === 'name' ? sortOrder : 'asc'}
                       onClick={() => handleSort('name')}
                     >
-                      Product Details
+                      تفاصيل المنتج
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Store Status</TableCell>
+                  <TableCell>حالة المتجر</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'price'}
                       direction={sortBy === 'price' ? sortOrder : 'asc'}
                       onClick={() => handleSort('price')}
                     >
-                      Price
+                      السعر
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Stock</TableCell>
+                  <TableCell>المخزون</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'status'}
                       direction={sortBy === 'status' ? sortOrder : 'asc'}
                       onClick={() => handleSort('status')}
                     >
-                      Status
+                      الحالة
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Performance</TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell>الأداء</TableCell>
+                  <TableCell align="right">الإجراءات</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -929,12 +906,12 @@ const ProductPublishing = () => {
                       </TableCell>
                       <TableCell>
                         <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
-                          ${item.price.toFixed(2)}
+                          {item.price.toFixed(2)} ر.س
                         </Typography>
                       </TableCell>
                       <TableCell>
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                          {item.stock} units
+                          {item.stock} وحدة
                         </Typography>
                       </TableCell>
                       <TableCell>
@@ -975,17 +952,21 @@ const ProductPublishing = () => {
                       </TableCell>
                       <TableCell align="right">
                         <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                          <Tooltip title="View Details" arrow>
-                            <IconButton size="small" color="primary">
+                          <Tooltip title="عرض التفاصيل" arrow>
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              onClick={() => setOpenViewDialog(true)}
+                            >
                               <ViewIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="Edit Publishing" arrow>
+                          <Tooltip title="تعديل النشر" arrow>
                             <IconButton size="small" color="primary">
                               <EditIcon />
                             </IconButton>
                           </Tooltip>
-                          <Tooltip title="More Actions" arrow>
+                          <Tooltip title="المزيد من الإجراءات" arrow>
                             <IconButton size="small" onClick={(e) => handleMenuClick(e, item)}>
                               <MoreVertIcon />
                             </IconButton>
@@ -1172,6 +1153,252 @@ const ProductPublishing = () => {
         </DialogActions>
       </Dialog>
 
+      {/* View Details Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="lg"
+        fullWidth
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'info.main' }}>
+              <ViewIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="h6">تفاصيل النشر</Typography>
+              <Typography variant="body2" color="text.secondary">
+                عرض جميع تفاصيل نشر المنتج عبر المتاجر
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  معلومات المنتج الأساسية
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      اسم المنتج:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      ايفون 15 برو 128 جيجابايت
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      رمز المنتج:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      IPH15P-128
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الحالة:
+                    </Typography>
+                    <Chip label="منشور" color="success" size="small" />
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      السعر:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      999.99 ر.س
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  حالة النشر عبر المتاجر
+                </Typography>
+                <List>
+                  {[
+                    {
+                      name: 'المتجر الرئيسي',
+                      status: 'منشور',
+                      lastSync: '2024-01-15 10:30',
+                      syncStatus: 'success',
+                    },
+                    {
+                      name: 'متجر الإلكترونيات',
+                      status: 'منشور',
+                      lastSync: '2024-01-15 10:32',
+                      syncStatus: 'success',
+                    },
+                    {
+                      name: 'متجر الموبايل',
+                      status: 'مسودة',
+                      lastSync: '2024-01-14 15:20',
+                      syncStatus: 'pending',
+                    },
+                    {
+                      name: 'المتجر المميز',
+                      status: 'منشور',
+                      lastSync: '2024-01-15 10:35',
+                      syncStatus: 'success',
+                    },
+                  ].map((store, index) => (
+                    <ListItem key={index} sx={{ px: 0 }}>
+                      <ListItemAvatar>
+                        <Avatar sx={{ bgcolor: 'primary.light', width: 32, height: 32 }}>
+                          <StoreIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <MuiListItemText
+                        primary={store.name}
+                        secondary={`${store.status} • آخر مزامنة: ${store.lastSync}`}
+                      />
+                      <ListItemSecondaryAction>
+                        <Chip
+                          label={store.status}
+                          size="small"
+                          color={
+                            store.syncStatus === 'نجاح'
+                              ? 'success'
+                              : store.syncStatus === 'قيد الانتظار'
+                              ? 'warning'
+                              : 'error'
+                          }
+                          icon={
+                            store.syncStatus === 'نجاح' ? (
+                              <CheckIcon />
+                            ) : store.syncStatus === 'قيد الانتظار' ? (
+                              <ScheduleIcon />
+                            ) : (
+                              <ErrorIcon />
+                            )
+                          }
+                        />
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
+                </List>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  إحصائيات الأداء
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المشاهدات:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                      1,250
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      النقرات:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
+                      89
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المخزون:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'info.main' }}>
+                      45 وحدة
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      آخر تعديل:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      2024-01-15
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  ملخص النشر
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Box
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                      }}
+                    >
+                      <Typography variant="h4" sx={{ fontWeight: 700, color: 'success.main' }}>
+                        3
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        متاجر منشورة
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Box
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                      }}
+                    >
+                      <Typography variant="h4" sx={{ fontWeight: 700, color: 'warning.main' }}>
+                        1
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        متاجر معلقة
+                      </Typography>
+                    </Box>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Box
+                      sx={{
+                        textAlign: 'center',
+                        p: 2,
+                        border: '1px solid #e0e0e0',
+                        borderRadius: 1,
+                      }}
+                    >
+                      <Typography variant="h4" sx={{ fontWeight: 700, color: 'info.main' }}>
+                        4
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        إجمالي المتاجر
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button onClick={() => setOpenViewDialog(false)} variant="outlined">
+            إغلاق
+          </Button>
+          <Button variant="contained" startIcon={<EditIcon />}>
+            تعديل النشر
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Action Menu */}
       <Menu
         anchorEl={anchorEl}
@@ -1180,36 +1407,41 @@ const ProductPublishing = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem
+          onClick={() => {
+            setOpenViewDialog(true);
+            handleMenuClose();
+          }}
+        >
           <ListItemIcon>
             <ViewIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View Details</ListItemText>
+          <ListItemText>عرض التفاصيل</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Edit Publishing</ListItemText>
+          <ListItemText>تعديل النشر</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <SyncIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Sync Now</ListItemText>
+          <ListItemText>مزامنة الآن</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <CopyIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Duplicate</ListItemText>
+          <ListItemText>نسخ</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" color="error" />
           </ListItemIcon>
-          <ListItemText>Remove from Publishing</ListItemText>
+          <ListItemText>إزالة من النشر</ListItemText>
         </MenuItem>
       </Menu>
 

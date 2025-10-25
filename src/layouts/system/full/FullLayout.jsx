@@ -1,8 +1,8 @@
 import { styled, Container, Box, useTheme } from '@mui/material';
-import { CustomizerContext } from '../../../context/CustomizerContext.jsx';
-import config from '../../../context/config.js';
 import { useContext } from 'react';
 import { Outlet } from 'react-router-dom';
+import { CustomizerContext } from '../../../context/CustomizerContext.jsx';
+import config from '../../../context/config.js';
 import Header from './vertical/header/Header.jsx';
 import HorizontalHeader from '../full/horizontal/header/Header.jsx';
 import Sidebar from './vertical/sidebar/Sidebar.jsx';

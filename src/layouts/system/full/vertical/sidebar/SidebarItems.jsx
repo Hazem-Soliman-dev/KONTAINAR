@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import Menuitems from './MenuItems.jsx';
 import { useLocation } from 'react-router-dom';
 import { Box, List, useMediaQuery } from '@mui/material';
+import Menuitems from './MenuItems.jsx';
 import { CustomizerContext } from '../../../../../context/CustomizerContext.jsx';
 
 import NavItem from './NavItem/index.jsx';

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Snackbar, Alert, AlertTitle } from '@mui/material';
 
 const Welcome = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -14,7 +14,8 @@ const Welcome = () => {
     }
     setOpen(false);
   };
-  React.useEffect(() => {
+  
+  useEffect(() => {
     // Update the document title using the browser API
     const timer = setTimeout(() => {
       handleClick();
@@ -24,7 +25,7 @@ const Welcome = () => {
   }, []);
 
   return (
-    <React.Fragment>
+    <>
       <Snackbar
         open={open}
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
@@ -41,7 +42,7 @@ const Welcome = () => {
           مرحباً بك في نظام إدارة الشركة المتكامل!
         </Alert>
       </Snackbar>
-    </React.Fragment>
+    </>
   );
 };
 

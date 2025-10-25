@@ -10,7 +10,6 @@ import {
   Button,
   Breadcrumbs,
   Link,
-  Divider,
   FormControl,
   InputLabel,
   Select,
@@ -31,11 +30,6 @@ import {
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   Stack,
   Avatar,
   LinearProgress,
@@ -91,58 +85,64 @@ const SearchSynonyms = () => {
   const synonymsData = [
     {
       id: 1,
-      term: 'laptop',
-      synonyms: ['notebook', 'computer', 'pc'],
-      pinnedResult: 'Laptop Computers',
-      status: 'active',
+      term: 'لاب توب',
+      synonyms: ['لاب توب', 'كمبيوتر', 'بي سي'],
+      pinnedResult: 'لاب توب',
+      status: 'نشط',
       updatedAt: '2024-01-15',
     },
     {
       id: 2,
-      term: 'phone',
-      synonyms: ['mobile', 'cellphone', 'smartphone'],
-      pinnedResult: 'Mobile Phones',
-      status: 'active',
+      term: 'هاتف',
+      synonyms: ['هاتف', 'هاتف محمول', 'هاتف ذكي'],
+      pinnedResult: 'هاتف',
+      status: 'نشط',
       updatedAt: '2024-01-14',
     },
     {
       id: 3,
-      term: 'shirt',
-      synonyms: ['top', 'blouse', 't-shirt'],
-      pinnedResult: 'Shirts & Tops',
-      status: 'inactive',
+      term: 'قميص',
+      synonyms: ['قميص', 'قميص أعلى', 'قميص تي شيرت'],
+      pinnedResult: 'قميص',
+      status: 'غير نشط',
       updatedAt: '2024-01-13',
     },
     {
       id: 4,
-      term: 'shoes',
-      synonyms: ['footwear', 'sneakers', 'boots'],
-      pinnedResult: 'Footwear',
-      status: 'active',
+      term: 'أحذية',
+      synonyms: ['أحذية', 'أحذية سنكرز', 'أحذية بوتس'],
+      pinnedResult: 'أحذية',
+      status: 'نشط',
       updatedAt: '2024-01-12',
     },
     {
       id: 5,
-      term: 'bag',
-      synonyms: ['purse', 'handbag', 'backpack'],
-      pinnedResult: 'Bags & Accessories',
-      status: 'active',
+      term: 'مشينج',
+      synonyms: ['مشينج', 'مشينج محمول', 'مشينج حقيبة'],
+      pinnedResult: 'مشينج',
+      status: 'نشط',
       updatedAt: '2024-01-11',
     },
   ];
 
   // Mock data for search stats
   const searchStats = [
-    { title: 'Terms Count', value: '156', change: '+8%', color: 'primary', icon: SearchIcon },
-    { title: 'Synonyms Avg', value: '3.2', change: '+0.4', color: 'secondary', icon: SettingsIcon },
+    { title: 'عدد المصطلحات', value: '156', change: '+8%', color: 'primary', icon: SearchIcon },
     {
-      title: 'Pinned Results',
+      title: 'متوسط المرادفات',
+      value: '3.2',
+      change: '+0.4',
+      color: 'secondary',
+      icon: SettingsIcon,
+    },
+    {
+      title: 'النتائج المثبتة',
       value: '89',
       change: '+12',
       color: 'success',
       icon: CheckCircleIcon,
     },
-    { title: 'Updated Today', value: '24', change: '+5', color: 'info', icon: AnalyticsIcon },
+    { title: 'محدث اليوم', value: '24', change: '+5', color: 'info', icon: AnalyticsIcon },
   ];
 
   useEffect(() => {
@@ -317,24 +317,30 @@ const SearchSynonyms = () => {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
+    <Box
+      sx={{ p: 3 }}
+      role="main"
+      aria-label="إدارة مرادفات البحث"
+      aria-hidden="false"
+      tabIndex={0}
+    >
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main', mb: 1 }}>
-          Search Synonyms
+          إدارة مرادفات البحث
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-          Manage search synonyms to improve search results and user experience
+          إدارة مرادفات البحث لتحسين نتائج البحث وتجربة المستخدم
         </Typography>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
-          <Link color="inherit" href="/main-store">
+        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="مسار التنقل">
+          <Link color="inherit" href="/main-store" aria-label="الذهاب إلى المتجر الرئيسي">
             <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Main Store
+            المتجر الرئيسي
           </Link>
-          <Link color="inherit" href="/main-store/catalog">
-            Catalog
+          <Link color="inherit" href="/main-store/catalog" aria-label="الذهاب إلى الكتالوج">
+            الكتالوج
           </Link>
-          <Typography color="text.primary">Search Synonyms</Typography>
+          <Typography color="text.primary">مرادفات البحث</Typography>
         </Breadcrumbs>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
           <Stack direction="row" spacing={2}>
@@ -343,11 +349,21 @@ const SearchSynonyms = () => {
               startIcon={<RefreshIcon />}
               onClick={handleRefresh}
               disabled={isRefreshing}
+              aria-label="تحديث البيانات"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Refresh
+              تحديث
             </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Synonym
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => setOpenDialog(true)}
+              aria-label="إضافة مرادف جديد"
+              aria-hidden="false"
+              tabIndex={0}
+            >
+              إضافة مرادف
             </Button>
           </Stack>
         </Box>
@@ -401,24 +417,31 @@ const SearchSynonyms = () => {
       </Grid>
 
       {/* Filters & Search */}
-      <Paper sx={{ p: 3, mb: 4 }}>
+      <Paper sx={{ p: 3, mb: 4 }} aria-hidden="false">
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
-          <Button variant="outlined" size="small">
-            Clear Filters
+          <Button
+            variant="outlined"
+            size="small"
+            aria-label="مسح الفلاتر"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            مسح الفلاتر
           </Button>
         </Box>
         <Grid container spacing={2}>
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField
               fullWidth
-              placeholder="Search synonyms..."
+              placeholder="البحث في المرادفات..."
               variant="outlined"
               size="small"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              aria-label="البحث في المرادفات"
               InputProps={{
                 startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
               }}
@@ -426,25 +449,26 @@ const SearchSynonyms = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
                 value={statusFilter}
-                label="Status"
+                label="الحالة"
                 onChange={(e) => setStatusFilter(e.target.value)}
+                aria-label="فلتر الحالة"
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Type</InputLabel>
-              <Select value="all" label="Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="exact">Exact Match</MenuItem>
-                <MenuItem value="fuzzy">Fuzzy Match</MenuItem>
+              <InputLabel>النوع</InputLabel>
+              <Select value="all" label="النوع" aria-label="فلتر النوع">
+                <MenuItem value="all">جميع الأنواع</MenuItem>
+                <MenuItem value="exact">مطابقة دقيقة</MenuItem>
+                <MenuItem value="fuzzy">مطابقة تقريبية</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -459,7 +483,7 @@ const SearchSynonyms = () => {
                 justifyContent: 'center',
               }}
             >
-              {filteredData.length} synonyms found
+              تم العثور على {filteredData.length} مرادف
             </Typography>
           </Grid>
         </Grid>
@@ -472,23 +496,29 @@ const SearchSynonyms = () => {
         {selectedItems.length > 0 && (
           <Toolbar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1) }}>
             <Typography variant="subtitle1" sx={{ flex: '1 1 100%' }}>
-              {selectedItems.length} selected
+              {selectedItems.length} محدد
             </Typography>
             <Button
               variant="outlined"
               size="small"
               onClick={() => handleBulkAction('export')}
               sx={{ mr: 1 }}
+              aria-label="تصدير المحدد"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Export
+              تصدير
             </Button>
             <Button
               variant="outlined"
               color="error"
               size="small"
               onClick={() => handleBulkAction('delete')}
+              aria-label="حذف المحدد"
+              aria-hidden="false"
+              tabIndex={0}
             >
-              Delete
+              حذف
             </Button>
           </Toolbar>
         )}
@@ -511,14 +541,14 @@ const SearchSynonyms = () => {
                   direction={sortBy === 'term' ? sortOrder : 'asc'}
                   onClick={() => handleSort('term')}
                 >
-                  Term
+                  المصطلح
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Synonyms</TableCell>
-              <TableCell>Pinned Result</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>Updated</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>المرادفات</TableCell>
+              <TableCell>النتيجة المثبتة</TableCell>
+              <TableCell>الحالة</TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>آخر تحديث</TableCell>
+              <TableCell>الإجراءات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -551,7 +581,7 @@ const SearchSynonyms = () => {
             ) : sortedData.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={7} align="center" sx={{ py: 4 }}>
-                  <Alert severity="info">No synonyms found</Alert>
+                  <Alert severity="info">لم يتم العثور على مرادفات</Alert>
                 </TableCell>
               </TableRow>
             ) : (
@@ -597,30 +627,36 @@ const SearchSynonyms = () => {
                     </TableCell>
                     <TableCell>
                       <Stack direction="row" spacing={1}>
-                        <Tooltip title="View Details">
+                        <Tooltip title="عرض التفاصيل">
                           <IconButton
                             size="small"
                             onClick={() => handleView(synonym)}
-                            aria-label="view synonym"
+                            aria-label="عرض المرادف"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <VisibilityOutlined />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Edit Synonym">
+                        <Tooltip title="تعديل المرادف">
                           <IconButton
                             size="small"
                             onClick={() => handleEdit(synonym)}
-                            aria-label="edit synonym"
+                            aria-label="تعديل المرادف"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <EditIcon />
                           </IconButton>
                         </Tooltip>
-                        <Tooltip title="Delete Synonym">
+                        <Tooltip title="حذف المرادف">
                           <IconButton
                             size="small"
                             onClick={() => handleDelete(synonym)}
-                            aria-label="delete synonym"
+                            aria-label="حذف المرادف"
                             color="error"
+                            aria-hidden="false"
+                            tabIndex={0}
                           >
                             <DeleteIcon />
                           </IconButton>
@@ -645,70 +681,116 @@ const SearchSynonyms = () => {
       </Paper>
 
       {/* Edit Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Edit Synonym</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        maxWidth="sm"
+        fullWidth
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+      >
+        <DialogTitle id="dialog-title">تعديل المرادف</DialogTitle>
+        <DialogContent id="dialog-description">
           <Grid container spacing={2} sx={{ mt: 1 }}>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Term"
+                label="المصطلح"
                 value={selectedSynonym?.term || ''}
                 variant="outlined"
-                helperText="Enter the main search term"
+                helperText="أدخل المصطلح الرئيسي للبحث"
+                aria-label="المصطلح"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Synonyms"
+                label="المرادفات"
                 multiline
                 rows={3}
                 value={selectedSynonym?.synonyms?.join(', ') || ''}
                 variant="outlined"
-                helperText="Enter synonyms separated by commas"
+                helperText="أدخل المرادفات مفصولة بفواصل"
+                aria-label="المرادفات"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Pinned Result"
+                label="النتيجة المثبتة"
                 value={selectedSynonym?.pinnedResult || ''}
                 variant="outlined"
-                helperText="Enter the pinned search result"
+                helperText="أدخل نتيجة البحث المثبتة"
+                aria-label="النتيجة المثبتة"
               />
             </Grid>
             <Grid size={{ xs: 12 }}>
               <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select value={selectedSynonym?.status || 'active'} label="Status">
-                  <MenuItem value="active">Active</MenuItem>
-                  <MenuItem value="inactive">Inactive</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+                <Select
+                  value={selectedSynonym?.status || 'active'}
+                  label="الحالة"
+                  aria-label="حالة المرادف"
+                >
+                  <MenuItem value="active">نشط</MenuItem>
+                  <MenuItem value="inactive">غير نشط</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
-          <Button onClick={handleSave} variant="contained">
-            Save
+          <Button
+            onClick={() => setOpenDialog(false)}
+            aria-label="إلغاء العملية"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            إلغاء
+          </Button>
+          <Button
+            onClick={handleSave}
+            variant="contained"
+            aria-label="حفظ المرادف"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            حفظ
           </Button>
         </DialogActions>
       </Dialog>
 
       {/* Delete Confirmation Dialog */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>Delete Synonym</DialogTitle>
-        <DialogContent>
+      <Dialog
+        open={openDeleteDialog}
+        onClose={() => setOpenDeleteDialog(false)}
+        aria-labelledby="delete-dialog-title"
+        aria-describedby="delete-dialog-description"
+      >
+        <DialogTitle id="delete-dialog-title">حذف المرادف</DialogTitle>
+        <DialogContent id="delete-dialog-description">
           <Typography>
-            Are you sure you want to delete "{selectedSynonym?.term}"? This action cannot be undone.
+            هل أنت متأكد من حذف "{selectedSynonym?.term}"؟ لا يمكن التراجع عن هذا الإجراء.
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>Cancel</Button>
-          <Button onClick={handleDeleteConfirm} color="error" variant="contained">
-            Delete
+          <Button
+            onClick={() => setOpenDeleteDialog(false)}
+            aria-label="إلغاء الحذف"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            إلغاء
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            aria-label="تأكيد الحذف"
+            aria-hidden="false"
+            tabIndex={0}
+          >
+            حذف
           </Button>
         </DialogActions>
       </Dialog>
@@ -719,27 +801,28 @@ const SearchSynonyms = () => {
         open={viewDrawer}
         onClose={() => setViewDrawer(false)}
         sx={{ '& .MuiDrawer-paper': { width: 400 } }}
+        aria-labelledby="drawer-title"
       >
         <Box sx={{ p: 3 }}>
-          <Typography variant="h6" sx={{ mb: 3 }}>
-            Synonym Details
+          <Typography variant="h6" sx={{ mb: 3 }} id="drawer-title">
+            تفاصيل المرادف
           </Typography>
           {selectedSynonym && (
             <List>
               <ListItem>
-                <ListItemText primary="Term" secondary={selectedSynonym.term} />
+                <ListItemText primary="المصطلح" secondary={selectedSynonym.term} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Synonyms" secondary={selectedSynonym.synonyms.join(', ')} />
+                <ListItemText primary="المرادفات" secondary={selectedSynonym.synonyms.join(', ')} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Pinned Result" secondary={selectedSynonym.pinnedResult} />
+                <ListItemText primary="النتيجة المثبتة" secondary={selectedSynonym.pinnedResult} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Status" secondary={selectedSynonym.status} />
+                <ListItemText primary="الحالة" secondary={selectedSynonym.status} />
               </ListItem>
               <ListItem>
-                <ListItemText primary="Last Updated" secondary={selectedSynonym.updatedAt} />
+                <ListItemText primary="آخر تحديث" secondary={selectedSynonym.updatedAt} />
               </ListItem>
             </List>
           )}

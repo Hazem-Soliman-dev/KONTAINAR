@@ -91,9 +91,6 @@ const VariantsManager = () => {
   const [selectedItems, setSelectedItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [openViewDialog, setOpenViewDialog] = useState(false);
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const [selectedVariant, setSelectedVariant] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [sortBy, setSortBy] = useState('name');
   const [sortOrder, setSortOrder] = useState('asc');
@@ -101,130 +98,131 @@ const VariantsManager = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [tabValue, setTabValue] = useState(0);
+  const [openViewDialog, setOpenViewDialog] = useState(false);
 
   // Enhanced mock data with product variants
   const variantsData = [
     {
       id: 1,
-      name: 'iPhone 15 Pro - Space Black - 128GB',
+      name: 'iPhone 15 Pro - أسود فضائي - 128 جيجابايت',
       productName: 'iPhone 15 Pro',
       sku: 'IPH15P-SB-128',
-      status: 'Active',
+      status: 'نشط',
       lastModified: '2024-01-15',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 1250,
       clicks: 89,
       price: 999.99,
       stock: 45,
       attributes: {
-        color: 'Space Black',
-        storage: '128GB',
-        size: '6.1"',
+        color: 'أسود فضائي',
+        storage: '128 جيجابايت',
+        size: '6.1 بوصة',
       },
       images: 3,
       featured: true,
       position: 1,
-      description: 'Latest iPhone with advanced camera system',
-      tags: ['smartphone', 'apple', 'premium'],
+      description: 'أحدث iPhone مع نظام كاميرا متقدم',
+      tags: ['هاتف ذكي', 'أبل', 'مميز'],
     },
     {
       id: 2,
-      name: 'iPhone 15 Pro - Natural Titanium - 256GB',
+      name: 'iPhone 15 Pro - تيتانيوم طبيعي - 256 جيجابايت',
       productName: 'iPhone 15 Pro',
       sku: 'IPH15P-NT-256',
-      status: 'Active',
+      status: 'نشط',
       lastModified: '2024-01-14',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 890,
       clicks: 67,
       price: 1099.99,
       stock: 32,
       attributes: {
-        color: 'Natural Titanium',
-        storage: '256GB',
-        size: '6.1"',
+        color: 'تيتانيوم طبيعي',
+        storage: '256 جيجابايت',
+        size: '6.1 بوصة',
       },
       images: 3,
       featured: true,
       position: 2,
-      description: 'Latest iPhone with advanced camera system',
-      tags: ['smartphone', 'apple', 'premium'],
+      description: 'أحدث iPhone مع نظام كاميرا متقدم',
+      tags: ['هاتف ذكي', 'أبل', 'مميز'],
     },
     {
       id: 3,
-      name: 'Samsung Galaxy S24 - Phantom Black - 128GB',
+      name: 'Samsung Galaxy S24 - أسود شبح - 128 جيجابايت',
       productName: 'Samsung Galaxy S24',
       sku: 'SGS24-PB-128',
-      status: 'Draft',
+      status: 'مسودة',
       lastModified: '2024-01-13',
-      author: 'Editor',
-      priority: 'Medium',
+      author: 'محرر',
+      priority: 'متوسط',
       views: 0,
       clicks: 0,
       price: 799.99,
       stock: 0,
       attributes: {
-        color: 'Phantom Black',
-        storage: '128GB',
-        size: '6.2"',
+        color: 'أسود شبح',
+        storage: '128 جيجابايت',
+        size: '6.2 بوصة',
       },
       images: 2,
       featured: false,
       position: 3,
-      description: 'Samsung flagship smartphone with AI features',
-      tags: ['smartphone', 'samsung', 'android'],
+      description: 'هاتف Samsung الرائد مع ميزات الذكاء الاصطناعي',
+      tags: ['هاتف ذكي', 'سامسونج', 'أندرويد'],
     },
     {
       id: 4,
-      name: 'MacBook Air M3 - Midnight - 8GB/256GB',
+      name: 'MacBook Air M3 - منتصف الليل - 8 جيجابايت/256 جيجابايت',
       productName: 'MacBook Air M3',
       sku: 'MBA-M3-MD-8-256',
-      status: 'Active',
+      status: 'نشط',
       lastModified: '2024-01-12',
-      author: 'Admin',
-      priority: 'High',
+      author: 'مدير',
+      priority: 'عالي',
       views: 650,
       clicks: 23,
       price: 1199.99,
       stock: 12,
       attributes: {
-        color: 'Midnight',
-        memory: '8GB',
-        storage: '256GB',
-        size: '13"',
+        color: 'منتصف الليل',
+        memory: '8 جيجابايت',
+        storage: '256 جيجابايت',
+        size: '13 بوصة',
       },
       images: 4,
       featured: true,
       position: 4,
-      description: 'Ultra-thin laptop with M3 chip',
-      tags: ['laptop', 'apple', 'macbook'],
+      description: 'لابتوب فائق النحافة مع معالج M3',
+      tags: ['لابتوب', 'أبل', 'ماك بوك'],
     },
     {
       id: 5,
-      name: 'MacBook Air M3 - Starlight - 16GB/512GB',
+      name: 'MacBook Air M3 - ضوء النجوم - 16 جيجابايت/512 جيجابايت',
       productName: 'MacBook Air M3',
       sku: 'MBA-M3-SL-16-512',
-      status: 'Scheduled',
+      status: 'مجدول',
       lastModified: '2024-01-11',
-      author: 'Editor',
-      priority: 'Medium',
+      author: 'محرر',
+      priority: 'متوسط',
       views: 0,
       clicks: 0,
       price: 1499.99,
       stock: 0,
       attributes: {
-        color: 'Starlight',
-        memory: '16GB',
-        storage: '512GB',
-        size: '13"',
+        color: 'ضوء النجوم',
+        memory: '16 جيجابايت',
+        storage: '512 جيجابايت',
+        size: '13 بوصة',
       },
       images: 4,
       featured: false,
       position: 5,
-      description: 'Ultra-thin laptop with M3 chip',
-      tags: ['laptop', 'apple', 'macbook'],
+      description: 'لابتوب فائق النحافة مع معالج M3',
+      tags: ['لابتوب', 'أبل', 'ماك بوك'],
     },
   ];
 
@@ -280,14 +278,14 @@ const VariantsManager = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setIsRefreshing(false);
     setLoading(false);
-    setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+    setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
   };
 
   const handleBulkAction = (action) => {
     console.log(`Bulk ${action} for items:`, selectedItems);
     setSnackbar({
       open: true,
-      message: `${action} completed for ${selectedItems.length} items`,
+      message: `تم ${action} لـ ${selectedItems.length} عنصر`,
       severity: 'success',
     });
     setSelectedItems([]);
@@ -298,19 +296,23 @@ const VariantsManager = () => {
     setTimeout(() => {
       setLoading(false);
       setOpenDialog(false);
-      setSnackbar({ open: true, message: 'Variant updated successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث المتغير بنجاح', severity: 'success' });
     }, 1000);
   };
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case 'active':
+      case 'نشط':
         return 'success';
       case 'draft':
+      case 'مسودة':
         return 'warning';
       case 'scheduled':
+      case 'مجدول':
         return 'info';
       case 'archived':
+      case 'مؤرشف':
         return 'default';
       default:
         return 'default';
@@ -320,10 +322,13 @@ const VariantsManager = () => {
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
       case 'high':
+      case 'عالي':
         return 'error';
       case 'medium':
+      case 'متوسط':
         return 'warning';
       case 'low':
+      case 'منخفض':
         return 'success';
       default:
         return 'default';
@@ -331,9 +336,9 @@ const VariantsManager = () => {
   };
 
   const getStockStatus = (stock) => {
-    if (stock === 0) return { color: 'error', text: 'Out of Stock', icon: <WarningIcon /> };
-    if (stock < 10) return { color: 'warning', text: 'Low Stock', icon: <WarningIcon /> };
-    return { color: 'success', text: 'In Stock', icon: <CheckCircleIcon /> };
+    if (stock === 0) return { color: 'error', text: 'نفد من المخزون', icon: <WarningIcon /> };
+    if (stock < 10) return { color: 'warning', text: 'مخزون منخفض', icon: <WarningIcon /> };
+    return { color: 'success', text: 'متوفر', icon: <CheckCircleIcon /> };
   };
 
   const filteredData = variantsData.filter((item) => {
@@ -387,10 +392,10 @@ const VariantsManager = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Product Variants Manager
+              مدير متغيرات المنتجات
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Manage product variants, attributes, pricing, and inventory across all products
+              إدارة متغيرات المنتجات، الخصائص، التسعير، والمخزون لجميع المنتجات
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -399,15 +404,15 @@ const VariantsManager = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/catalog">
-                Catalog
+                الكتالوج
               </Link>
               <Link color="inherit" href="/main-store/catalog/products">
-                Products
+                المنتجات
               </Link>
-              <Typography color="text.primary">Variants Manager</Typography>
+              <Typography color="text.primary">مدير المتغيرات</Typography>
             </Breadcrumbs>
           </Box>
 
@@ -418,10 +423,10 @@ const VariantsManager = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Variant
+              إضافة متغير
             </Button>
           </Stack>
         </Box>
@@ -456,7 +461,7 @@ const VariantsManager = () => {
                   {variantsData.length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Variants
+                  إجمالي المتغيرات
                 </Typography>
               </CardContent>
             </Card>
@@ -489,7 +494,7 @@ const VariantsManager = () => {
                   {variantsData.filter((item) => item.status === 'Active').length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Active Variants
+                  المتغيرات النشطة
                 </Typography>
               </CardContent>
             </Card>
@@ -522,7 +527,7 @@ const VariantsManager = () => {
                   {variantsData.filter((item) => item.stock < 10).length}
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Low Stock
+                  مخزون منخفض
                 </Typography>
               </CardContent>
             </Card>
@@ -552,10 +557,10 @@ const VariantsManager = () => {
                   </Avatar>
                 </Box>
                 <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  ${variantsData.reduce((sum, item) => sum + item.price, 0).toLocaleString()}
+                  {variantsData.reduce((sum, item) => sum + item.price, 0).toLocaleString()} ر.س
                 </Typography>
                 <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  Total Value
+                  القيمة الإجمالية
                 </Typography>
               </CardContent>
             </Card>
@@ -567,7 +572,7 @@ const VariantsManager = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            الفلاتر والبحث
           </Typography>
           <Stack direction="row" spacing={1}>
             <Button
@@ -579,7 +584,7 @@ const VariantsManager = () => {
                 setStatusFilter('all');
               }}
             >
-              Clear Filters
+              مسح الفلاتر
             </Button>
           </Stack>
         </Box>
@@ -589,7 +594,7 @@ const VariantsManager = () => {
             <TextField
               fullWidth
               size="small"
-              placeholder="Search variants, SKUs, or attributes..."
+              placeholder="البحث في المتغيرات، الرموز، أو الخصائص..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -599,34 +604,34 @@ const VariantsManager = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
                 value={statusFilter}
-                label="Status"
+                label="الحالة"
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="draft">Draft</MenuItem>
-                <MenuItem value="scheduled">Scheduled</MenuItem>
-                <MenuItem value="archived">Archived</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="draft">مسودة</MenuItem>
+                <MenuItem value="scheduled">مجدول</MenuItem>
+                <MenuItem value="archived">مؤرشف</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Stock Status</InputLabel>
-              <Select value="all" label="Stock Status" onChange={() => {}}>
-                <MenuItem value="all">All Stock</MenuItem>
-                <MenuItem value="in-stock">In Stock</MenuItem>
-                <MenuItem value="low-stock">Low Stock</MenuItem>
-                <MenuItem value="out-of-stock">Out of Stock</MenuItem>
+              <InputLabel>حالة المخزون</InputLabel>
+              <Select value="all" label="حالة المخزون" onChange={() => {}}>
+                <MenuItem value="all">جميع المخزون</MenuItem>
+                <MenuItem value="in-stock">متوفر</MenuItem>
+                <MenuItem value="low-stock">مخزون منخفض</MenuItem>
+                <MenuItem value="out-of-stock">نفد من المخزون</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-              {sortedData.length} variants found
+              تم العثور على {sortedData.length} متغير
             </Typography>
           </Grid>
         </Grid>
@@ -636,7 +641,7 @@ const VariantsManager = () => {
       <Paper sx={{ borderRadius: 2, overflow: 'hidden' }}>
         <Toolbar sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Typography variant="h6" sx={{ flex: 1, fontWeight: 600 }}>
-            Product Variants
+            متغيرات المنتجات
           </Typography>
           {selectedItems.length > 0 && (
             <Fade in={selectedItems.length > 0}>
@@ -645,18 +650,18 @@ const VariantsManager = () => {
                   size="small"
                   variant="outlined"
                   startIcon={<PublicIcon />}
-                  onClick={() => handleBulkAction('Activate')}
+                  onClick={() => handleBulkAction('تفعيل')}
                 >
-                  Activate ({selectedItems.length})
+                  تفعيل ({selectedItems.length})
                 </Button>
                 <Button
                   size="small"
                   variant="outlined"
                   color="error"
                   startIcon={<DeleteIcon />}
-                  onClick={() => handleBulkAction('Delete')}
+                  onClick={() => handleBulkAction('حذف')}
                 >
-                  Delete ({selectedItems.length})
+                  حذف ({selectedItems.length})
                 </Button>
               </Box>
             </Fade>
@@ -674,13 +679,13 @@ const VariantsManager = () => {
           <Box sx={{ p: 6, textAlign: 'center' }}>
             <InventoryIcon sx={{ fontSize: 64, color: 'text.secondary', mb: 2 }} />
             <Typography variant="h6" color="text.secondary" gutterBottom>
-              No product variants found
+              لم يتم العثور على متغيرات منتجات
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-              Create your first product variant to get started
+              قم بإنشاء أول متغير منتج للبدء
             </Typography>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add First Variant
+              إضافة أول متغير
             </Button>
           </Box>
         ) : (
@@ -703,40 +708,40 @@ const VariantsManager = () => {
                       direction={sortBy === 'name' ? sortOrder : 'asc'}
                       onClick={() => handleSort('name')}
                     >
-                      Variant Details
+                      تفاصيل المتغير
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Attributes</TableCell>
+                  <TableCell>الخصائص</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'price'}
                       direction={sortBy === 'price' ? sortOrder : 'asc'}
                       onClick={() => handleSort('price')}
                     >
-                      Price
+                      السعر
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Stock</TableCell>
+                  <TableCell>المخزون</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'status'}
                       direction={sortBy === 'status' ? sortOrder : 'asc'}
                       onClick={() => handleSort('status')}
                     >
-                      Status
+                      الحالة
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell>Performance</TableCell>
+                  <TableCell>الأداء</TableCell>
                   <TableCell>
                     <TableSortLabel
                       active={sortBy === 'lastModified'}
                       direction={sortBy === 'lastModified' ? sortOrder : 'asc'}
                       onClick={() => handleSort('lastModified')}
                     >
-                      Last Modified
+                      آخر تعديل
                     </TableSortLabel>
                   </TableCell>
-                  <TableCell align="right">Actions</TableCell>
+                  <TableCell align="right">الإجراءات</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -790,7 +795,7 @@ const VariantsManager = () => {
                         </TableCell>
                         <TableCell>
                           <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
-                            ${item.price.toFixed(2)}
+                            {item.price.toFixed(2)} ر.س
                           </Typography>
                         </TableCell>
                         <TableCell>
@@ -847,17 +852,21 @@ const VariantsManager = () => {
                         </TableCell>
                         <TableCell align="right">
                           <Stack direction="row" spacing={0.5} justifyContent="flex-end">
-                            <Tooltip title="View Details" arrow>
-                              <IconButton size="small" color="primary">
+                            <Tooltip title="عرض التفاصيل" arrow>
+                              <IconButton
+                                size="small"
+                                color="primary"
+                                onClick={() => setOpenViewDialog(true)}
+                              >
                                 <ViewIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="Edit Variant" arrow>
+                            <Tooltip title="تعديل المتغير" arrow>
                               <IconButton size="small" color="primary">
                                 <EditIcon />
                               </IconButton>
                             </Tooltip>
-                            <Tooltip title="More Actions" arrow>
+                            <Tooltip title="المزيد من الإجراءات" arrow>
                               <IconButton size="small" onClick={(e) => handleMenuClick(e, item)}>
                                 <MoreVertIcon />
                               </IconButton>
@@ -891,19 +900,19 @@ const VariantsManager = () => {
               <AddIcon />
             </Avatar>
             <Box>
-              <Typography variant="h6">Add Product Variant</Typography>
+              <Typography variant="h6">إضافة متغير منتج</Typography>
               <Typography variant="body2" color="text.secondary">
-                Create a new variant for an existing product
+                إنشاء متغير جديد لمنتج موجود
               </Typography>
             </Box>
           </Box>
         </DialogTitle>
         <DialogContent sx={{ pt: 2 }}>
           <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)} sx={{ mb: 3 }}>
-            <Tab label="Basic Info" />
-            <Tab label="Attributes" />
-            <Tab label="Pricing" />
-            <Tab label="Inventory" />
+            <Tab label="المعلومات الأساسية" />
+            <Tab label="الخصائص" />
+            <Tab label="التسعير" />
+            <Tab label="المخزون" />
           </Tabs>
 
           {tabValue === 0 && (
@@ -911,15 +920,15 @@ const VariantsManager = () => {
               <Grid size={{ xs: 12 }}>
                 <TextField
                   fullWidth
-                  label="Variant Name"
-                  placeholder="e.g., iPhone 15 Pro - Space Black - 128GB"
-                  helperText="This will be displayed to customers"
+                  label="اسم المتغير"
+                  placeholder="مثال: iPhone 15 Pro - Space Black - 128GB"
+                  helperText="سيتم عرض هذا للعملاء"
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Parent Product</InputLabel>
-                  <Select label="Parent Product">
+                  <InputLabel>المنتج الأساسي</InputLabel>
+                  <Select label="المنتج الأساسي">
                     <MenuItem value="iphone15">iPhone 15 Pro</MenuItem>
                     <MenuItem value="samsung-s24">Samsung Galaxy S24</MenuItem>
                     <MenuItem value="macbook-air">MacBook Air M3</MenuItem>
@@ -929,9 +938,9 @@ const VariantsManager = () => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
-                  label="SKU"
-                  placeholder="e.g., IPH15P-SB-128"
-                  helperText="Unique identifier for this variant"
+                  label="الرمز"
+                  placeholder="مثال: IPH15P-SB-128"
+                  helperText="معرف فريد لهذا المتغير"
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>
@@ -939,9 +948,9 @@ const VariantsManager = () => {
                   fullWidth
                   multiline
                   rows={3}
-                  label="Description"
-                  placeholder="Describe this variant..."
-                  helperText="Optional description for this specific variant"
+                  label="الوصف"
+                  placeholder="وصف هذا المتغير..."
+                  helperText="وصف اختياري لهذا المتغير المحدد"
                 />
               </Grid>
             </Grid>
@@ -951,44 +960,44 @@ const VariantsManager = () => {
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Color</InputLabel>
-                  <Select label="Color">
-                    <MenuItem value="space-black">Space Black</MenuItem>
-                    <MenuItem value="natural-titanium">Natural Titanium</MenuItem>
-                    <MenuItem value="white">White</MenuItem>
-                    <MenuItem value="blue">Blue</MenuItem>
+                  <InputLabel>اللون</InputLabel>
+                  <Select label="اللون">
+                    <MenuItem value="space-black">أسود فضائي</MenuItem>
+                    <MenuItem value="natural-titanium">تيتانيوم طبيعي</MenuItem>
+                    <MenuItem value="white">أبيض</MenuItem>
+                    <MenuItem value="blue">أزرق</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Storage</InputLabel>
-                  <Select label="Storage">
-                    <MenuItem value="128gb">128GB</MenuItem>
-                    <MenuItem value="256gb">256GB</MenuItem>
-                    <MenuItem value="512gb">512GB</MenuItem>
-                    <MenuItem value="1tb">1TB</MenuItem>
+                  <InputLabel>التخزين</InputLabel>
+                  <Select label="التخزين">
+                    <MenuItem value="128gb">128 جيجابايت</MenuItem>
+                    <MenuItem value="256gb">256 جيجابايت</MenuItem>
+                    <MenuItem value="512gb">512 جيجابايت</MenuItem>
+                    <MenuItem value="1tb">1 تيرابايت</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Memory</InputLabel>
-                  <Select label="Memory">
-                    <MenuItem value="8gb">8GB</MenuItem>
-                    <MenuItem value="16gb">16GB</MenuItem>
-                    <MenuItem value="32gb">32GB</MenuItem>
+                  <InputLabel>الذاكرة</InputLabel>
+                  <Select label="الذاكرة">
+                    <MenuItem value="8gb">8 جيجابايت</MenuItem>
+                    <MenuItem value="16gb">16 جيجابايت</MenuItem>
+                    <MenuItem value="32gb">32 جيجابايت</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Size</InputLabel>
-                  <Select label="Size">
-                    <MenuItem value="13-inch">13"</MenuItem>
-                    <MenuItem value="15-inch">15"</MenuItem>
-                    <MenuItem value="6.1-inch">6.1"</MenuItem>
-                    <MenuItem value="6.2-inch">6.2"</MenuItem>
+                  <InputLabel>الحجم</InputLabel>
+                  <Select label="الحجم">
+                    <MenuItem value="13-inch">13 بوصة</MenuItem>
+                    <MenuItem value="15-inch">15 بوصة</MenuItem>
+                    <MenuItem value="6.1-inch">6.1 بوصة</MenuItem>
+                    <MenuItem value="6.2-inch">6.2 بوصة</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1001,10 +1010,10 @@ const VariantsManager = () => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Price"
+                  label="السعر"
                   placeholder="999.99"
                   InputProps={{
-                    startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                    startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                   }}
                 />
               </Grid>
@@ -1012,10 +1021,10 @@ const VariantsManager = () => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Compare at Price"
+                  label="سعر المقارنة"
                   placeholder="1199.99"
                   InputProps={{
-                    startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                    startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                   }}
                 />
               </Grid>
@@ -1023,20 +1032,20 @@ const VariantsManager = () => {
                 <TextField
                   fullWidth
                   type="number"
-                  label="Cost Price"
+                  label="سعر التكلفة"
                   placeholder="600.00"
                   InputProps={{
-                    startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
+                    startAdornment: <Typography sx={{ mr: 1 }}>ر.س</Typography>,
                   }}
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Tax Class</InputLabel>
-                  <Select label="Tax Class">
-                    <MenuItem value="standard">Standard Tax</MenuItem>
-                    <MenuItem value="reduced">Reduced Tax</MenuItem>
-                    <MenuItem value="exempt">Tax Exempt</MenuItem>
+                  <InputLabel>فئة الضريبة</InputLabel>
+                  <Select label="فئة الضريبة">
+                    <MenuItem value="standard">ضريبة عادية</MenuItem>
+                    <MenuItem value="reduced">ضريبة مخفضة</MenuItem>
+                    <MenuItem value="exempt">معفى من الضريبة</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1046,27 +1055,27 @@ const VariantsManager = () => {
           {tabValue === 3 && (
             <Grid container spacing={3}>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth type="number" label="Stock Quantity" placeholder="100" />
+                <TextField fullWidth type="number" label="كمية المخزون" placeholder="100" />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth type="number" label="Low Stock Threshold" placeholder="10" />
+                <TextField fullWidth type="number" label="حد المخزون المنخفض" placeholder="10" />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Track Inventory</InputLabel>
-                  <Select label="Track Inventory">
-                    <MenuItem value="yes">Yes</MenuItem>
-                    <MenuItem value="no">No</MenuItem>
+                  <InputLabel>تتبع المخزون</InputLabel>
+                  <Select label="تتبع المخزون">
+                    <MenuItem value="yes">نعم</MenuItem>
+                    <MenuItem value="no">لا</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth>
-                  <InputLabel>Allow Backorders</InputLabel>
-                  <Select label="Allow Backorders">
-                    <MenuItem value="no">No</MenuItem>
-                    <MenuItem value="yes">Yes</MenuItem>
-                    <MenuItem value="notify">Notify Only</MenuItem>
+                  <InputLabel>السماح بالطلبات المؤجلة</InputLabel>
+                  <Select label="السماح بالطلبات المؤجلة">
+                    <MenuItem value="no">لا</MenuItem>
+                    <MenuItem value="yes">نعم</MenuItem>
+                    <MenuItem value="notify">إشعار فقط</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
@@ -1075,10 +1084,10 @@ const VariantsManager = () => {
         </DialogContent>
         <DialogActions sx={{ p: 3, pt: 1 }}>
           <Button onClick={() => setOpenDialog(false)} variant="outlined">
-            Cancel
+            إلغاء
           </Button>
           <Button variant="outlined" startIcon={<SaveIcon />} onClick={() => handleSave()}>
-            Save Draft
+            حفظ كمسودة
           </Button>
           <Button
             variant="contained"
@@ -1086,7 +1095,223 @@ const VariantsManager = () => {
             disabled={loading}
             startIcon={loading ? <LinearProgress size={20} /> : <PublicIcon />}
           >
-            {loading ? 'Saving...' : 'Save & Activate'}
+            {loading ? 'جاري الحفظ...' : 'حفظ وتفعيل'}
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* View Details Dialog */}
+      <Dialog
+        open={openViewDialog}
+        onClose={() => setOpenViewDialog(false)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle sx={{ pb: 1 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'info.main' }}>
+              <ViewIcon />
+            </Avatar>
+            <Box>
+              <Typography variant="h6">تفاصيل المتغير</Typography>
+              <Typography variant="body2" color="text.secondary">
+                عرض جميع تفاصيل المتغير المحدد
+              </Typography>
+            </Box>
+          </Box>
+        </DialogTitle>
+        <DialogContent sx={{ pt: 2 }}>
+          <Grid container spacing={3}>
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  المعلومات الأساسية
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      اسم المتغير:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      iPhone 15 Pro - أسود فضائي - 128 جيجابايت
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المنتج الأساسي:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      iPhone 15 Pro
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الرمز (SKU):
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      IPH15P-SB-128
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 6 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الحالة:
+                    </Typography>
+                    <Chip label="نشط" color="success" size="small" />
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  الخصائص
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      اللون:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      أسود فضائي
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      التخزين:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      128 جيجابايت
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الحجم:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      6.1 بوصة
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      الذاكرة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      8 جيجابايت
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  التسعير والمخزون
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      السعر:
+                    </Typography>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'success.main' }}>
+                      999.99 ر.س
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      سعر المقارنة:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      1199.99 ر.س
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 4 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المخزون:
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Chip label="متوفر" color="success" size="small" />
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                        (45)
+                      </Typography>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2, mb: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  الأداء والإحصائيات
+                </Typography>
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المشاهدات:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      1,250
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      النقرات:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      89
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      آخر تعديل:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      2024-01-15
+                    </Typography>
+                  </Grid>
+                  <Grid size={{ xs: 12, md: 3 }}>
+                    <Typography variant="body2" color="text.secondary">
+                      المؤلف:
+                    </Typography>
+                    <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                      مدير
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Card>
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <Card sx={{ p: 2 }}>
+                <Typography variant="h6" gutterBottom>
+                  الوصف والعلامات
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  الوصف:
+                </Typography>
+                <Typography variant="body1" sx={{ mb: 2 }}>
+                  أحدث iPhone مع نظام كاميرا متقدم
+                </Typography>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  العلامات:
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                  {['هاتف ذكي', 'أبل', 'مميز'].map((tag, index) => (
+                    <Chip key={index} label={tag} size="small" variant="outlined" />
+                  ))}
+                </Box>
+              </Card>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button onClick={() => setOpenViewDialog(false)} variant="outlined">
+            إغلاق
+          </Button>
+          <Button variant="contained" startIcon={<EditIcon />}>
+            تعديل المتغير
           </Button>
         </DialogActions>
       </Dialog>
@@ -1099,36 +1324,41 @@ const VariantsManager = () => {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleMenuClose}>
+        <MenuItem
+          onClick={() => {
+            setOpenViewDialog(true);
+            handleMenuClose();
+          }}
+        >
           <ListItemIcon>
             <ViewIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>View Details</ListItemText>
+          <ListItemText>عرض التفاصيل</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <EditIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Edit Variant</ListItemText>
+          <ListItemText>تعديل المتغير</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <CopyIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Duplicate</ListItemText>
+          <ListItemText>نسخ</ListItemText>
         </MenuItem>
         <MenuItem onClick={handleMenuClose}>
           <ListItemIcon>
             <ShareIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Share</ListItemText>
+          <ListItemText>مشاركة</ListItemText>
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleMenuClose} sx={{ color: 'error.main' }}>
           <ListItemIcon>
             <DeleteIcon fontSize="small" color="error" />
           </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
+          <ListItemText>حذف</ListItemText>
         </MenuItem>
       </Menu>
 

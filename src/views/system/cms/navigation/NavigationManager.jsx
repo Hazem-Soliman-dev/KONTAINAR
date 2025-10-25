@@ -18,19 +18,8 @@ import {
   Chip,
   IconButton,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-  TablePagination,
   Switch,
   FormControlLabel,
   Accordion,
@@ -40,7 +29,6 @@ import {
   Stack,
   Zoom,
   LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,16 +38,12 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
+  Menu as MenuIcon,
   CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
-  TrendingUp as TrendingUpIcon,
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  Menu as MenuIcon,
+  Navigation as NavigationIcon,
+  DragIndicator as DragIndicatorIcon,
 } from '@mui/icons-material';
 
 const NavigationManager = () => {
@@ -86,17 +70,17 @@ const NavigationManager = () => {
     },
     {
       title: 'عناصر القائمة',
-      value: '34',
+      value: '45',
       color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '+8',
+      icon: NavigationIcon,
+      change: '+12',
     },
     {
-      title: 'آخر تحديث',
-      value: '2h ago',
+      title: 'المستخدمون النشطون',
+      value: '1,250',
       color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: TrendingUpIcon,
-      change: 'حديث',
+      icon: VisibilityIcon,
+      change: '+8%',
     },
   ];
 
@@ -104,7 +88,7 @@ const NavigationManager = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,40 +98,80 @@ const NavigationManager = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'Navigation Manager',
+    title: 'إدارة التنقل',
     content: '',
     isActive: true,
-    menuType: 'main',
-    maxDepth: 3,
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    mainMenu: true,
+    footerMenu: true,
+    mobileMenu: true,
+    breadcrumbs: true,
+    searchEnabled: true,
+    socialLinks: true,
   });
 
-  const [sections, setSections] = useState([
+  const [menuItems, setMenuItems] = useState([
     {
       id: 1,
-      title: 'Main Menu',
-      content: 'Primary navigation menu with main categories and pages.',
-      isExpanded: true,
+      title: 'الرئيسية',
+      url: '/',
+      icon: 'HomeIcon',
+      order: 1,
+      isActive: true,
+      parentId: null,
+      children: [],
     },
     {
       id: 2,
-      title: 'Footer Menu',
-      content: 'Footer navigation with links to policies and support.',
-      isExpanded: false,
+      title: 'المنتجات',
+      url: '/products',
+      icon: 'ShoppingCartIcon',
+      order: 2,
+      isActive: true,
+      parentId: null,
+      children: [
+        {
+          id: 21,
+          title: 'الإلكترونيات',
+          url: '/products/electronics',
+          icon: 'PhoneIcon',
+          order: 1,
+          isActive: true,
+          parentId: 2,
+        },
+        {
+          id: 22,
+          title: 'الملابس',
+          url: '/products/clothing',
+          icon: 'CheckroomIcon',
+          order: 2,
+          isActive: true,
+          parentId: 2,
+        },
+      ],
     },
     {
       id: 3,
-      title: 'Sidebar Menu',
-      content: 'Sidebar navigation for quick access to features.',
-      isExpanded: false,
+      title: 'من نحن',
+      url: '/about',
+      icon: 'InfoIcon',
+      order: 3,
+      isActive: true,
+      parentId: null,
+      children: [],
     },
     {
       id: 4,
-      title: 'Mobile Menu',
-      content: 'Mobile-optimized navigation menu for smaller screens.',
-      isExpanded: false,
+      title: 'اتصل بنا',
+      url: '/contact',
+      icon: 'ContactMailIcon',
+      order: 4,
+      isActive: true,
+      parentId: null,
+      children: [],
     },
   ]);
 
@@ -157,37 +181,37 @@ const NavigationManager = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Navigation settings updated successfully',
+        message: 'تم تحديث إعدادات التنقل بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'New Section',
-      content: '',
-      isExpanded: false,
+  const handleAddMenuItem = () => {
+    const newItem = {
+      id: menuItems.length + 1,
+      title: 'عنصر جديد',
+      url: '/new-item',
+      icon: 'LinkIcon',
+      order: menuItems.length + 1,
+      isActive: true,
+      parentId: null,
+      children: [],
     };
-    setSections([...sections, newSection]);
+    setMenuItems([...menuItems, newItem]);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteMenuItem = (id) => {
+    setMenuItems(menuItems.filter((item) => item.id !== id));
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleMenuItemChange = (id, field, value) => {
+    setMenuItems(menuItems.map((item) => (item.id === id ? { ...item, [field]: value } : item)));
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
+  const handleToggleActive = (id) => {
+    setMenuItems(
+      menuItems.map((item) => (item.id === id ? { ...item, isActive: !item.isActive } : item)),
     );
   };
 
@@ -200,10 +224,10 @@ const NavigationManager = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Navigation Manager
+              إدارة التنقل والقوائم
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage your store's navigation menus and structure
+              إدارة وتخصيص قوائم التنقل والروابط في الموقع لتحسين تجربة المستخدم
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -212,12 +236,12 @@ const NavigationManager = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+                إدارة المحتوى
               </Link>
-              <Typography color="text.primary">Navigation Manager</Typography>
+              <Typography color="text.primary">إدارة التنقل</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -227,7 +251,7 @@ const NavigationManager = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -235,7 +259,7 @@ const NavigationManager = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              Save Navigation
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -309,14 +333,14 @@ const NavigationManager = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <MenuIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Navigation Management
+              إعدادات التنقل
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Configure and manage your navigation menus
+              تخصيص وإدارة قوائم التنقل
             </Typography>
           </Box>
         </Box>
@@ -324,35 +348,35 @@ const NavigationManager = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search menus"
+              label="البحث في القوائم"
               size="small"
-              placeholder="Search navigation menus..."
+              placeholder="البحث في عناصر القائمة..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>الحالة</InputLabel>
+              <Select value="all" label="الحالة">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Menu Type</InputLabel>
-              <Select value="all" label="Menu Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="main">Main Menu</MenuItem>
-                <MenuItem value="footer">Footer Menu</MenuItem>
-                <MenuItem value="sidebar">Sidebar Menu</MenuItem>
+              <InputLabel>النوع</InputLabel>
+              <Select value="all" label="النوع">
+                <MenuItem value="all">الكل</MenuItem>
+                <MenuItem value="main">الرئيسية</MenuItem>
+                <MenuItem value="footer">التذييل</MenuItem>
+                <MenuItem value="mobile">المحمول</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -364,15 +388,15 @@ const NavigationManager = () => {
                 disabled={loading}
                 size="small"
               >
-                Save Navigation
+                حفظ القوائم
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddMenuItem}
                 size="small"
               >
-                Add Menu
+                إضافة عنصر
               </Button>
             </Box>
           </Grid>
@@ -386,7 +410,7 @@ const NavigationManager = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Navigation Settings
+                إعدادات التنقل
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -394,7 +418,7 @@ const NavigationManager = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Manager Title"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -408,44 +432,79 @@ const NavigationManager = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Navigation Active"
+                    label="التنقل نشط"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Menu Type</InputLabel>
-                    <Select
-                      value={formData.menuType}
-                      label="Menu Type"
-                      onChange={(e) => setFormData({ ...formData, menuType: e.target.value })}
-                    >
-                      <MenuItem value="main">Main Menu</MenuItem>
-                      <MenuItem value="footer">Footer Menu</MenuItem>
-                      <MenuItem value="sidebar">Sidebar Menu</MenuItem>
-                      <MenuItem value="mobile">Mobile Menu</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Max Menu Depth"
-                    type="number"
-                    value={formData.maxDepth}
-                    onChange={(e) => setFormData({ ...formData, maxDepth: e.target.value })}
-                    size="small"
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.mainMenu}
+                        onChange={(e) => setFormData({ ...formData, mainMenu: e.target.checked })}
+                      />
+                    }
+                    label="القائمة الرئيسية"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Contact Information"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="Technical support contact details..."
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.footerMenu}
+                        onChange={(e) => setFormData({ ...formData, footerMenu: e.target.checked })}
+                      />
+                    }
+                    label="قائمة التذييل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.mobileMenu}
+                        onChange={(e) => setFormData({ ...formData, mobileMenu: e.target.checked })}
+                      />
+                    }
+                    label="قائمة المحمول"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.breadcrumbs}
+                        onChange={(e) =>
+                          setFormData({ ...formData, breadcrumbs: e.target.checked })
+                        }
+                      />
+                    }
+                    label="مسار التنقل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.searchEnabled}
+                        onChange={(e) =>
+                          setFormData({ ...formData, searchEnabled: e.target.checked })
+                        }
+                      />
+                    }
+                    label="البحث مفعل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.socialLinks}
+                        onChange={(e) =>
+                          setFormData({ ...formData, socialLinks: e.target.checked })
+                        }
+                      />
+                    }
+                    label="روابط التواصل الاجتماعي"
                   />
                 </Grid>
               </Grid>
@@ -453,7 +512,7 @@ const NavigationManager = () => {
           </Card>
         </Grid>
 
-        {/* Navigation Sections */}
+        {/* Menu Items */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
             <CardContent>
@@ -465,79 +524,99 @@ const NavigationManager = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Navigation Menus</Typography>
-                <Chip label={`${sections.length} menus`} color="primary" size="small" />
+                <Typography variant="h6">عناصر القائمة</Typography>
+                <Chip label={`${menuItems.length} عنصر`} color="primary" size="small" />
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
+              {menuItems.map((item) => (
+                <Accordion key={item.id} sx={{ mb: 1 }}>
                   <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
+                      <DragIndicatorIcon sx={{ mr: 1, color: 'text.secondary' }} />
                       <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+                        value={item.title}
+                        onChange={(e) => handleMenuItemChange(item.id, 'title', e.target.value)}
                         size="small"
                         sx={{ flexGrow: 1, mr: 2 }}
                         onClick={(e) => e.stopPropagation()}
                       />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Menu">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </Box>
-                        </Tooltip>
-                      </Box>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={item.isActive}
+                            onChange={() => handleToggleActive(item.id)}
+                          />
+                        }
+                        label="نشط"
+                        onClick={(e) => e.stopPropagation()}
+                      />
                     </Box>
                   </AccordionSummary>
+                  <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 1, gap: 1 }}>
+                    <Tooltip title="حذف العنصر">
+                      <IconButton size="small" onClick={() => handleDeleteMenuItem(item.id)}>
+                            <DeleteIcon fontSize="small" />
+                      </IconButton>
+                        </Tooltip>
+                      </Box>
                   <AccordionDetails>
+                    <Grid container spacing={2}>
+                      <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                          fullWidth
+                          label="العنوان"
+                          value={item.title}
+                          onChange={(e) => handleMenuItemChange(item.id, 'title', e.target.value)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                          fullWidth
+                          label="الرابط"
+                          value={item.url}
+                          onChange={(e) => handleMenuItemChange(item.id, 'url', e.target.value)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid size={{ xs: 12, md: 6 }}>
+                        <TextField
+                          fullWidth
+                          label="الأيقونة"
+                          value={item.icon}
+                          onChange={(e) => handleMenuItemChange(item.id, 'icon', e.target.value)}
+                          size="small"
+                        />
+                      </Grid>
+                      <Grid size={{ xs: 12, md: 6 }}>
                     <TextField
                       fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter menu description..."
+                          label="الترتيب"
+                          type="number"
+                          value={item.order}
+                          onChange={(e) =>
+                            handleMenuItemChange(item.id, 'order', parseInt(e.target.value))
+                          }
                       size="small"
                     />
+                      </Grid>
+                    </Grid>
                   </AccordionDetails>
                 </Accordion>
               ))}
 
-              {sections.length === 0 && (
+              {menuItems.length === 0 && (
                 <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                  <MenuIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
                   <Typography variant="h6" color="text.secondary">
-                    No navigation menus yet
+                    لا توجد عناصر قائمة بعد
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first navigation menu to get started
+                    أضف أول عنصر قائمة للبدء
                   </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Menu
+                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddMenuItem}>
+                    إضافة أول عنصر
                   </Button>
                 </Box>
               )}

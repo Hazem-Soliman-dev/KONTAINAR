@@ -35,6 +35,9 @@ import {
   LinearProgress,
   Checkbox,
   TableSortLabel,
+  Divider,
+  Switch,
+  FormControlLabel,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -49,6 +52,18 @@ import {
   CheckCircle as CheckCircleIcon,
   TrendingUp as TrendingUpIcon,
   AttachMoney as AttachMoneyIcon,
+  ExpandMore as ExpandMoreIcon,
+  FilterList as FilterListIcon,
+  Analytics as AnalyticsIcon,
+  Campaign as CampaignIcon,
+  Percent as PercentIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Timer as TimerIcon,
+  QrCode as QrCodeIcon,
+  ContentCopy as ContentCopyIcon,
+  Star as StarIcon,
+  Diamond as DiamondIcon,
+  EmojiEvents as EmojiEventsIcon,
 } from '@mui/icons-material';
 
 const LoyaltyWallets = () => {
@@ -67,71 +82,123 @@ const LoyaltyWallets = () => {
   const [viewDrawer, setViewDrawer] = useState(false);
   const [selectedWallet, setSelectedWallet] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [advancedFilters, setAdvancedFilters] = useState(false);
 
   const walletsData = [
     {
       id: 1,
       walletId: 'WALLET-001',
       customerName: 'أحمد محمد',
+      customerEmail: 'ahmed@example.com',
+      customerPhone: '+966501234567',
       tier: 'gold',
       points: 1500,
       balance: 150.0,
       status: 'active',
       lastActivity: '2024-01-15',
       lastUpdated: '2024-01-15',
+      createdDate: '2023-06-01',
+      totalEarned: 2500,
+      totalSpent: 1000,
+      currency: 'SAR',
+      membershipDate: '2023-06-01',
+      nextTierPoints: 500,
+      tierBenefits: ['خصم 15%', 'شحن مجاني', 'دعم أولوية'],
     },
     {
       id: 2,
       walletId: 'WALLET-002',
-      customerName: 'Jane Smith',
+      customerName: 'فاطمة أحمد',
+      customerEmail: 'fatima@example.com',
+      customerPhone: '+966507654321',
       tier: 'silver',
       points: 850,
       balance: 85.0,
       status: 'active',
       lastActivity: '2024-01-10',
       lastUpdated: '2024-01-10',
+      createdDate: '2023-08-15',
+      totalEarned: 1200,
+      totalSpent: 350,
+      currency: 'SAR',
+      membershipDate: '2023-08-15',
+      nextTierPoints: 150,
+      tierBenefits: ['خصم 10%', 'شحن مجاني'],
     },
     {
       id: 3,
       walletId: 'WALLET-003',
-      customerName: 'Bob Johnson',
+      customerName: 'محمد علي',
+      customerEmail: 'mohammed@example.com',
+      customerPhone: '+966509876543',
       tier: 'bronze',
       points: 320,
       balance: 32.0,
       status: 'inactive',
       lastActivity: '2023-12-20',
       lastUpdated: '2023-12-20',
+      createdDate: '2023-10-01',
+      totalEarned: 500,
+      totalSpent: 180,
+      currency: 'SAR',
+      membershipDate: '2023-10-01',
+      nextTierPoints: 180,
+      tierBenefits: ['خصم 5%'],
+    },
+    {
+      id: 4,
+      walletId: 'WALLET-004',
+      customerName: 'سارة خالد',
+      customerEmail: 'sara@example.com',
+      customerPhone: '+966501111111',
+      tier: 'platinum',
+      points: 2500,
+      balance: 250.0,
+      status: 'active',
+      lastActivity: '2024-01-12',
+      lastUpdated: '2024-01-12',
+      createdDate: '2023-03-01',
+      totalEarned: 5000,
+      totalSpent: 2500,
+      currency: 'SAR',
+      membershipDate: '2023-03-01',
+      nextTierPoints: 0,
+      tierBenefits: ['خصم 20%', 'شحن مجاني', 'دعم أولوية', 'هدايا حصرية'],
     },
   ];
 
   const walletStats = [
     {
-      title: 'Total Wallets',
+      title: 'إجمالي المحافظ',
       value: walletsData.length.toString(),
       color: 'primary',
       icon: AccountBalanceWalletIcon,
       change: '+20%',
+      description: 'زيادة في عدد محافظ الولاء',
     },
     {
-      title: 'Active Wallets',
+      title: 'المحافظ النشطة',
       value: walletsData.filter((w) => w.status === 'active').length.toString(),
       color: 'success',
       icon: CheckCircleIcon,
-      change: '2 active',
+      change: '3 نشطة',
+      description: 'المحافظ المستخدمة حالياً',
     },
     {
-      title: 'Total Points',
+      title: 'إجمالي النقاط',
       value: walletsData.reduce((sum, w) => sum + w.points, 0).toString(),
       color: 'info',
       icon: TrendingUpIcon,
-      change: '2670 pts',
+      change: '5170 نقطة',
+      description: 'النقاط المتراكمة في جميع المحافظ',
     },
     {
-      title: 'Total Balance',
-      value: '$' + walletsData.reduce((sum, w) => sum + w.balance, 0).toFixed(2),
+      title: 'إجمالي الرصيد',
+      value: walletsData.reduce((sum, w) => sum + w.balance, 0).toFixed(0),
       color: 'warning',
       icon: AttachMoneyIcon,
-      change: '$267.00',
+      change: '517 ريال',
+      description: 'القيمة النقدية في جميع المحافظ',
     },
   ];
 
@@ -139,14 +206,16 @@ const LoyaltyWallets = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Wallets refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث محافظ الولاء بنجاح', severity: 'success' });
     }, 1000);
   };
+
   const handleChangePage = (event, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   const handleSelectAll = (event) => {
     if (event.target.checked) {
       setSelectedItems(walletsData.map((w) => w.id));
@@ -154,6 +223,7 @@ const LoyaltyWallets = () => {
       setSelectedItems([]);
     }
   };
+
   const handleSelectItem = (id) => {
     if (selectedItems.includes(id)) {
       setSelectedItems(selectedItems.filter((item) => item !== id));
@@ -161,21 +231,25 @@ const LoyaltyWallets = () => {
       setSelectedItems([...selectedItems, id]);
     }
   };
+
   const handleView = (wallet) => {
     setSelectedWallet(wallet);
     setViewDrawer(true);
   };
+
   const handleEdit = (wallet) => {
     setSelectedWallet(wallet);
     setOpenDialog(true);
   };
+
   const handleDelete = (wallet) => {
     setSnackbar({
       open: true,
-      message: `Wallet ${wallet.walletId} deleted successfully`,
+      message: `تم حذف محفظة الولاء ${wallet.walletId} بنجاح`,
       severity: 'success',
     });
   };
+
   const handleSort = (property) => {
     const isAsc = sortBy === property && sortOrder === 'asc';
     setSortOrder(isAsc ? 'desc' : 'asc');
@@ -185,7 +259,8 @@ const LoyaltyWallets = () => {
   const filteredData = walletsData.filter((wallet) => {
     const matchesSearch =
       wallet.walletId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      wallet.customerName.toLowerCase().includes(searchTerm.toLowerCase());
+      wallet.customerName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      wallet.customerEmail.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === 'all' || wallet.status === statusFilter;
     const matchesTier = tierFilter === 'all' || wallet.tier === tierFilter;
     return matchesSearch && matchesStatus && matchesTier;
@@ -209,12 +284,17 @@ const LoyaltyWallets = () => {
         return 'default';
       case 'suspended':
         return 'error';
+      case 'pending':
+        return 'warning';
       default:
         return 'default';
     }
   };
+
   const getTierColor = (tier) => {
     switch (tier) {
+      case 'platinum':
+        return 'secondary';
       case 'gold':
         return 'warning';
       case 'silver':
@@ -225,22 +305,69 @@ const LoyaltyWallets = () => {
         return 'default';
     }
   };
+
+  const getTierIcon = (tier) => {
+    switch (tier) {
+      case 'platinum':
+        return <DiamondIcon />;
+      case 'gold':
+        return <StarIcon />;
+      case 'silver':
+        return <EmojiEventsIcon />;
+      case 'bronze':
+        return <AccountBalanceWalletIcon />;
+      default:
+        return <AccountBalanceWalletIcon />;
+    }
+  };
+
+  const getStatusText = (status) => {
+    switch (status) {
+      case 'active':
+        return 'نشط';
+      case 'inactive':
+        return 'غير نشط';
+      case 'suspended':
+        return 'معلق';
+      case 'pending':
+        return 'في الانتظار';
+      default:
+        return status;
+    }
+  };
+
+  const getTierText = (tier) => {
+    switch (tier) {
+      case 'platinum':
+        return 'بلاتيني';
+      case 'gold':
+        return 'ذهبي';
+      case 'silver':
+        return 'فضي';
+      case 'bronze':
+        return 'برونزي';
+      default:
+        return tier;
+    }
+  };
+
   const handleSnackbarClose = () => {
     setSnackbar({ ...snackbar, open: false });
   };
 
   return (
     <Box sx={{ p: 3 }}>
+      {/* Header Section */}
       <Box sx={{ mb: 4 }}>
         <Box
           sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Loyalty Wallets Management
+              إدارة محافظ الولاء
             </Typography>
             <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              Manage customer loyalty wallets and points
+              إدارة محافظ العملاء ونقاط الولاء والمكافآت
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
               <Link
@@ -249,14 +376,12 @@ const LoyaltyWallets = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Dashboard
+                لوحة التحكم
               </Link>
               <Link color="inherit" href="/main-store/pricing">
-                Pricing
+                التسعير
               </Link>
-              <Link color="inherit" href="/main-store/pricing/loyalty">
-                Loyalty Wallets
-              </Link>
+              <Typography color="text.primary">محافظ الولاء</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -266,14 +391,15 @@ const LoyaltyWallets = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              Add Wallet
+              إضافة محفظة جديدة
             </Button>
           </Stack>
         </Box>
 
+        {/* Statistics Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           {walletStats.map((stat, index) => {
             const IconComponent = stat.icon;
@@ -319,8 +445,14 @@ const LoyaltyWallets = () => {
                     <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       {stat.title}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: theme.palette[color].main }}>
+                    <Typography variant="caption" sx={{ color: theme.palette[color].main, mb: 1 }}>
                       {stat.change}
+                    </Typography>
+                    <Typography
+                      variant="caption"
+                      sx={{ color: 'text.secondary', display: 'block' }}
+                    >
+                      {stat.description}
                     </Typography>
                   </CardContent>
                 </Card>
@@ -330,30 +462,42 @@ const LoyaltyWallets = () => {
         </Grid>
       </Box>
 
+      {/* Filters Section */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            Filters & Search
+            البحث والتصفية
           </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              setSearchTerm('');
-              setStatusFilter('all');
-              setTierFilter('all');
-            }}
-          >
-            Clear Filters
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<FilterListIcon />}
+              onClick={() => setAdvancedFilters(!advancedFilters)}
+            >
+              {advancedFilters ? 'إخفاء المرشحات المتقدمة' : 'مرشحات متقدمة'}
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => {
+                setSearchTerm('');
+                setStatusFilter('all');
+                setTierFilter('all');
+              }}
+            >
+              مسح المرشحات
+            </Button>
+          </Stack>
         </Box>
+
         <Grid container spacing={2} alignItems="center">
           <Grid size={{ xs: 12, md: 4 }}>
             <TextField
               fullWidth
-              label="Search Wallets"
+              label="البحث في المحافظ"
               size="small"
-              placeholder="Search by wallet ID or customer..."
+              placeholder="البحث بالمعرف أو اسم العميل أو البريد..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               InputProps={{
@@ -363,42 +507,93 @@ const LoyaltyWallets = () => {
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
+              <InputLabel>الحالة</InputLabel>
               <Select
-                label="Status"
+                label="الحالة"
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
-                <MenuItem value="all">All Status</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
-                <MenuItem value="suspended">Suspended</MenuItem>
+                <MenuItem value="all">جميع الحالات</MenuItem>
+                <MenuItem value="active">نشط</MenuItem>
+                <MenuItem value="inactive">غير نشط</MenuItem>
+                <MenuItem value="suspended">معلق</MenuItem>
+                <MenuItem value="pending">في الانتظار</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Tier</InputLabel>
+              <InputLabel>المستوى</InputLabel>
               <Select
-                label="Tier"
+                label="المستوى"
                 value={tierFilter}
                 onChange={(e) => setTierFilter(e.target.value)}
               >
-                <MenuItem value="all">All Tiers</MenuItem>
-                <MenuItem value="gold">Gold</MenuItem>
-                <MenuItem value="silver">Silver</MenuItem>
-                <MenuItem value="bronze">Bronze</MenuItem>
+                <MenuItem value="all">جميع المستويات</MenuItem>
+                <MenuItem value="platinum">بلاتيني</MenuItem>
+                <MenuItem value="gold">ذهبي</MenuItem>
+                <MenuItem value="silver">فضي</MenuItem>
+                <MenuItem value="bronze">برونزي</MenuItem>
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Typography variant="body2" color="text.secondary">
-              {filteredData.length} results found
+              {filteredData.length} نتيجة
             </Typography>
           </Grid>
         </Grid>
+
+        {/* Advanced Filters */}
+        {advancedFilters && (
+          <Box sx={{ mt: 3 }}>
+            <Divider sx={{ mb: 2 }} />
+            <Typography variant="subtitle2" sx={{ mb: 2 }}>
+              مرشحات متقدمة
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأدنى للنقاط"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 100"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأقصى للنقاط"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 5000"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأدنى للرصيد"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 50"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  label="الحد الأقصى للرصيد"
+                  type="number"
+                  size="small"
+                  placeholder="مثال: 1000"
+                />
+              </Grid>
+            </Grid>
+          </Box>
+        )}
       </Paper>
 
+      {/* Data Table */}
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         {loading && <LinearProgress />}
         <Table>
@@ -419,18 +614,16 @@ const LoyaltyWallets = () => {
                   direction={sortBy === 'walletId' ? sortOrder : 'asc'}
                   onClick={() => handleSort('walletId')}
                 >
-                  Wallet ID
+                  معرف المحفظة
                 </TableSortLabel>
               </TableCell>
-              <TableCell>Customer</TableCell>
-              <TableCell>Tier</TableCell>
-              <TableCell>Points</TableCell>
-              <TableCell>Balance</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>
-                Last Activity
-              </TableCell>
-              <TableCell align="center">Actions</TableCell>
+              <TableCell>العميل</TableCell>
+              <TableCell>المستوى</TableCell>
+              <TableCell>النقاط</TableCell>
+              <TableCell>الرصيد</TableCell>
+              <TableCell>الحالة</TableCell>
+              <TableCell sx={{ display: { xs: 'none', md: 'table-cell' } }}>آخر نشاط</TableCell>
+              <TableCell align="center">الإجراءات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -450,20 +643,36 @@ const LoyaltyWallets = () => {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography variant="body2">{wallet.customerName}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Chip label={wallet.tier} color={getTierColor(wallet.tier)} size="small" />
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">{wallet.points}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography variant="body2">${wallet.balance.toFixed(2)}</Typography>
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                        {wallet.customerName}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {wallet.customerEmail}
+                      </Typography>
+                    </Box>
                   </TableCell>
                   <TableCell>
                     <Chip
-                      label={wallet.status}
+                      label={getTierText(wallet.tier)}
+                      color={getTierColor(wallet.tier)}
+                      size="small"
+                      icon={getTierIcon(wallet.tier)}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="primary.main" sx={{ fontWeight: 500 }}>
+                      {wallet.points.toLocaleString()}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography variant="body2" color="success.main" sx={{ fontWeight: 500 }}>
+                      {wallet.balance.toFixed(2)} {wallet.currency}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Chip
+                      label={getStatusText(wallet.status)}
                       color={getStatusColor(wallet.status)}
                       size="small"
                     />
@@ -475,30 +684,30 @@ const LoyaltyWallets = () => {
                   </TableCell>
                   <TableCell align="center">
                     <Stack direction="row" spacing={1} justifyContent="center">
-                      <Tooltip title="View Details" arrow>
+                      <Tooltip title="عرض التفاصيل" arrow>
                         <IconButton
                           size="small"
                           onClick={() => handleView(wallet)}
-                          aria-label="view wallet"
+                          aria-label="عرض المحفظة"
                         >
                           <VisibilityOutlined />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Edit Wallet" arrow>
+                      <Tooltip title="تعديل المحفظة" arrow>
                         <IconButton
                           size="small"
                           onClick={() => handleEdit(wallet)}
-                          aria-label="edit wallet"
+                          aria-label="تعديل المحفظة"
                         >
                           <EditOutlined />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="Delete Wallet" arrow>
+                      <Tooltip title="حذف المحفظة" arrow>
                         <IconButton
                           size="small"
                           color="error"
                           onClick={() => handleDelete(wallet)}
-                          aria-label="delete wallet"
+                          aria-label="حذف المحفظة"
                         >
                           <DeleteOutline />
                         </IconButton>
@@ -520,151 +729,256 @@ const LoyaltyWallets = () => {
         />
       </Paper>
 
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>{selectedWallet ? 'Edit Wallet' : 'Add New Wallet'}</DialogTitle>
+      {/* Add/Edit Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>
+          {selectedWallet ? 'تعديل محفظة الولاء' : 'إضافة محفظة ولاء جديدة'}
+        </DialogTitle>
         <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12 }}>
+          <Grid container spacing={3} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label="Wallet ID"
+                label="معرف المحفظة"
                 value={selectedWallet?.walletId || ''}
                 size="small"
                 disabled
+                helperText="يتم إنشاء المعرف تلقائياً"
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="Customer Name"
-                value={selectedWallet?.customerName || ''}
-                size="small"
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth size="small">
-                <InputLabel>Tier</InputLabel>
-                <Select value={selectedWallet?.tier || 'bronze'} label="Tier">
-                  <MenuItem value="gold">Gold</MenuItem>
-                  <MenuItem value="silver">Silver</MenuItem>
-                  <MenuItem value="bronze">Bronze</MenuItem>
+                <InputLabel>المستوى</InputLabel>
+                <Select value={selectedWallet?.tier || 'bronze'} label="المستوى">
+                  <MenuItem value="platinum">بلاتيني</MenuItem>
+                  <MenuItem value="gold">ذهبي</MenuItem>
+                  <MenuItem value="silver">فضي</MenuItem>
+                  <MenuItem value="bronze">برونزي</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
             <Grid size={{ xs: 12 }}>
               <TextField
                 fullWidth
-                label="Points"
+                label="اسم العميل"
+                value={selectedWallet?.customerName || ''}
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="البريد الإلكتروني"
+                type="email"
+                value={selectedWallet?.customerEmail || ''}
+                size="small"
+                required
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="رقم الهاتف"
+                value={selectedWallet?.customerPhone || ''}
+                size="small"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="النقاط"
                 type="number"
                 value={selectedWallet?.points || ''}
                 size="small"
+                required
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
               <TextField
                 fullWidth
-                label="Balance"
+                label="الرصيد"
                 type="number"
                 value={selectedWallet?.balance || ''}
                 size="small"
+                required
               />
             </Grid>
-            <Grid size={{ xs: 12 }}>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="تاريخ العضوية"
+                type="date"
+                value={selectedWallet?.membershipDate || ''}
+                size="small"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
               <FormControl fullWidth size="small">
-                <InputLabel>Status</InputLabel>
-                <Select value={selectedWallet?.status || 'active'} label="Status">
-                  <MenuItem value="active">Active</MenuItem>
-                  <MenuItem value="inactive">Inactive</MenuItem>
-                  <MenuItem value="suspended">Suspended</MenuItem>
+                <InputLabel>الحالة</InputLabel>
+                <Select value={selectedWallet?.status || 'active'} label="الحالة">
+                  <MenuItem value="active">نشط</MenuItem>
+                  <MenuItem value="inactive">غير نشط</MenuItem>
+                  <MenuItem value="suspended">معلق</MenuItem>
+                  <MenuItem value="pending">في الانتظار</MenuItem>
                 </Select>
               </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="تفعيل المكافآت التلقائية"
+              />
             </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>Cancel</Button>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
           <Button
             variant="contained"
             onClick={() => {
               setSnackbar({
                 open: true,
-                message: 'Wallet saved successfully',
+                message: 'تم حفظ محفظة الولاء بنجاح',
                 severity: 'success',
               });
               setOpenDialog(false);
             }}
           >
-            Save
+            حفظ
           </Button>
         </DialogActions>
       </Dialog>
 
-      <Dialog open={viewDrawer} onClose={() => setViewDrawer(false)} maxWidth="sm" fullWidth>
-        <DialogTitle>Wallet Details</DialogTitle>
+      {/* View Details Dialog */}
+      <Dialog open={viewDrawer} onClose={() => setViewDrawer(false)} maxWidth="md" fullWidth>
+        <DialogTitle>تفاصيل محفظة الولاء</DialogTitle>
         <DialogContent>
           {selectedWallet && (
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid size={{ xs: 12 }}>
+            <Grid container spacing={3} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Wallet ID
+                  معرف المحفظة
                 </Typography>
                 <Typography variant="body1">{selectedWallet.walletId}</Typography>
               </Grid>
-              <Grid size={{ xs: 12 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Customer
-                </Typography>
-                <Typography variant="body1">{selectedWallet.customerName}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Tier
+                  المستوى
                 </Typography>
                 <Chip
-                  label={selectedWallet.tier}
+                  label={getTierText(selectedWallet.tier)}
                   color={getTierColor(selectedWallet.tier)}
                   size="small"
+                  icon={getTierIcon(selectedWallet.tier)}
                 />
               </Grid>
               <Grid size={{ xs: 12 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Points
+                  العميل
                 </Typography>
-                <Typography variant="body1">{selectedWallet.points}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  Balance
+                <Typography variant="body1">{selectedWallet.customerName}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {selectedWallet.customerEmail} - {selectedWallet.customerPhone}
                 </Typography>
-                <Typography variant="body1">${selectedWallet.balance.toFixed(2)}</Typography>
               </Grid>
-              <Grid size={{ xs: 12 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Status
+                  النقاط
+                </Typography>
+                <Typography variant="body1" color="primary.main" sx={{ fontWeight: 500 }}>
+                  {selectedWallet.points.toLocaleString()}
+                </Typography>
+                {selectedWallet.nextTierPoints > 0 && (
+                  <Typography variant="caption" color="text.secondary">
+                    {selectedWallet.nextTierPoints} نقطة للوصول للمستوى التالي
+                  </Typography>
+                )}
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  الرصيد
+                </Typography>
+                <Typography variant="body1" color="success.main" sx={{ fontWeight: 500 }}>
+                  {selectedWallet.balance.toFixed(2)} {selectedWallet.currency}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  الحالة
                 </Typography>
                 <Chip
-                  label={selectedWallet.status}
+                  label={getStatusText(selectedWallet.status)}
                   color={getStatusColor(selectedWallet.status)}
                   size="small"
                 />
               </Grid>
-              <Grid size={{ xs: 12 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
                 <Typography variant="subtitle2" color="text.secondary">
-                  Last Activity
+                  تاريخ العضوية
+                </Typography>
+                <Typography variant="body1">{selectedWallet.membershipDate}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  إجمالي النقاط المكتسبة
+                </Typography>
+                <Typography variant="body1">
+                  {selectedWallet.totalEarned.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  إجمالي النقاط المستخدمة
+                </Typography>
+                <Typography variant="body1">
+                  {selectedWallet.totalSpent.toLocaleString()}
+                </Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  آخر نشاط
                 </Typography>
                 <Typography variant="body1">{selectedWallet.lastActivity}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  آخر تحديث
+                </Typography>
+                <Typography variant="body1">{selectedWallet.lastUpdated}</Typography>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  مزايا المستوى
+                </Typography>
+                <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
+                  {selectedWallet.tierBenefits.map((benefit, index) => (
+                    <Chip
+                      key={index}
+                      label={benefit}
+                      size="small"
+                      color="primary"
+                      variant="outlined"
+                    />
+                  ))}
+                </Stack>
               </Grid>
             </Grid>
           )}
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => setViewDrawer(false)}>Close</Button>
+          <Button onClick={() => setViewDrawer(false)}>إغلاق</Button>
+          <Button variant="contained" onClick={() => handleEdit(selectedWallet)}>
+            تعديل
+          </Button>
         </DialogActions>
       </Dialog>
 
+      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
-        autoHideDuration={2500}
+        autoHideDuration={3000}
         onClose={handleSnackbarClose}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >

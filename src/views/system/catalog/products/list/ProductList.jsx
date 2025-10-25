@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   Box,
@@ -32,7 +32,6 @@ import {
   MenuItem,
   Card,
   CardContent,
-  Divider,
   Stack,
   Avatar,
   LinearProgress,
@@ -41,13 +40,10 @@ import {
   Menu,
   ListItemIcon,
   ListItemText,
-  Switch,
-  FormControlLabel,
   Drawer,
   List,
   ListItem,
-  ListItemButton,
-  ListItemSecondaryAction,
+  Divider,
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -61,16 +57,10 @@ import {
   Inventory as InventoryIcon,
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
-  MoreVert as MoreVertIcon,
-  CheckCircleOutline as CheckIcon,
-  BlockOutlined as CloseIcon,
-  Upload as UploadIcon,
   Download as DownloadIcon,
-  Refresh as RefreshIcon,
   ViewColumn as ViewColumnIcon,
   DensityMedium as DensityMediumIcon,
   DensitySmall as DensitySmallIcon,
-  DensityLarge as DensityLargeIcon,
 } from '@mui/icons-material';
 
 const ProductList = () => {
@@ -163,26 +153,26 @@ const ProductList = () => {
       digital: false,
       downloadable: false,
       requiresShipping: true,
-      seoTitle: 'Wireless Bluetooth Headphones - TechSound Premium Audio',
-      seoDescription: 'High-quality wireless headphones with noise cancellation technology',
-      metaKeywords: 'wireless headphones, bluetooth, noise cancellation, audio',
-      tags: ['wireless', 'bluetooth', 'audio', 'headphones'],
-      keywords: ['wireless headphones', 'bluetooth audio', 'noise cancellation'],
-      availableStores: ['Main Store', 'Sub Store 1', 'Mobile App'],
+      seoTitle: 'سماعات بلوتوث لاسلكية - TechSound صوت عالي الجودة',
+      seoDescription: 'سماعات لاسلكية عالية الجودة مع تقنية إلغاء الضوضاء',
+      metaKeywords: 'سماعات لاسلكية, بلوتوث, إلغاء الضوضاء, صوت',
+      tags: ['لاسلكي', 'بلوتوث', 'صوت', 'سماعات'],
+      keywords: ['سماعات لاسلكية', 'صوت بلوتوث', 'إلغاء الضوضاء'],
+      availableStores: ['المتجر الرئيسي', 'المتجر الفرعي 1', 'التطبيق المحمول'],
       specifications: [
-        { name: 'Battery Life', value: '30 hours' },
-        { name: 'Connectivity', value: 'Bluetooth 5.0' },
-        { name: 'Noise Cancellation', value: 'Active' },
+        { name: 'مدة البطارية', value: '30 ساعة' },
+        { name: 'الاتصال', value: 'Bluetooth 5.0' },
+        { name: 'إلغاء الضوضاء', value: 'نشط' },
       ],
-      features: ['Noise Cancellation', '30-hour Battery', 'Quick Charge'],
-      benefits: ['Crystal Clear Audio', 'Comfortable Fit', 'Long Battery Life'],
-      warranty: '2 years manufacturer warranty',
-      warrantyPeriod: '2 years',
+      features: ['إلغاء الضوضاء', 'بطارية 30 ساعة', 'شحن سريع'],
+      benefits: ['صوت واضح', 'راحة في الاستخدام', 'مدة بطارية طويلة'],
+      warranty: 'ضمان الشركة المصنعة لمدة سنتين',
+      warrantyPeriod: 'سنتان',
       warrantyType: 'manufacturer',
       specialOffers: [
         {
-          title: 'Summer Sale',
-          description: '20% off all audio products',
+          title: 'عرض الصيف',
+          description: 'خصم 20% على جميع المنتجات الصوتية',
           discount: 20,
           startDate: '2024-06-01',
           endDate: '2024-08-31',
@@ -206,26 +196,26 @@ const ProductList = () => {
       requiresApproval: false,
       approvalStatus: 'approved',
       customFields: [
-        { name: 'Color', value: 'Black', type: 'text' },
-        { name: 'Material', value: 'Plastic', type: 'text' },
+        { name: 'اللون', value: 'أسود', type: 'text' },
+        { name: 'المادة', value: 'بلاستيك', type: 'text' },
       ],
       variants: [],
       attributes: [],
       sales: 1250,
       lastModified: '2024-01-15',
       image: '/api/placeholder/40/40',
-      description: 'High-quality wireless headphones with noise cancellation',
-      shortDescription: 'Premium wireless headphones with active noise cancellation',
+      description: 'سماعات لاسلكية عالية الجودة مع تقنية إلغاء الضوضاء',
+      shortDescription: 'سماعات لاسلكية متميزة مع إلغاء الضوضاء النشط',
       rating: 4.5,
       reviews: 89,
     },
     {
       id: 2,
-      name: 'Smart Fitness Watch',
+      name: 'ساعة ذكية لللياقة البدنية',
       sku: 'SW-002',
       barcode: '1234567890124',
-      category: 'Electronics',
-      subCategory: 'Wearables',
+      category: 'إلكترونيات',
+      subCategory: 'أجهزة قابلة للارتداء',
       brand: 'FitTech',
       model: 'FT-SW-2024',
       manufacturer: 'FitTech Corp.',
@@ -246,21 +236,21 @@ const ProductList = () => {
       digital: false,
       downloadable: false,
       requiresShipping: true,
-      seoTitle: 'Smart Fitness Watch - FitTech Advanced Health Tracking',
-      seoDescription: 'Advanced fitness tracking with heart rate monitoring and GPS',
-      metaKeywords: 'fitness watch, smartwatch, health tracking, heart rate',
-      tags: ['fitness', 'smartwatch', 'health', 'tracking'],
-      keywords: ['fitness watch', 'health tracking', 'smartwatch'],
-      availableStores: ['Main Store', 'Sub Store 2', 'Mobile App'],
+      seoTitle: 'ساعة ذكية لللياقة البدنية - FitTech تتبع صحي متقدم',
+      seoDescription: 'تتبع لياقة بدنية متقدم مع مراقبة معدل ضربات القلب ونظام GPS',
+      metaKeywords: 'ساعة لياقة, ساعة ذكية, تتبع صحي, معدل ضربات القلب',
+      tags: ['لياقة', 'ساعة ذكية', 'صحة', 'تتبع'],
+      keywords: ['ساعة لياقة', 'تتبع صحي', 'ساعة ذكية'],
+      availableStores: ['المتجر الرئيسي', 'المتجر الفرعي 2', 'التطبيق المحمول'],
       specifications: [
-        { name: 'Battery Life', value: '7 days' },
-        { name: 'Water Resistance', value: '5ATM' },
-        { name: 'GPS', value: 'Built-in' },
+        { name: 'مدة البطارية', value: '7 أيام' },
+        { name: 'مقاومة الماء', value: '5ATM' },
+        { name: 'GPS', value: 'مدمج' },
       ],
-      features: ['Heart Rate Monitor', 'GPS Tracking', 'Sleep Analysis'],
-      benefits: ['24/7 Health Monitoring', 'Fitness Insights', 'Long Battery Life'],
-      warranty: '1 year manufacturer warranty',
-      warrantyPeriod: '1 year',
+      features: ['مراقب معدل ضربات القلب', 'تتبع GPS', 'تحليل النوم'],
+      benefits: ['مراقبة صحية 24/7', 'رؤى اللياقة', 'مدة بطارية طويلة'],
+      warranty: 'ضمان الشركة المصنعة لمدة سنة',
+      warrantyPeriod: 'سنة واحدة',
       warrantyType: 'manufacturer',
       specialOffers: [],
       rewardPoints: 300,
@@ -280,26 +270,26 @@ const ProductList = () => {
       requiresApproval: false,
       approvalStatus: 'approved',
       customFields: [
-        { name: 'Color', value: 'Black', type: 'text' },
-        { name: 'Size', value: 'Large', type: 'text' },
+        { name: 'اللون', value: 'أسود', type: 'text' },
+        { name: 'الحجم', value: 'كبير', type: 'text' },
       ],
       variants: [],
       attributes: [],
       sales: 890,
       lastModified: '2024-01-14',
       image: '/api/placeholder/40/40',
-      description: 'Advanced fitness tracking with heart rate monitoring',
-      shortDescription: 'Smart fitness watch with comprehensive health tracking',
+      description: 'تتبع لياقة بدنية متقدم مع مراقبة معدل ضربات القلب',
+      shortDescription: 'ساعة ذكية لللياقة البدنية مع تتبع صحي شامل',
       rating: 4.2,
       reviews: 156,
     },
     {
       id: 3,
-      name: 'Premium Coffee Maker',
+      name: 'ماكينة قهوة متميزة',
       sku: 'CM-003',
       barcode: '1234567890125',
-      category: 'Appliances',
-      subCategory: 'Kitchen',
+      category: 'أجهزة منزلية',
+      subCategory: 'مطبخ',
       brand: 'BrewMaster',
       model: 'BM-CM-2024',
       manufacturer: 'BrewMaster Appliances',
@@ -320,21 +310,21 @@ const ProductList = () => {
       digital: false,
       downloadable: false,
       requiresShipping: true,
-      seoTitle: 'Premium Coffee Maker - BrewMaster Professional Grade',
-      seoDescription: 'Professional-grade coffee maker with programmable settings',
-      metaKeywords: 'coffee maker, espresso, programmable, professional',
-      tags: ['coffee', 'espresso', 'programmable', 'kitchen'],
-      keywords: ['coffee maker', 'espresso machine', 'programmable'],
-      availableStores: ['Main Store', 'Sub Store 1'],
+      seoTitle: 'ماكينة قهوة متميزة - BrewMaster درجة احترافية',
+      seoDescription: 'ماكينة قهوة درجة احترافية مع إعدادات قابلة للبرمجة',
+      metaKeywords: 'ماكينة قهوة, إسبرسو, قابل للبرمجة, احترافي',
+      tags: ['قهوة', 'إسبرسو', 'قابل للبرمجة', 'مطبخ'],
+      keywords: ['ماكينة قهوة', 'آلة إسبرسو', 'قابل للبرمجة'],
+      availableStores: ['المتجر الرئيسي', 'المتجر الفرعي 1'],
       specifications: [
-        { name: 'Capacity', value: '12 cups' },
-        { name: 'Material', value: 'Stainless Steel' },
-        { name: 'Programmable', value: 'Yes' },
+        { name: 'السعة', value: '12 كوب' },
+        { name: 'المادة', value: 'فولاذ مقاوم للصدأ' },
+        { name: 'قابل للبرمجة', value: 'نعم' },
       ],
-      features: ['Programmable Timer', 'Stainless Steel', '12-Cup Capacity'],
-      benefits: ['Perfect Coffee Every Time', 'Durable Construction', 'Easy to Clean'],
-      warranty: '2 years manufacturer warranty',
-      warrantyPeriod: '2 years',
+      features: ['مؤقت قابل للبرمجة', 'فولاذ مقاوم للصدأ', 'سعة 12 كوب'],
+      benefits: ['قهوة مثالية في كل مرة', 'بناء متين', 'سهل التنظيف'],
+      warranty: 'ضمان الشركة المصنعة لمدة سنتين',
+      warrantyPeriod: 'سنتان',
       warrantyType: 'manufacturer',
       specialOffers: [],
       rewardPoints: 150,
@@ -354,26 +344,26 @@ const ProductList = () => {
       requiresApproval: false,
       approvalStatus: 'approved',
       customFields: [
-        { name: 'Color', value: 'Silver', type: 'text' },
-        { name: 'Material', value: 'Stainless Steel', type: 'text' },
+        { name: 'اللون', value: 'فضي', type: 'text' },
+        { name: 'المادة', value: 'فولاذ مقاوم للصدأ', type: 'text' },
       ],
       variants: [],
       attributes: [],
       sales: 567,
       lastModified: '2024-01-13',
       image: '/api/placeholder/40/40',
-      description: 'Professional-grade coffee maker with programmable settings',
-      shortDescription: 'Premium coffee maker with advanced brewing technology',
+      description: 'ماكينة قهوة درجة احترافية مع إعدادات قابلة للبرمجة',
+      shortDescription: 'ماكينة قهوة متميزة مع تقنية تخمير متقدمة',
       rating: 4.8,
       reviews: 234,
     },
     {
       id: 4,
-      name: 'Gaming Mechanical Keyboard',
+      name: 'لوحة مفاتيح ميكانيكية للألعاب',
       sku: 'GMK-004',
       barcode: '1234567890126',
-      category: 'Electronics',
-      subCategory: 'Gaming',
+      category: 'إلكترونيات',
+      subCategory: 'ألعاب',
       brand: 'GameTech',
       model: 'GT-GMK-2024',
       manufacturer: 'GameTech Gaming',
@@ -394,21 +384,21 @@ const ProductList = () => {
       digital: false,
       downloadable: false,
       requiresShipping: true,
-      seoTitle: 'Gaming Mechanical Keyboard - GameTech RGB Gaming',
-      seoDescription: 'RGB mechanical keyboard for gaming enthusiasts with customizable lighting',
-      metaKeywords: 'gaming keyboard, mechanical, RGB, gaming, keyboard',
-      tags: ['gaming', 'keyboard', 'mechanical', 'RGB'],
-      keywords: ['gaming keyboard', 'mechanical keyboard', 'RGB keyboard'],
-      availableStores: ['Main Store', 'Sub Store 3', 'Mobile App'],
+      seoTitle: 'لوحة مفاتيح ميكانيكية للألعاب - GameTech RGB للألعاب',
+      seoDescription: 'لوحة مفاتيح ميكانيكية RGB لعشاق الألعاب مع إضاءة قابلة للتخصيص',
+      metaKeywords: 'لوحة مفاتيح ألعاب, ميكانيكية, RGB, ألعاب, لوحة مفاتيح',
+      tags: ['ألعاب', 'لوحة مفاتيح', 'ميكانيكية', 'RGB'],
+      keywords: ['لوحة مفاتيح ألعاب', 'لوحة مفاتيح ميكانيكية', 'لوحة مفاتيح RGB'],
+      availableStores: ['المتجر الرئيسي', 'المتجر الفرعي 3', 'التطبيق المحمول'],
       specifications: [
-        { name: 'Switch Type', value: 'Cherry MX Blue' },
-        { name: 'Backlight', value: 'RGB' },
-        { name: 'Connectivity', value: 'USB-C' },
+        { name: 'نوع المفاتيح', value: 'Cherry MX Blue' },
+        { name: 'الإضاءة الخلفية', value: 'RGB' },
+        { name: 'الاتصال', value: 'USB-C' },
       ],
-      features: ['RGB Backlighting', 'Mechanical Switches', 'Gaming Mode'],
-      benefits: ['Enhanced Gaming Performance', 'Durable Construction', 'Customizable Lighting'],
-      warranty: '1 year manufacturer warranty',
-      warrantyPeriod: '1 year',
+      features: ['إضاءة خلفية RGB', 'مفاتيح ميكانيكية', 'وضع الألعاب'],
+      benefits: ['أداء ألعاب محسن', 'بناء متين', 'إضاءة قابلة للتخصيص'],
+      warranty: 'ضمان الشركة المصنعة لمدة سنة',
+      warrantyPeriod: 'سنة واحدة',
       warrantyType: 'manufacturer',
       specialOffers: [],
       rewardPoints: 200,
@@ -428,26 +418,26 @@ const ProductList = () => {
       requiresApproval: false,
       approvalStatus: 'approved',
       customFields: [
-        { name: 'Switch Type', value: 'Cherry MX Blue', type: 'text' },
-        { name: 'Layout', value: 'Full Size', type: 'text' },
+        { name: 'نوع المفاتيح', value: 'Cherry MX Blue', type: 'text' },
+        { name: 'التخطيط', value: 'حجم كامل', type: 'text' },
       ],
       variants: [],
       attributes: [],
       sales: 432,
       lastModified: '2024-01-12',
       image: '/api/placeholder/40/40',
-      description: 'RGB mechanical keyboard for gaming enthusiasts',
-      shortDescription: 'High-performance gaming keyboard with RGB lighting',
+      description: 'لوحة مفاتيح ميكانيكية RGB لعشاق الألعاب',
+      shortDescription: 'لوحة مفاتيح ألعاب عالية الأداء مع إضاءة RGB',
       rating: 4.6,
       reviews: 78,
     },
     {
       id: 5,
-      name: 'Wireless Charging Pad',
+      name: 'لوحة شحن لاسلكية',
       sku: 'WCP-005',
       barcode: '1234567890127',
-      category: 'Electronics',
-      subCategory: 'Accessories',
+      category: 'إلكترونيات',
+      subCategory: 'ملحقات',
       brand: 'PowerUp',
       model: 'PU-WCP-2024',
       manufacturer: 'PowerUp Technologies',
@@ -468,21 +458,21 @@ const ProductList = () => {
       digital: false,
       downloadable: false,
       requiresShipping: true,
-      seoTitle: 'Wireless Charging Pad - PowerUp Fast Wireless Charging',
-      seoDescription: 'Fast wireless charging pad for smartphones with LED indicator',
-      metaKeywords: 'wireless charging, charging pad, fast charging, smartphone',
-      tags: ['wireless', 'charging', 'accessories', 'smartphone'],
-      keywords: ['wireless charging', 'charging pad', 'fast charging'],
-      availableStores: ['Main Store', 'Sub Store 1', 'Sub Store 2', 'Mobile App'],
+      seoTitle: 'لوحة شحن لاسلكية - PowerUp شحن لاسلكي سريع',
+      seoDescription: 'لوحة شحن لاسلكية سريعة للهواتف الذكية مع مؤشر LED',
+      metaKeywords: 'شحن لاسلكي, لوحة شحن, شحن سريع, هاتف ذكي',
+      tags: ['لاسلكي', 'شحن', 'ملحقات', 'هاتف ذكي'],
+      keywords: ['شحن لاسلكي', 'لوحة شحن', 'شحن سريع'],
+      availableStores: ['المتجر الرئيسي', 'المتجر الفرعي 1', 'المتجر الفرعي 2', 'التطبيق المحمول'],
       specifications: [
-        { name: 'Charging Speed', value: '15W' },
-        { name: 'Compatibility', value: 'Qi Standard' },
-        { name: 'LED Indicator', value: 'Yes' },
+        { name: 'سرعة الشحن', value: '15W' },
+        { name: 'التوافق', value: 'معيار Qi' },
+        { name: 'مؤشر LED', value: 'نعم' },
       ],
-      features: ['Fast Charging', 'LED Indicator', 'Qi Compatible'],
-      benefits: ['Convenient Charging', 'Fast Charging Speed', 'Universal Compatibility'],
-      warranty: '1 year manufacturer warranty',
-      warrantyPeriod: '1 year',
+      features: ['شحن سريع', 'مؤشر LED', 'متوافق مع Qi'],
+      benefits: ['شحن مريح', 'سرعة شحن عالية', 'توافق عالمي'],
+      warranty: 'ضمان الشركة المصنعة لمدة سنة',
+      warrantyPeriod: 'سنة واحدة',
       warrantyType: 'manufacturer',
       specialOffers: [],
       rewardPoints: 50,
@@ -502,22 +492,22 @@ const ProductList = () => {
       requiresApproval: false,
       approvalStatus: 'approved',
       customFields: [
-        { name: 'Color', value: 'White', type: 'text' },
-        { name: 'Material', value: 'Silicone', type: 'text' },
+        { name: 'اللون', value: 'أبيض', type: 'text' },
+        { name: 'المادة', value: 'سيليكون', type: 'text' },
       ],
       variants: [],
       attributes: [],
       sales: 678,
       lastModified: '2024-01-11',
       image: '/api/placeholder/40/40',
-      description: 'Fast wireless charging pad for smartphones',
-      shortDescription: 'Convenient wireless charging pad with fast charging',
+      description: 'لوحة شحن لاسلكية سريعة للهواتف الذكية',
+      shortDescription: 'لوحة شحن لاسلكية مريحة مع شحن سريع',
       rating: 4.3,
       reviews: 145,
     },
   ];
 
-  const categories = ['Electronics', 'Appliances', 'Clothing', 'Books', 'Sports'];
+  const categories = ['إلكترونيات', 'أجهزة منزلية', 'ملابس', 'كتب', 'رياضة'];
   const brands = ['TechSound', 'FitTech', 'BrewMaster', 'GameTech', 'PowerUp'];
 
   useEffect(() => {
@@ -536,124 +526,137 @@ const ProductList = () => {
     });
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = useCallback((event, newPage) => {
     setPage(newPage);
-  };
+  }, []);
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = useCallback((event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
+  }, []);
 
-  const handleSelectAll = (event) => {
-    if (event.target.checked) {
-      setSelectedItems(filteredData.map((item) => item.id));
-    } else {
-      setSelectedItems([]);
-    }
-  };
+  const handleSelectAll = useCallback(
+    (event) => {
+      if (event.target.checked) {
+        setSelectedItems(productData.map((item) => item.id));
+      } else {
+        setSelectedItems([]);
+      }
+    },
+    [productData],
+  );
 
-  const handleSelectItem = (itemId) => {
+  const handleSelectItem = useCallback((itemId) => {
     setSelectedItems((prev) =>
       prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId],
     );
-  };
+  }, []);
 
-  const handleBulkAction = (action) => {
-    notify(`${action} المنتجات`, `${selectedItems.length} منتج`);
-    setSelectedItems([]);
-  };
+  const handleBulkAction = useCallback(
+    (action) => {
+      notify(`${action} المنتجات`, `${selectedItems.length} منتج`);
+      setSelectedItems([]);
+    },
+    [selectedItems.length, notify],
+  );
 
-  const handleSort = (property) => {
-    const isAsc = sortBy === property && sortOrder === 'asc';
-    setSortOrder(isAsc ? 'desc' : 'asc');
-    setSortBy(property);
-  };
+  const handleSort = useCallback(
+    (property) => {
+      const isAsc = sortBy === property && sortOrder === 'asc';
+      setSortOrder(isAsc ? 'desc' : 'asc');
+      setSortBy(property);
+    },
+    [sortBy, sortOrder],
+  );
 
-  const handleView = (product) => {
+  const handleView = useCallback((product) => {
     setSelectedProduct(product);
     setViewDrawer(true);
-  };
+  }, []);
 
-  const handleEdit = (product) => {
+  const handleEdit = useCallback((product) => {
     setSelectedProduct(product);
     setOpenDialog(true);
-  };
+  }, []);
 
-  const handleDelete = (product) => {
+  const handleDelete = useCallback((product) => {
     setSelectedProduct(product);
     setOpenDeleteDialog(true);
-  };
+  }, []);
 
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       setOpenDialog(false);
       notify('تحديث المنتج', selectedProduct ? 'تم تحديث المنتج' : 'تم إنشاء المنتج');
     }, 1000);
-  };
+  }, [selectedProduct, notify]);
 
-  const handleDeleteConfirm = () => {
+  const handleDeleteConfirm = useCallback(() => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
       setOpenDeleteDialog(false);
       notify('حذف المنتج', 'تم حذف المنتج');
     }, 1000);
-  };
+  }, [notify]);
 
-  const handleExport = () => {
+  const handleExport = useCallback(() => {
     notify('تصدير المنتجات', 'تم تصدير البيانات');
-  };
+  }, [notify]);
 
-  const handleDensityChange = (newDensity) => {
+  const handleDensityChange = useCallback((newDensity) => {
     setDensity(newDensity);
-  };
+  }, []);
 
-  const handleColumnToggle = (column) => {
+  const handleColumnToggle = useCallback((column) => {
     setColumnVisibility((prev) => ({
       ...prev,
       [column]: !prev[column],
     }));
-  };
+  }, []);
 
-  const filteredData = productData.filter((item) => {
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.brand.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus =
-      statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
-    const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
-    const matchesBrand = brandFilter === 'all' || item.brand === brandFilter;
-    return matchesSearch && matchesStatus && matchesCategory && matchesBrand;
-  });
+  const filteredData = useMemo(() => {
+    return productData.filter((item) => {
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.brand.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === 'all' || item.status.toLowerCase() === statusFilter.toLowerCase();
+      const matchesCategory = categoryFilter === 'all' || item.category === categoryFilter;
+      const matchesBrand = brandFilter === 'all' || item.brand === brandFilter;
+      return matchesSearch && matchesStatus && matchesCategory && matchesBrand;
+    });
+  }, [productData, searchTerm, statusFilter, categoryFilter, brandFilter]);
 
-  const sortedData = [...filteredData].sort((a, b) => {
-    let aValue = a[sortBy];
-    let bValue = b[sortBy];
+  const sortedData = useMemo(() => {
+    return [...filteredData].sort((a, b) => {
+      let aValue = a[sortBy];
+      let bValue = b[sortBy];
 
-    if (typeof aValue === 'string') {
-      aValue = aValue.toLowerCase();
-      bValue = bValue.toLowerCase();
-    }
+      if (typeof aValue === 'string') {
+        aValue = aValue.toLowerCase();
+        bValue = bValue.toLowerCase();
+      }
 
-    if (sortOrder === 'asc') {
-      return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
-    } else {
-      return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
-    }
-  });
+      if (sortOrder === 'asc') {
+        return aValue < bValue ? -1 : aValue > bValue ? 1 : 0;
+      } else {
+        return aValue > bValue ? -1 : aValue < bValue ? 1 : 0;
+      }
+    });
+  }, [filteredData, sortBy, sortOrder]);
 
-  const getStockStatus = (stock) => {
+  const getStockStatus = useCallback((stock) => {
     if (stock === 0) return { color: 'error', label: 'نفد من المخزون' };
     if (stock < 10) return { color: 'warning', label: 'مخزون منخفض' };
     return { color: 'success', label: 'متوفر' };
-  };
+  }, []);
 
-  const getDensityProps = () => {
+  const getDensityProps = useCallback(() => {
     switch (density) {
       case 'compact':
         return { size: 'small' };
@@ -662,11 +665,11 @@ const ProductList = () => {
       default:
         return { size: 'small' };
     }
-  };
+  }, [density]);
 
   return (
     <Box sx={{ p: 3 }}>
-      {/* Header */}
+      {/* رأس الصفحة */}
       <Box sx={{ mb: 3 }}>
         <Typography variant="h4" gutterBottom color="primary.main">
           إدارة المنتجات
@@ -983,7 +986,7 @@ const ProductList = () => {
                       direction={sortBy === 'name' ? sortOrder : 'asc'}
                       onClick={() => handleSort('name')}
                     >
-المنتج
+                      المنتج
                     </TableSortLabel>
                   </TableCell>
                   {columnVisibility.sku && (
@@ -993,7 +996,7 @@ const ProductList = () => {
                         direction={sortBy === 'sku' ? sortOrder : 'asc'}
                         onClick={() => handleSort('sku')}
                       >
-رمز المنتج
+                        رمز المنتج
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1004,7 +1007,7 @@ const ProductList = () => {
                         direction={sortBy === 'barcode' ? sortOrder : 'asc'}
                         onClick={() => handleSort('barcode')}
                       >
-الباركود
+                        الباركود
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1015,7 +1018,7 @@ const ProductList = () => {
                         direction={sortBy === 'category' ? sortOrder : 'asc'}
                         onClick={() => handleSort('category')}
                       >
-الفئة
+                        الفئة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1026,7 +1029,7 @@ const ProductList = () => {
                         direction={sortBy === 'subCategory' ? sortOrder : 'asc'}
                         onClick={() => handleSort('subCategory')}
                       >
-الفئة الفرعية
+                        الفئة الفرعية
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1037,7 +1040,7 @@ const ProductList = () => {
                         direction={sortBy === 'brand' ? sortOrder : 'asc'}
                         onClick={() => handleSort('brand')}
                       >
-العلامة التجارية
+                        العلامة التجارية
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1048,7 +1051,7 @@ const ProductList = () => {
                         direction={sortBy === 'model' ? sortOrder : 'asc'}
                         onClick={() => handleSort('model')}
                       >
-الموديل
+                        الموديل
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1059,7 +1062,7 @@ const ProductList = () => {
                         direction={sortBy === 'manufacturer' ? sortOrder : 'asc'}
                         onClick={() => handleSort('manufacturer')}
                       >
-الشركة المصنعة
+                        الشركة المصنعة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1070,7 +1073,7 @@ const ProductList = () => {
                         direction={sortBy === 'price' ? sortOrder : 'asc'}
                         onClick={() => handleSort('price')}
                       >
-السعر
+                        السعر
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1081,7 +1084,7 @@ const ProductList = () => {
                         direction={sortBy === 'comparePrice' ? sortOrder : 'asc'}
                         onClick={() => handleSort('comparePrice')}
                       >
-سعر المقارنة
+                        سعر المقارنة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1092,7 +1095,7 @@ const ProductList = () => {
                         direction={sortBy === 'cost' ? sortOrder : 'asc'}
                         onClick={() => handleSort('cost')}
                       >
-التكلفة
+                        التكلفة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1103,7 +1106,7 @@ const ProductList = () => {
                         direction={sortBy === 'wholesalePrice' ? sortOrder : 'asc'}
                         onClick={() => handleSort('wholesalePrice')}
                       >
-سعر الجملة
+                        سعر الجملة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1114,7 +1117,7 @@ const ProductList = () => {
                         direction={sortBy === 'stock' ? sortOrder : 'asc'}
                         onClick={() => handleSort('stock')}
                       >
-المخزون
+                        المخزون
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1125,7 +1128,7 @@ const ProductList = () => {
                         direction={sortBy === 'sales' ? sortOrder : 'asc'}
                         onClick={() => handleSort('sales')}
                       >
-المبيعات
+                        المبيعات
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1136,7 +1139,7 @@ const ProductList = () => {
                         direction={sortBy === 'status' ? sortOrder : 'asc'}
                         onClick={() => handleSort('status')}
                       >
-الحالة
+                        الحالة
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1147,7 +1150,7 @@ const ProductList = () => {
                         direction={sortBy === 'lastModified' ? sortOrder : 'asc'}
                         onClick={() => handleSort('lastModified')}
                       >
-آخر تعديل
+                        آخر تعديل
                       </TableSortLabel>
                     </TableCell>
                   )}
@@ -1539,10 +1542,16 @@ const ProductList = () => {
                   <ListItemText primary="المخزون" secondary={selectedProduct.stock} />
                 </ListItem>
                 <ListItem>
-                  <ListItemText primary="الحد الأدنى للمخزون" secondary={selectedProduct.minStock} />
+                  <ListItemText
+                    primary="الحد الأدنى للمخزون"
+                    secondary={selectedProduct.minStock}
+                  />
                 </ListItem>
                 <ListItem>
-                  <ListItemText primary="الحد الأقصى للمخزون" secondary={selectedProduct.maxStock} />
+                  <ListItemText
+                    primary="الحد الأقصى للمخزون"
+                    secondary={selectedProduct.maxStock}
+                  />
                 </ListItem>
                 <ListItem>
                   <ListItemText primary="الوزن" secondary={`${selectedProduct.weight} كيلو`} />
@@ -1569,10 +1578,7 @@ const ProductList = () => {
                   />
                 </ListItem>
                 <ListItem>
-                  <ListItemText
-                    primary="رقمي"
-                    secondary={selectedProduct.digital ? 'نعم' : 'لا'}
-                  />
+                  <ListItemText primary="رقمي" secondary={selectedProduct.digital ? 'نعم' : 'لا'} />
                 </ListItem>
                 <ListItem>
                   <ListItemText

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { IconBellRinging } from '@tabler/icons-react';
 import {
   IconButton,
   Box,
@@ -10,12 +11,10 @@ import {
   Typography,
   Button,
   Chip,
+  Stack,
 } from '@mui/material';
 import * as dropdownData from './data';
 import Scrollbar from '../../../../../components/custom-scroll/Scrollbar.jsx';
-
-import { IconBellRinging } from '@tabler/icons-react';
-import { Stack } from '@mui/system';
 
 const Notifications = () => {
   const [anchorEl2, setAnchorEl2] = useState(null);

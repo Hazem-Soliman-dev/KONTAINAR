@@ -24,23 +24,25 @@ import {
   DialogActions,
   Snackbar,
   Alert,
-  Skeleton,
+  Switch,
+  FormControlLabel,
+  Avatar,
+  Stack,
+  Zoom,
+  LinearProgress,
   Table,
   TableHead,
   TableBody,
   TableRow,
   TableCell,
   TablePagination,
-  Switch,
-  FormControlLabel,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Avatar,
-  Stack,
-  Zoom,
-  LinearProgress,
-  Fade,
+  List,
+  ListItem,
+  ListItemText,
+  Drawer,
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -50,61 +52,149 @@ import {
   Delete as DeleteIcon,
   Add as AddIcon,
   ExpandMore as ExpandMoreIcon,
-  Policy as PolicyIcon,
-  Schedule as ScheduleIcon,
-  CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  Assignment as AssignmentIcon,
-  AttachMoney as AttachMoneyIcon,
+  PhotoLibrary as PhotoLibraryIcon,
   TrendingUp as TrendingUpIcon,
   Visibility as VisibilityIcon,
   Refresh as RefreshIcon,
-  PhotoLibrary as PhotoLibraryIcon,
+  Speed as SpeedIcon,
+  Download as DownloadIcon,
+  CloudUpload as CloudUploadIcon,
+  Description as DescriptionIcon,
+  AttachFile as AttachFileIcon,
+  Image as ImageIcon,
+  VideoLibrary as VideoLibraryIcon,
+  Archive as ArchiveIcon,
+  ViewList as ViewListIcon,
+  GridView as GridViewIcon,
+  InsertDriveFile as InsertDriveFileIcon,
+  AudioFile as AudioFileIcon,
 } from '@mui/icons-material';
 
 const MediaLibrary = () => {
   const [loading, setLoading] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [openDrawer, setOpenDrawer] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [selectedMedia, setSelectedMedia] = useState(null);
+  const [viewMode, setViewMode] = useState('grid'); // grid or list
 
   // Stats data
   const mediaStats = [
     {
-      title: 'Total Files',
-      value: '1,247',
+      title: 'إجمالي الملفات',
+      value: '2,450',
       color: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
       icon: PhotoLibraryIcon,
-      change: '+89',
+      change: '+125',
     },
     {
-      title: 'Images',
-      value: '892',
+      title: 'المساحة المستخدمة',
+      value: '15.2 جيجا',
       color: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      icon: CheckCircleIcon,
-      change: '71.5%',
-    },
-    {
-      title: 'Videos',
-      value: '156',
-      color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: VisibilityIcon,
-      change: '12.5%',
-    },
-    {
-      title: 'Storage Used',
-      value: '2.4GB',
-      color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
-      icon: TrendingUpIcon,
+      icon: AttachFileIcon,
       change: '68%',
     },
+    {
+      title: 'الملفات الجديدة',
+      value: '89',
+      color: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      icon: TrendingUpIcon,
+      change: '+12%',
+    },
+    {
+      title: 'معدل الاستخدام',
+      value: '94.5%',
+      color: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+      icon: SpeedIcon,
+      change: '+2.1%',
+    },
+  ];
+
+  // Mock data for media files
+  const mediaData = [
+    {
+      id: 1,
+      name: 'صورة المنتج الرئيسي',
+      type: 'image',
+      size: '2.5 ميجا',
+      format: 'jpg',
+      url: '/images/product-main.jpg',
+      thumbnail: '/images/product-main-thumb.jpg',
+      category: 'منتجات',
+      tags: ['منتج', 'رئيسي', 'صورة'],
+      uploadedBy: 'أحمد محمد',
+      uploadedAt: '2024-01-15',
+      lastModified: '2024-01-20',
+      views: 1250,
+      downloads: 45,
+      isPublic: true,
+      isFeatured: true,
+      dimensions: '1920x1080',
+      alt: 'صورة المنتج الرئيسي',
+      description: 'صورة عالية الجودة للمنتج الرئيسي',
+    },
+    {
+      id: 2,
+      name: 'فيديو العرض التوضيحي',
+      type: 'video',
+      size: '45.2 ميجا',
+      format: 'mp4',
+      url: '/videos/demo.mp4',
+      thumbnail: '/images/demo-thumb.jpg',
+      category: 'عروض',
+      tags: ['فيديو', 'عرض', 'توضيحي'],
+      uploadedBy: 'فاطمة علي',
+      uploadedAt: '2024-01-18',
+      lastModified: '2024-01-22',
+      views: 890,
+      downloads: 23,
+      isPublic: true,
+      isFeatured: false,
+      dimensions: '1920x1080',
+      alt: 'فيديو العرض التوضيحي',
+      description: 'فيديو توضيحي للمنتج',
+    },
+    {
+      id: 3,
+      name: 'دليل المستخدم',
+      type: 'document',
+      size: '3.8 ميجا',
+      format: 'pdf',
+      url: '/documents/user-guide.pdf',
+      thumbnail: '/images/pdf-thumb.jpg',
+      category: 'وثائق',
+      tags: ['دليل', 'مستخدم', 'وثيقة'],
+      uploadedBy: 'محمد أحمد',
+      uploadedAt: '2024-01-20',
+      lastModified: '2024-01-25',
+      views: 450,
+      downloads: 67,
+      isPublic: false,
+      isFeatured: false,
+      dimensions: 'A4',
+      alt: 'دليل المستخدم',
+      description: 'دليل شامل لاستخدام المنتج',
+    },
+  ];
+
+  const categories = ['منتجات', 'عروض', 'وثائق', 'صور', 'فيديوهات', 'أصوات', 'أخرى'];
+
+  const fileTypes = [
+    { value: 'image', label: 'صور', icon: ImageIcon, color: 'primary' },
+    { value: 'video', label: 'فيديوهات', icon: VideoLibraryIcon, color: 'secondary' },
+    { value: 'document', label: 'وثائق', icon: DescriptionIcon, color: 'info' },
+    { value: 'audio', label: 'أصوات', icon: AudioFileIcon, color: 'warning' },
+    { value: 'archive', label: 'أرشيف', icon: ArchiveIcon, color: 'error' },
   ];
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
       setIsRefreshing(false);
-      setSnackbar({ open: true, message: 'Data refreshed successfully', severity: 'success' });
+      setSnackbar({ open: true, message: 'تم تحديث البيانات بنجاح', severity: 'success' });
     }, 1000);
   };
 
@@ -114,43 +204,25 @@ const MediaLibrary = () => {
       setLoading(false);
     }, 800);
   }, []);
+
   const [formData, setFormData] = useState({
-    title: 'Media Library',
+    title: 'مكتبة الوسائط',
     content: '',
     isActive: true,
-    mediaType: 'all',
-    fileSize: 10,
-    allowedFormats: 'jpg,png,gif,mp4,pdf',
-    contactInfo: '',
+    language: 'ar',
     lastUpdated: new Date().toISOString().split('T')[0],
+    allowUpload: true,
+    allowDownload: true,
+    allowSharing: true,
+    showThumbnails: true,
+    showDetails: true,
+    showCategories: true,
+    showTags: true,
+    requireApproval: false,
+    maxFileSize: 100,
+    allowedFormats: ['jpg', 'png', 'gif', 'mp4', 'pdf', 'doc', 'docx'],
+    maxFiles: 1000,
   });
-
-  const [sections, setSections] = useState([
-    {
-      id: 1,
-      title: 'Upload Guidelines',
-      content: 'Maximum file size is 10MB. Supported formats: JPG, PNG, GIF, MP4, PDF.',
-      isExpanded: true,
-    },
-    {
-      id: 2,
-      title: 'Usage Rights',
-      content: 'All uploaded media must have proper usage rights and permissions.',
-      isExpanded: false,
-    },
-    {
-      id: 3,
-      title: 'Storage Limits',
-      content: 'Each user has a 1GB storage limit for media files.',
-      isExpanded: false,
-    },
-    {
-      id: 4,
-      title: 'File Organization',
-      content: 'Organize files in folders by category or project for easy access.',
-      isExpanded: false,
-    },
-  ]);
 
   const handleSave = () => {
     setLoading(true);
@@ -158,38 +230,50 @@ const MediaLibrary = () => {
       setLoading(false);
       setSnackbar({
         open: true,
-        message: 'Media library settings updated successfully',
+        message: 'تم تحديث إعدادات مكتبة الوسائط بنجاح',
         severity: 'success',
       });
     }, 1000);
   };
 
-  const handleAddSection = () => {
-    const newSection = {
-      id: sections.length + 1,
-      title: 'New Section',
-      content: '',
-      isExpanded: false,
-    };
-    setSections([...sections, newSection]);
+  const handleAddMedia = () => {
+    setOpenDialog(true);
   };
 
-  const handleDeleteSection = (id) => {
-    setSections(sections.filter((section) => section.id !== id));
+  const handleDeleteMedia = (id) => {
+    setSnackbar({
+      open: true,
+      message: 'تم حذف الملف بنجاح',
+      severity: 'success',
+    });
   };
 
-  const handleSectionChange = (id, field, value) => {
-    setSections(
-      sections.map((section) => (section.id === id ? { ...section, [field]: value } : section)),
-    );
+  const handleViewMedia = (media) => {
+    setSelectedMedia(media);
+    setOpenDrawer(true);
   };
 
-  const handleToggleExpanded = (id) => {
-    setSections(
-      sections.map((section) =>
-        section.id === id ? { ...section, isExpanded: !section.isExpanded } : section,
-      ),
-    );
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  const getFileTypeIcon = (type) => {
+    const fileType = fileTypes.find((ft) => ft.value === type);
+    return fileType ? fileType.icon : InsertDriveFileIcon;
+  };
+
+  const getFileTypeColor = (type) => {
+    const fileType = fileTypes.find((ft) => ft.value === type);
+    return fileType ? fileType.color : 'default';
+  };
+
+  const formatFileSize = (size) => {
+    return size;
   };
 
   return (
@@ -201,10 +285,10 @@ const MediaLibrary = () => {
         >
           <Box>
             <Typography variant="h4" gutterBottom sx={{ color: 'primary.main', fontWeight: 700 }}>
-              Media Library Management
+              مكتبة الوسائط
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Manage your store's media library and file uploads
+              إدارة وتنظيم الملفات والوسائط في المكتبة
             </Typography>
             <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />}>
               <Link
@@ -213,12 +297,12 @@ const MediaLibrary = () => {
                 sx={{ display: 'flex', alignItems: 'center' }}
               >
                 <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                Main Store
+                المتجر الرئيسي
               </Link>
               <Link color="inherit" href="/main-store/cms">
-                CMS
+                إدارة المحتوى
               </Link>
-              <Typography color="text.primary">Media Library</Typography>
+              <Typography color="text.primary">مكتبة الوسائط</Typography>
             </Breadcrumbs>
           </Box>
           <Stack direction="row" spacing={2}>
@@ -228,7 +312,7 @@ const MediaLibrary = () => {
               onClick={handleRefresh}
               disabled={isRefreshing}
             >
-              {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
             </Button>
             <Button
               variant="contained"
@@ -236,7 +320,7 @@ const MediaLibrary = () => {
               onClick={handleSave}
               disabled={loading}
             >
-              Save Media
+              حفظ التغييرات
             </Button>
           </Stack>
         </Box>
@@ -310,14 +394,14 @@ const MediaLibrary = () => {
       <Paper sx={{ p: 3, mb: 3, borderRadius: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
           <Avatar sx={{ bgcolor: 'info.main' }}>
-            <AssignmentIcon />
+            <PhotoLibraryIcon />
           </Avatar>
           <Box>
             <Typography variant="h6" sx={{ color: 'primary.main', fontWeight: 600 }}>
-              Media Management
+              إعدادات مكتبة الوسائط
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Configure and manage your media library
+              تخصيص وإدارة مكتبة الوسائط
             </Typography>
           </Box>
         </Box>
@@ -325,35 +409,40 @@ const MediaLibrary = () => {
           <Grid size={{ xs: 12, md: 3 }}>
             <TextField
               fullWidth
-              label="Search media"
+              label="البحث في الملفات"
               size="small"
-              placeholder="Search media files..."
+              placeholder="البحث في الملفات..."
             />
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Status</InputLabel>
-              <Select value="all" label="Status">
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="active">Active</MenuItem>
-                <MenuItem value="inactive">Inactive</MenuItem>
+              <InputLabel>النوع</InputLabel>
+              <Select value="all" label="النوع">
+                <MenuItem value="all">الكل</MenuItem>
+                {fileTypes.map((type) => (
+                  <MenuItem key={type.value} value={type.value}>
+                    {type.label}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <FormControl fullWidth size="small">
-              <InputLabel>Media Type</InputLabel>
-              <Select value="all" label="Media Type">
-                <MenuItem value="all">All Types</MenuItem>
-                <MenuItem value="images">Images</MenuItem>
-                <MenuItem value="videos">Videos</MenuItem>
-                <MenuItem value="documents">Documents</MenuItem>
+              <InputLabel>الفئة</InputLabel>
+              <Select value="all" label="الفئة">
+                <MenuItem value="all">الكل</MenuItem>
+                {categories.map((category) => (
+                  <MenuItem key={category} value={category}>
+                    {category}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
           <Grid size={{ xs: 12, md: 2 }}>
             <Button variant="outlined" size="small" fullWidth>
-              Reset Filters
+              إعادة تعيين الفلاتر
             </Button>
           </Grid>
           <Grid size={{ xs: 12, md: 3 }}>
@@ -365,15 +454,15 @@ const MediaLibrary = () => {
                 disabled={loading}
                 size="small"
               >
-                Save Settings
+                حفظ الإعدادات
               </Button>
               <Button
                 variant="outlined"
                 startIcon={<AddIcon />}
-                onClick={handleAddSection}
+                onClick={handleAddMedia}
                 size="small"
               >
-                Add Section
+                إضافة ملف
               </Button>
             </Box>
           </Grid>
@@ -387,7 +476,7 @@ const MediaLibrary = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Media Settings
+                إعدادات المكتبة
               </Typography>
               <Divider sx={{ mb: 2 }} />
 
@@ -395,7 +484,7 @@ const MediaLibrary = () => {
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Library Title"
+                    label="عنوان الصفحة"
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     size="small"
@@ -409,54 +498,133 @@ const MediaLibrary = () => {
                         onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                       />
                     }
-                    label="Library Active"
+                    label="المكتبة نشطة"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>Media Type</InputLabel>
-                    <Select
-                      value={formData.mediaType}
-                      label="Media Type"
-                      onChange={(e) => setFormData({ ...formData, mediaType: e.target.value })}
-                    >
-                      <MenuItem value="all">All Types</MenuItem>
-                      <MenuItem value="images">Images Only</MenuItem>
-                      <MenuItem value="videos">Videos Only</MenuItem>
-                      <MenuItem value="documents">Documents Only</MenuItem>
-                    </Select>
-                  </FormControl>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowUpload}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowUpload: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بالرفع"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowDownload}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowDownload: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بالتحميل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.allowSharing}
+                        onChange={(e) =>
+                          setFormData({ ...formData, allowSharing: e.target.checked })
+                        }
+                      />
+                    }
+                    label="السماح بالمشاركة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showThumbnails}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showThumbnails: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض الصور المصغرة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showDetails}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showDetails: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض التفاصيل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showCategories}
+                        onChange={(e) =>
+                          setFormData({ ...formData, showCategories: e.target.checked })
+                        }
+                      />
+                    }
+                    label="عرض الفئات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.showTags}
+                        onChange={(e) => setFormData({ ...formData, showTags: e.target.checked })}
+                      />
+                    }
+                    label="عرض العلامات"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.requireApproval}
+                        onChange={(e) =>
+                          setFormData({ ...formData, requireApproval: e.target.checked })
+                        }
+                      />
+                    }
+                    label="طلب الموافقة"
+                  />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Max File Size (MB)"
+                    label="الحد الأقصى لحجم الملف (ميجا)"
                     type="number"
-                    value={formData.fileSize}
-                    onChange={(e) => setFormData({ ...formData, fileSize: e.target.value })}
+                    value={formData.maxFileSize}
+                    onChange={(e) =>
+                      setFormData({ ...formData, maxFileSize: parseInt(e.target.value) })
+                    }
                     size="small"
                   />
                 </Grid>
                 <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
-                    label="Allowed Formats"
-                    value={formData.allowedFormats}
-                    onChange={(e) => setFormData({ ...formData, allowedFormats: e.target.value })}
+                    label="الحد الأقصى للملفات"
+                    type="number"
+                    value={formData.maxFiles}
+                    onChange={(e) =>
+                      setFormData({ ...formData, maxFiles: parseInt(e.target.value) })
+                    }
                     size="small"
-                    placeholder="e.g., jpg,png,gif,mp4,pdf"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="Contact Information"
-                    multiline
-                    rows={2}
-                    value={formData.contactInfo}
-                    onChange={(e) => setFormData({ ...formData, contactInfo: e.target.value })}
-                    size="small"
-                    placeholder="Technical support contact details..."
                   />
                 </Grid>
               </Grid>
@@ -464,7 +632,7 @@ const MediaLibrary = () => {
           </Card>
         </Grid>
 
-        {/* Media Sections */}
+        {/* Media Files */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card>
             <CardContent>
@@ -476,86 +644,349 @@ const MediaLibrary = () => {
                   mb: 2,
                 }}
               >
-                <Typography variant="h6">Media Guidelines</Typography>
-                <Chip label={`${sections.length} sections`} color="primary" size="small" />
+                <Typography variant="h6">قائمة الملفات</Typography>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Chip label={`${mediaData.length} ملف`} color="primary" size="small" />
+                  <IconButton
+                    size="small"
+                    onClick={() => setViewMode('grid')}
+                    color={viewMode === 'grid' ? 'primary' : 'default'}
+                  >
+                    <GridViewIcon />
+                  </IconButton>
+                  <IconButton
+                    size="small"
+                    onClick={() => setViewMode('list')}
+                    color={viewMode === 'list' ? 'primary' : 'default'}
+                  >
+                    <ViewListIcon />
+                  </IconButton>
+                </Box>
               </Box>
               <Divider sx={{ mb: 2 }} />
 
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PolicyIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                        size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
+              {viewMode === 'grid' ? (
+                <ImageList cols={3} gap={16}>
+                  {mediaData.map((media) => (
+                    <ImageListItem key={media.id}>
+                      <img
+                        src={media.thumbnail || media.url}
+                        alt={media.alt}
+                        loading="lazy"
+                        style={{ height: 200, objectFit: 'cover' }}
                       />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="Delete Section">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center',
-                              width: 32,
-                              height: 32,
-                              borderRadius: '50%',
-                              cursor: 'pointer',
-                              '&:hover': {
-                                backgroundColor: 'action.hover',
-                              },
-                            }}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
+                      <ImageListItemBar
+                        title={media.name}
+                        subtitle={
+                          <Box>
+                            <Typography variant="body2" color="white">
+                              {media.size} • {media.format.toUpperCase()}
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
+                              <Chip label={media.category} size="small" color="primary" />
+                              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                <VisibilityIcon sx={{ fontSize: 16, mr: 0.5 }} />
+                                {media.views}
+                              </Box>
+                            </Box>
                           </Box>
+                        }
+                        actionIcon={
+                          <Stack direction="row" spacing={1}>
+                            <Tooltip title="عرض" arrow>
+                              <IconButton
+                                size="small"
+                                sx={{ color: 'white' }}
+                                onClick={() => handleViewMedia(media)}
+                              >
+                                <VisibilityIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="تحميل" arrow>
+                              <IconButton size="small" sx={{ color: 'white' }}>
+                                <DownloadIcon />
+                              </IconButton>
+                            </Tooltip>
+                            <Tooltip title="حذف" arrow>
+                              <IconButton
+                        size="small"
+                                sx={{ color: 'white' }}
+                                onClick={() => handleDeleteMedia(media.id)}
+                              >
+                                <DeleteIcon />
+                              </IconButton>
                         </Tooltip>
+                          </Stack>
+                        }
+                      />
+                    </ImageListItem>
+                  ))}
+                </ImageList>
+              ) : (
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>الملف</TableCell>
+                      <TableCell>النوع</TableCell>
+                      <TableCell>الحجم</TableCell>
+                      <TableCell>الفئة</TableCell>
+                      <TableCell>المشاهدات</TableCell>
+                      <TableCell>التحميلات</TableCell>
+                      <TableCell align="right">الإجراءات</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {mediaData
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((media) => (
+                        <TableRow key={media.id} hover>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                              <Avatar sx={{ bgcolor: `${getFileTypeColor(media.type)}.main` }}>
+                                <getFileTypeIcon type={media.type} />
+                              </Avatar>
+                              <Box>
+                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                  {media.name}
+                                </Typography>
+                                <Typography variant="caption" color="text.secondary">
+                                  {media.description}
+                                </Typography>
                       </Box>
                     </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
-                    <TextField
-                      fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="Enter section content..."
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={
+                                fileTypes.find((ft) => ft.value === media.type)?.label || media.type
+                              }
                       size="small"
-                    />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PolicyIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    No media guidelines yet
+                              color={getFileTypeColor(media.type)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {media.size}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Chip label={media.category} size="small" color="primary" />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {media.views.toLocaleString()}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    Add your first media guideline to get started
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {media.downloads.toLocaleString()}
                   </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    Add First Guideline
-                  </Button>
-                </Box>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Stack direction="row" spacing={1} justifyContent="flex-end">
+                              <Tooltip title="عرض" arrow>
+                                <IconButton size="small" onClick={() => handleViewMedia(media)}>
+                                  <VisibilityIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="تحميل" arrow>
+                                <IconButton size="small">
+                                  <DownloadIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="حذف" arrow>
+                                <IconButton
+                                  size="small"
+                                  color="error"
+                                  onClick={() => handleDeleteMedia(media.id)}
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              )}
+              {viewMode === 'list' && (
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={mediaData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
               )}
             </CardContent>
           </Card>
         </Grid>
       </Grid>
+
+      {/* Add Media Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+        <DialogTitle>إضافة ملف جديد</DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid size={{ xs: 12 }}>
+              <Button
+                variant="outlined"
+                component="label"
+                startIcon={<CloudUploadIcon />}
+                fullWidth
+                sx={{ py: 3 }}
+              >
+                رفع ملف
+                <input type="file" hidden multiple />
+              </Button>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="اسم الملف"
+                placeholder="صورة المنتج الرئيسي"
+                helperText="اسم واضح ومحدد للملف"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="وصف الملف"
+                placeholder="صورة عالية الجودة للمنتج الرئيسي"
+                multiline
+                rows={3}
+                helperText="وصف تفصيلي للملف"
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>النوع</InputLabel>
+                <Select label="النوع">
+                  {fileTypes.map((type) => (
+                    <MenuItem key={type.value} value={type.value}>
+                      {type.label}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>الفئة</InputLabel>
+                <Select label="الفئة">
+                  {categories.map((category) => (
+                    <MenuItem key={category} value={category}>
+                      {category}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="العلامات"
+                placeholder="منتج, رئيسي, صورة"
+                helperText="افصل العلامات بفاصلة"
+              />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel control={<Switch />} label="ملف عام" />
+            </Grid>
+            <Grid size={{ xs: 12 }}>
+              <FormControlLabel control={<Switch />} label="ملف مميز" />
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+          <Button variant="contained" onClick={() => setOpenDialog(false)}>
+            إضافة الملف
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Media Details Drawer */}
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        onClose={() => setOpenDrawer(false)}
+        sx={{ '& .MuiDrawer-paper': { width: 400 } }}
+      >
+        <Box sx={{ p: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            تفاصيل الملف
+          </Typography>
+          {selectedMedia && (
+            <Box>
+              <Box sx={{ mb: 2 }}>
+                <img
+                  src={selectedMedia.thumbnail || selectedMedia.url}
+                  alt={selectedMedia.alt}
+                  style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8 }}
+                />
+              </Box>
+              <Typography variant="body1" sx={{ mb: 2, fontWeight: 500 }}>
+                {selectedMedia.name}
+              </Typography>
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                {selectedMedia.description}
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+              <List>
+                <ListItem>
+                  <ListItemText
+                    primary="النوع"
+                    secondary={
+                      fileTypes.find((ft) => ft.value === selectedMedia.type)?.label ||
+                      selectedMedia.type
+                    }
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="الحجم" secondary={selectedMedia.size} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="التنسيق" secondary={selectedMedia.format.toUpperCase()} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="الفئة" secondary={selectedMedia.category} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="رفع بواسطة" secondary={selectedMedia.uploadedBy} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="تاريخ الرفع" secondary={selectedMedia.uploadedAt} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="آخر تعديل" secondary={selectedMedia.lastModified} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="المشاهدات"
+                    secondary={selectedMedia.views.toLocaleString()}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText
+                    primary="التحميلات"
+                    secondary={selectedMedia.downloads.toLocaleString()}
+                  />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="الأبعاد" secondary={selectedMedia.dimensions} />
+                </ListItem>
+                <ListItem>
+                  <ListItemText primary="العلامات" secondary={selectedMedia.tags.join(', ')} />
+                </ListItem>
+              </List>
+            </Box>
+          )}
+        </Box>
+      </Drawer>
 
       {/* Snackbar */}
       <Snackbar

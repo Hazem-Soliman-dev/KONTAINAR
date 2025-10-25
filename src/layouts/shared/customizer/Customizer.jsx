@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { IconX, IconSettings, IconCheck } from '@tabler/icons-react';
 import {
   Fab,
   Drawer,
@@ -10,13 +11,8 @@ import {
   Typography,
   Tooltip,
   Stack,
+  Box,
 } from '@mui/material';
-
-import Box from '@mui/material/Box';
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { IconX, IconSettings, IconCheck } from '@tabler/icons-react';
-import Scrollbar from 'src/components/custom-scroll/Scrollbar';
 import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone';
 import DarkModeTwoToneIcon from '@mui/icons-material/DarkModeTwoTone';
 import SwipeLeftAltTwoToneIcon from '@mui/icons-material/SwipeLeftAltTwoTone';
@@ -26,6 +22,7 @@ import CallToActionTwoToneIcon from '@mui/icons-material/CallToActionTwoTone';
 import ViewSidebarTwoToneIcon from '@mui/icons-material/ViewSidebarTwoTone';
 import WebAssetTwoToneIcon from '@mui/icons-material/WebAssetTwoTone';
 import { ViewComfyTwoTone, PaddingTwoTone, BorderOuter } from '@mui/icons-material';
+import Scrollbar from 'src/components/custom-scroll/Scrollbar';
 import { CustomizerContext } from 'src/context/CustomizerContext';
 
 const SidebarWidth = "320px";

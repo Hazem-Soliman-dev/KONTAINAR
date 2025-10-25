@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
-// mui imports
+import { useTranslation } from 'react-i18next';
 import {
   ListItemIcon,
   ListItem,
@@ -12,8 +12,6 @@ import {
   useTheme,
   Typography,
 } from '@mui/material';
-
-import { useTranslation } from 'react-i18next';
 import { CustomizerContext } from '../../../../../../context/CustomizerContext.jsx';
 
 const NavItem = ({ item, level, pathDirect, onClick, hideMenu }) => {

@@ -2,7 +2,6 @@ import img1 from '../../../../../assets/images/profile/user-1.jpg';
 import img2 from '../../../../../assets/images/profile/user-2.jpg';
 import img3 from '../../../../../assets/images/profile/user-3.jpg';
 import img4 from '../../../../../assets/images/profile/user-4.jpg';
-
 import icon1 from '../../../../../assets/images/svgs/icon-account.svg';
 import icon2 from '../../../../../assets/images/svgs/icon-inbox.svg';
 import icon3 from '../../../../../assets/images/svgs/icon-tasks.svg';

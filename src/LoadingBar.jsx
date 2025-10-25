@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import TopLoadingBar from 'react-top-loading-bar';
 import { useLocation } from 'react-router-dom';
+import TopLoadingBar from 'react-top-loading-bar';
 
 function LoadingBar() {
   const [progress, setProgress] = useState(0);
