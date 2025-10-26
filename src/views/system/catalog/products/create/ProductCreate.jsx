@@ -9,10 +9,6 @@ import {
   Breadcrumbs,
   Link,
   Alert,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Snackbar,
   FormControl,
   InputLabel,
@@ -29,27 +25,12 @@ import {
   Tabs,
   Tab,
   Autocomplete,
-  Slider,
-  Rating,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
   IconButton,
   Tooltip,
   Badge,
   Avatar,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemIcon,
   Checkbox,
-  Radio,
-  RadioGroup,
-  FormLabel,
   FormGroup,
-  Zoom,
-  LinearProgress,
-  Fade,
 } from '@mui/material';
 import {
   Save as SaveIcon,
@@ -59,214 +40,25 @@ import {
   Add as AddIcon,
   DeleteOutline as DeleteIcon,
   NavigateNext as NavigateNextIcon,
-  ExpandMore as ExpandMoreIcon,
   Image as ImageIcon,
   AttachMoney as MoneyIcon,
-  LocalShipping as ShippingIcon,
   Star as StarIcon,
   Discount as DiscountIcon,
   Store as StoreIcon,
   Settings as SettingsIcon,
-  Visibility as VisibilityIcon,
-  VisibilityOff as VisibilityOffIcon,
-  Edit as EditIcon,
-  Close as CloseIcon,
-  Check as CheckIcon,
-  Warning as WarningIcon,
   Info as InfoIcon,
   TrendingUp as TrendingUpIcon,
-  Category as CategoryIcon,
-  Tag as TagIcon,
   Description as DescriptionIcon,
   Search as SearchIcon,
-  FilterList as FilterIcon,
-  Sort as SortIcon,
   Refresh as RefreshIcon,
-  Download as DownloadIcon,
   Upload as UploadIcon,
-  Share as ShareIcon,
-  Favorite as FavoriteIcon,
-  ContentCopy as DuplicateIcon,
-  ShoppingCart as CartIcon,
-  Person as PersonIcon,
-  Email as EmailIcon,
-  Phone as PhoneIcon,
-  LocationOn as LocationIcon,
-  Schedule as ScheduleIcon,
-  Security as SecurityIcon,
-  Verified as VerifiedIcon,
   Public as PublicIcon,
   Lock as LockIcon,
-  Key as KeyIcon,
-  Code as CodeIcon,
-  Language as LanguageIcon,
-  Translate as TranslateIcon,
   CheckCircle as CheckCircleIcon,
-  Assignment as AssignmentIcon,
   AttachMoney as AttachMoneyIcon,
-  Palette as PaletteIcon,
   PhotoCamera as CameraIcon,
   CloudUpload as CloudUploadIcon,
-  CloudDownload as CloudDownloadIcon,
-  CloudSync as CloudSyncIcon,
-  Sync as SyncIcon,
-  Autorenew as AutorenewIcon,
-  Cached as CachedIcon,
-  Update as UpdateIcon,
-  Build as BuildIcon,
-  Construction as ConstructionIcon,
-  Engineering as EngineeringIcon,
-  Science as ScienceIcon,
-  Psychology as PsychologyIcon,
-  Biotech as BiotechIcon,
-  MedicalServices as MedicalIcon,
-  School as SchoolIcon,
-  Work as WorkIcon,
-  Business as BusinessIcon,
-  AccountBalance as AccountBalanceIcon,
-  MonetizationOn as MonetizationOnIcon,
-  TrendingDown as TrendingDownIcon,
-  ShowChart as ShowChartIcon,
-  BarChart as BarChartIcon,
-  PieChart as PieChartIcon,
-  Assessment as AssessmentIcon,
-  Analytics as AnalyticsIcon,
-  Insights as InsightsIcon,
-  Timeline as TimelineIcon,
-  History as HistoryIcon,
-  Schedule as ScheduleIcon2,
-  Event as EventIcon,
-  CalendarToday as CalendarIcon,
-  DateRange as DateRangeIcon,
-  AccessTime as AccessTimeIcon,
-  Timer as TimerIcon,
-  HourglassEmpty as HourglassIcon,
-  Speed as SpeedIcon,
-  FlashOn as FlashIcon,
-  Bolt as BoltIcon,
-  ElectricBolt as ElectricBoltIcon,
-  Power as PowerIcon,
-  BatteryFull as BatteryIcon,
-  SignalCellularAlt as SignalIcon,
-  Wifi as WifiIcon,
-  Bluetooth as BluetoothIcon,
-  Usb as UsbIcon,
-  Cable as CableIcon,
-  Router as RouterIcon,
-  Memory as MemoryIcon,
-  Storage as StorageIcon,
-  SdCard as SdCardIcon,
-  SimCard as SimCardIcon,
-  CreditCard as CreditCardIcon,
-  Payment as PaymentIcon,
-  Receipt as ReceiptIcon,
-  Description as DescriptionIcon2,
-  Article as ArticleIcon,
-  TextSnippet as TextSnippetIcon,
-  Notes as NotesIcon,
-  StickyNote2 as StickyNoteIcon,
-  Task as TaskIcon,
-  Checklist as ChecklistIcon,
-  Done as DoneIcon,
-  DoneAll as DoneAllIcon,
-  CheckCircleOutline as CheckCircleOutlineIcon,
-  RadioButtonUnchecked as RadioButtonUncheckedIcon,
-  RadioButtonChecked as RadioButtonCheckedIcon,
-  IndeterminateCheckBox as IndeterminateCheckBoxIcon,
-  CheckBox as CheckBoxIcon,
-  CheckBoxOutlineBlank as CheckBoxOutlineBlankIcon,
-  ToggleOn as ToggleOnIcon,
-  ToggleOff as ToggleOffIcon,
-  PlayArrow as PlayArrowIcon,
-  Pause as PauseIcon,
-  Stop as StopIcon,
-  SkipNext as SkipNextIcon,
-  SkipPrevious as SkipPreviousIcon,
-  FastForward as FastForwardIcon,
-  FastRewind as FastRewindIcon,
-  Replay as ReplayIcon,
-  Shuffle as ShuffleIcon,
-  Repeat as RepeatIcon,
-  VolumeUp as VolumeUpIcon,
-  VolumeDown as VolumeDownIcon,
-  VolumeOff as VolumeOffIcon,
-  VolumeMute as VolumeMuteIcon,
-  Mic as MicIcon,
-  MicOff as MicOffIcon,
   Videocam as VideocamIcon,
-  VideocamOff as VideocamOffIcon,
-  ScreenShare as ScreenShareIcon,
-  StopScreenShare as StopScreenShareIcon,
-  Fullscreen as FullscreenIcon,
-  FullscreenExit as FullscreenExitIcon,
-  ZoomIn as ZoomInIcon,
-  ZoomOut as ZoomOutIcon,
-  CenterFocusStrong as CenterFocusStrongIcon,
-  CenterFocusWeak as CenterFocusWeakIcon,
-  Crop as CropIcon,
-  RotateLeft as RotateLeftIcon,
-  RotateRight as RotateRightIcon,
-  Flip as FlipIcon,
-  Transform as TransformIcon,
-  Straighten as StraightenIcon,
-  Tune as TuneIcon,
-  Filter as FilterIcon2,
-  SortByAlpha as SortByAlphaIcon,
-  Sort as SortIcon2,
-  SwapVert as SwapVertIcon,
-  SwapHoriz as SwapHorizIcon,
-  ImportExport as ImportExportIcon,
-  CompareArrows as CompareArrowsIcon,
-  TrendingFlat as TrendingFlatIcon,
-  TrendingUp as TrendingUpIcon2,
-  TrendingDown as TrendingDownIcon2,
-  KeyboardArrowUp as KeyboardArrowUpIcon,
-  KeyboardArrowDown as KeyboardArrowDownIcon,
-  KeyboardArrowLeft as KeyboardArrowLeftIcon,
-  KeyboardArrowRight as KeyboardArrowRightIcon,
-  ArrowUpward as ArrowUpwardIcon,
-  ArrowDownward as ArrowDownwardIcon,
-  ArrowBack as ArrowBackIcon,
-  ArrowForward as ArrowForwardIcon,
-  ArrowDropUp as ArrowDropUpIcon,
-  ArrowDropDown as ArrowDropDownIcon,
-  ArrowLeft as ArrowLeftIcon,
-  ArrowRight as ArrowRightIcon,
-  ArrowBackIos as ArrowBackIosIcon,
-  ArrowForwardIos as ArrowForwardIosIcon,
-  FirstPage as FirstPageIcon,
-  LastPage as LastPageIcon,
-  ChevronLeft as ChevronLeftIcon,
-  ChevronRight as ChevronRightIcon,
-  ExpandLess as ExpandLessIcon,
-  ExpandMore as ExpandMoreIcon2,
-  UnfoldMore as UnfoldMoreIcon,
-  UnfoldLess as UnfoldLessIcon,
-  OpenInFull as OpenInFullIcon,
-  CloseFullscreen as CloseFullscreenIcon,
-  Minimize as MinimizeIcon,
-  Maximize as MaximizeIcon,
-  Fullscreen as FullscreenIcon2,
-  FullscreenExit as FullscreenExitIcon2,
-  PictureInPicture as PictureInPictureIcon,
-  PictureInPictureAlt as PictureInPictureAltIcon,
-  AspectRatio as AspectRatioIcon,
-  CropFree as CropFreeIcon,
-  CropSquare as CropSquareIcon,
-  CropPortrait as CropPortraitIcon,
-  CropLandscape as CropLandscapeIcon,
-  CropDin as CropDinIcon,
-  CropOriginal as CropOriginalIcon,
-  CropRotate as CropRotateIcon,
-  Crop169 as Crop169Icon,
-  CropDin as CropDinIcon2,
-  CropFree as CropFreeIcon2,
-  CropSquare as CropSquareIcon2,
-  CropPortrait as CropPortraitIcon2,
-  CropLandscape as CropLandscapeIcon2,
-  CropOriginal as CropOriginalIcon2,
-  CropRotate as CropRotateIcon2,
-  Crop169 as Crop169Icon2,
 } from '@mui/icons-material';
 
 // Rich Text Editor Component
@@ -722,11 +514,11 @@ const ProductCreate = () => {
       en: '',
       ar: '',
     },
-    category: '',
+    mainCategory: '',
     subCategory: '',
+    categoryDescription: '',
     brand: '',
     model: '',
-    manufacturer: '',
 
     // Pricing
     cost: '', // سعر التكلفة (سعر الشراء) - من ERP
@@ -743,12 +535,16 @@ const ProductCreate = () => {
     stock: '',
     minStock: '',
     maxStock: '',
+    mainStoreStock: '',
+    suppliersStock: '',
     weight: '',
     dimensions: { length: '', width: '', height: '' },
     unit: 'piece', // piece, kg, liter, etc.
 
     // Status & Visibility
-    status: 'draft', // draft, active, inactive, out_of_stock, discontinued
+    availability: 'available', // available, unavailable
+    productStatus: 'new', // new, just_arrived, available, best_selling, most_requested (for available)
+    unavailableReason: '', // unavailable, 1-3_days, 1-7_days, 1-15_days, pre_order, disabled (for unavailable)
     visibility: 'public', // public, private, hidden
     featured: false,
     digital: false,
@@ -781,6 +577,16 @@ const ProductCreate = () => {
     warranty: '',
     warrantyPeriod: '',
     warrantyType: '',
+
+    // Image Properties
+    imageProperties: {
+      required: false, // إجبارية أو اختيارية
+      minImages: 1, // الحد الأدنى للصور
+      maxImages: 10, // الحد الأقصى للصور
+      allowedFormats: ['jpg', 'jpeg', 'png', 'webp'], // الصيغ المسموحة
+      maxFileSize: 5, // الحد الأقصى لحجم الملف (MB)
+      seoEnabled: false, // تفعيل SEO للصور
+    },
 
     // Offers & Promotions
     specialOffers: [],
@@ -1088,7 +894,7 @@ const ProductCreate = () => {
 
       <Grid container spacing={3}>
         {/* Main Content */}
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={{ xs: 12 }}>
           <Paper sx={{ p: 3 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
               <Tabs
@@ -1100,19 +906,64 @@ const ProductCreate = () => {
                 <Tab label="عام" icon={<SettingsIcon />} />
                 <Tab label="التسعير" icon={<MoneyIcon />} />
                 <Tab label="المخزون" icon={<InventoryIcon />} />
-                <Tab label="SEO والتسويق" icon={<SearchIcon />} />
-                <Tab label="المواصفات" icon={<DescriptionIcon />} />
+                <Tab label="خيارات المنتج" icon={<DescriptionIcon />} />
                 <Tab label="العروض والترويج" icon={<DiscountIcon />} />
                 <Tab label="المتاجر والتوفر" icon={<StoreIcon />} />
-                <Tab label="الشحن والتسليم" icon={<ShippingIcon />} />
                 <Tab label="الوسائط والملفات" icon={<ImageIcon />} />
-                <Tab label="الإعدادات المتقدمة" icon={<BuildIcon />} />
               </Tabs>
             </Box>
 
             {/* General Tab */}
             {activeTab === 0 && (
               <Grid container spacing={3}>
+                {/* Product Main Image */}
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6" gutterBottom>
+                    <ImageIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    الصورة الأساسية للمنتج
+                  </Typography>
+                  <Box
+                    sx={{
+                      textAlign: 'center',
+                      py: 4,
+                      border: 2,
+                      borderStyle: 'dashed',
+                      borderRadius: 2,
+                      borderColor: 'primary.main',
+                    }}
+                  >
+                    <CloudUploadIcon sx={{ fontSize: 48, mb: 2, color: 'primary.main' }} />
+                    <Typography variant="h6" gutterBottom>
+                      رفع الصورة الأساسية للمنتج
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      اسحب وأفلت الصورة هنا أو انقر للتصفح
+                    </Typography>
+                    <Button variant="contained" startIcon={<UploadIcon />} sx={{ mr: 2 }}>
+                      رفع الصورة
+                    </Button>
+                    <Button variant="outlined" startIcon={<CameraIcon />}>
+                      التقط صورة
+                    </Button>
+                  </Box>
+                </Grid>
+
+                {/* Language Tabs */}
+                <Grid size={{ xs: 12 }}>
+                  <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+                    <Tabs
+                      value={selectedLanguage === 'ar' ? 0 : 1}
+                      onChange={(event, newValue) => {
+                        setSelectedLanguage(newValue === 0 ? 'ar' : 'en');
+                      }}
+                      variant="fullWidth"
+                    >
+                      <Tab label="العربية" />
+                      <Tab label="English" />
+                    </Tabs>
+                  </Box>
+                </Grid>
+
                 {/* Product Name */}
                 <Grid size={{ xs: 12 }}>
                   <TextField
@@ -1133,8 +984,8 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                {/* SKU and Barcode */}
-                <Grid size={{ xs: 12, md: 6 }}>
+                {/* SKU */}
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="رمز المنتج"
@@ -1146,7 +997,82 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                {/* Main Category */}
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth>
+                    <InputLabel>القسم الرئيسي</InputLabel>
+                    <Select
+                      value={formData.mainCategory}
+                      label="القسم الرئيسي"
+                      onChange={handleInputChange('mainCategory')}
+                    >
+                      <MenuItem value="electronics">الإلكترونيات</MenuItem>
+                      <MenuItem value="clothing">الملابس</MenuItem>
+                      <MenuItem value="home">المنزل والحديقة</MenuItem>
+                      <MenuItem value="sports">الرياضة والترفيه</MenuItem>
+                      <MenuItem value="books">الكتب</MenuItem>
+                      <MenuItem value="beauty">الجمال والصحة</MenuItem>
+                      <MenuItem value="automotive">السيارات</MenuItem>
+                      <MenuItem value="toys">الألعاب والألعاب</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* Sub Category */}
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth>
+                    <InputLabel>القسم الفرعي</InputLabel>
+                    <Select
+                      value={formData.subCategory}
+                      label="القسم الفرعي"
+                      onChange={handleInputChange('subCategory')}
+                    >
+                      <MenuItem value="">اختر القسم الفرعي</MenuItem>
+                      <MenuItem value="smartphones">الهواتف الذكية</MenuItem>
+                      <MenuItem value="laptops">الكمبيوترات</MenuItem>
+                      <MenuItem value="accessories">الملحقات</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                {/* Category Description */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label="وصف الأقسام"
+                    value={formData.categoryDescription}
+                    onChange={handleInputChange('categoryDescription')}
+                    placeholder="أدخل وصف للأقسام المختارة"
+                    helperText="وصف تفصيلي للأقسام المختارة للمنتج"
+                  />
+                </Grid>
+
+                {/* Brand */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="العلامة التجارية"
+                    value={formData.brand}
+                    onChange={handleInputChange('brand')}
+                    placeholder="أدخل اسم العلامة التجارية"
+                  />
+                </Grid>
+
+                {/* Model */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الموديل"
+                    value={formData.model}
+                    onChange={handleInputChange('model')}
+                    placeholder="أدخل رقم الموديل"
+                  />
+                </Grid>
+
+                {/* Barcode */}
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="الباركود"
@@ -1161,10 +1087,28 @@ const ProductCreate = () => {
                           variant="outlined"
                           startIcon={<RefreshIcon />}
                           onClick={() => {
-                            // توليد باركود احترافي
-                            const timestamp = Date.now().toString().slice(-6);
-                            const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-                            const newBarcode = `BC${timestamp}${random}`;
+                            // توليد باركود حسب الفئات
+                            const generateBarcode = () => {
+                              // القسم الرئيسي - 3 أرقام
+                              const mainCategoryCode = formData.mainCategory ? 
+                                String(formData.mainCategory).padStart(3, '0') : '001';
+                              
+                              // القسم الفرعي - 3 أرقام  
+                              const subCategoryCode = formData.subCategory ? 
+                                String(formData.subCategory).padStart(3, '0') : '001';
+                              
+                              // العلامة التجارية - 5 أرقام
+                              const brandCode = formData.brand ? 
+                                String(formData.brand).padStart(5, '0') : '00001';
+                              
+                              // الموديل - 4 أرقام
+                              const modelCode = formData.model ? 
+                                String(formData.model).padStart(4, '0') : '0001';
+                              
+                              return `${mainCategoryCode}-${subCategoryCode}-${brandCode}-${modelCode}`;
+                            };
+                            
+                            const newBarcode = generateBarcode();
                             setFormData({ ...formData, barcode: newBarcode });
                           }}
                           sx={{ ml: 1 }}
@@ -1173,74 +1117,6 @@ const ProductCreate = () => {
                         </Button>
                       ),
                     }}
-                  />
-                </Grid>
-
-                {/* Category and Subcategory */}
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>الفئة</InputLabel>
-                    <Select
-                      value={formData.category}
-                      label="التصنيف"
-                      onChange={handleInputChange('category')}
-                    >
-                      <MenuItem value="electronics">الإلكترونيات</MenuItem>
-                      <MenuItem value="clothing">الملابس</MenuItem>
-                      <MenuItem value="home">المنزل والحديقة</MenuItem>
-                      <MenuItem value="sports">الرياضة والترفيه</MenuItem>
-                      <MenuItem value="books">الكتب</MenuItem>
-                      <MenuItem value="beauty">الجمال والصحة</MenuItem>
-                      <MenuItem value="automotive">السيارات</MenuItem>
-                      <MenuItem value="toys">الألعاب والألعاب</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>التصنيف الفرعي</InputLabel>
-                    <Select
-                      value={formData.subCategory}
-                      label="التصنيف الفرعي"
-                      onChange={handleInputChange('subCategory')}
-                    >
-                      <MenuItem value="">اختر التصنيف الفرعي</MenuItem>
-                      <MenuItem value="smartphones">الهواتف الذكية</MenuItem>
-                      <MenuItem value="laptops">الكمبيوترات</MenuItem>
-                      <MenuItem value="accessories">الملحقات</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                {/* Brand and Manufacturer */}
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="العلامة التجارية"
-                    value={formData.brand}
-                    onChange={handleInputChange('brand')}
-                    placeholder="أدخل اسم العلامة التجارية"
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="الموديل"
-                    value={formData.model}
-                    onChange={handleInputChange('model')}
-                    placeholder="أدخل رقم الموديل"
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="الشركة المصنعة"
-                    value={formData.manufacturer}
-                    onChange={handleInputChange('manufacturer')}
-                    placeholder="أدخل اسم الشركة المصنعة"
                   />
                 </Grid>
 
@@ -1287,25 +1163,146 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                {/* Product Status */}
-                <Grid size={{ xs: 12, md: 6 }}>
+                {/* SEO Section */}
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
+                    <SearchIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    إعدادات SEO
+                  </Typography>
+                </Grid>
+
+                {/* SEO Description */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={3}
+                    label={`وصف SEO (${selectedLanguage === 'en' ? 'English' : 'العربية'})`}
+                    value={formData.seoDescription[selectedLanguage] || ''}
+                    onChange={handleLanguageInputChange('seoDescription', selectedLanguage)}
+                    placeholder={
+                      selectedLanguage === 'en'
+                        ? 'SEO description for search engines (150-160 characters)'
+                        : 'وصف SEO لمحركات البحث (150-160 حرف)'
+                    }
+                    helperText={`${
+                      (formData.seoDescription[selectedLanguage] || '').length
+                    }/160 characters`}
+                    inputProps={{ maxLength: 160 }}
+                    dir={selectedLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                </Grid>
+
+                {/* Meta Tag Title */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label={`ميتا تاج المنتج (${selectedLanguage === 'en' ? 'English' : 'العربية'})`}
+                    value={formData.seoTitle[selectedLanguage] || ''}
+                    onChange={handleLanguageInputChange('seoTitle', selectedLanguage)}
+                    placeholder={
+                      selectedLanguage === 'en'
+                        ? 'SEO optimized title (50-60 characters)'
+                        : 'عنوان محسن لمحركات البحث (50-60 حرف)'
+                    }
+                    helperText={`${(formData.seoTitle[selectedLanguage] || '').length}/60 كلمة`}
+                    inputProps={{ maxLength: 60 }}
+                    dir={selectedLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                </Grid>
+
+                {/* Meta Tag Description */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={2}
+                    label={`وصف ميتا تاج المنتج (${selectedLanguage === 'en' ? 'English' : 'العربية'})`}
+                    value={formData.seoDescription[selectedLanguage] || ''}
+                    onChange={handleLanguageInputChange('seoDescription', selectedLanguage)}
+                    placeholder={
+                      selectedLanguage === 'en'
+                        ? 'Meta description for search engines (150-160 characters)'
+                        : 'وصف ميتا لمحركات البحث (150-160 حرف)'
+                    }
+                    helperText={`${
+                      (formData.seoDescription[selectedLanguage] || '').length
+                    }/160 characters`}
+                    inputProps={{ maxLength: 160 }}
+                    dir={selectedLanguage === 'ar' ? 'rtl' : 'ltr'}
+                  />
+                </Grid>
+
+                {/* Keywords */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الكلمات الدليلية"
+                    value={formData.metaKeywords}
+                    onChange={handleInputChange('metaKeywords')}
+                    placeholder="أدخل الكلمات الدليلية مفصولة بفواصل"
+                    helperText="الكلمات الدليلية لتحسين محركات البحث"
+                  />
+                </Grid>
+
+                {/* Product Availability */}
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
-                    <InputLabel>حالة المنتج</InputLabel>
+                    <InputLabel>توفر المنتج</InputLabel>
                     <Select
-                      value={formData.status}
-                      label="حالة المنتج"
-                      onChange={handleInputChange('status')}
+                      value={formData.availability}
+                      label="توفر المنتج"
+                      onChange={handleInputChange('availability')}
                     >
-                      <MenuItem value="draft">مسودة</MenuItem>
-                      <MenuItem value="active">نشط</MenuItem>
-                      <MenuItem value="inactive">غير نشط</MenuItem>
-                      <MenuItem value="out_of_stock">عدم وجود في المخزن</MenuItem>
-                      <MenuItem value="discontinued">موقوف</MenuItem>
+                      <MenuItem value="available">متوفر</MenuItem>
+                      <MenuItem value="unavailable">غير متوفر</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                {/* Product Status - Available */}
+                {formData.availability === 'available' && (
+                  <Grid size={{ xs: 12 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>حالة المنتج المتوفر</InputLabel>
+                      <Select
+                        value={formData.productStatus}
+                        label="حالة المنتج المتوفر"
+                        onChange={handleInputChange('productStatus')}
+                      >
+                        <MenuItem value="new">جديد</MenuItem>
+                        <MenuItem value="just_arrived">وصل حديثاً</MenuItem>
+                        <MenuItem value="available">متوفر</MenuItem>
+                        <MenuItem value="best_selling">الأكثر مبيعاً</MenuItem>
+                        <MenuItem value="most_requested">الأكثر طلباً</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                )}
+
+                {/* Unavailable Reason - Unavailable */}
+                {formData.availability === 'unavailable' && (
+                  <Grid size={{ xs: 12 }}>
+                    <FormControl fullWidth>
+                      <InputLabel>سبب عدم التوفر</InputLabel>
+                      <Select
+                        value={formData.unavailableReason}
+                        label="سبب عدم التوفر"
+                        onChange={handleInputChange('unavailableReason')}
+                      >
+                        <MenuItem value="unavailable">غير متوفر</MenuItem>
+                        <MenuItem value="1-3_days">من 1 - 3 أيام</MenuItem>
+                        <MenuItem value="1-7_days">من 1 - 7 أيام</MenuItem>
+                        <MenuItem value="1-15_days">من 1 - 15 يوم</MenuItem>
+                        <MenuItem value="pre_order">حجز مسبق</MenuItem>
+                        <MenuItem value="disabled">تعطيل</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                )}
+
+                {/* Visibility */}
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
                     <InputLabel>الرؤية</InputLabel>
                     <Select
@@ -1391,7 +1388,7 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1406,7 +1403,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1429,7 +1426,7 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1445,7 +1442,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1460,7 +1457,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1483,18 +1480,18 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
-                    label={formData.discountType === 'percentage' ? 'نسبة الخصم (%)' : 'مبلغ الخصم'}
+                    label={formData.discountType === 'percentage' ? 'نسبة الخصم (%)' : 'مبلغ الخصم (ر.س)'}
                     value={formData.discount}
                     onChange={handleInputChange('discount')}
                     placeholder="0"
                     helperText={
                       formData.discountType === 'percentage'
-                        ? 'نسبة الخصم المئوية'
-                        : 'مبلغ الخصم بالريال السعودي'
+                        ? 'نسبة الخصم المئوية (مثال: 10 لخصم 10%)'
+                        : 'مبلغ الخصم بالريال السعودي (مثال: 50 لخصم 50 ر.س)'
                     }
                     InputProps={{
                       endAdornment:
@@ -1507,7 +1504,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
                     <InputLabel>نوع الخصم</InputLabel>
                     <Select
@@ -1516,12 +1513,12 @@ const ProductCreate = () => {
                       onChange={handleInputChange('discountType')}
                     >
                       <MenuItem value="percentage">نسبة مئوية (%)</MenuItem>
-                      <MenuItem value="fixed">مبلغ ثابت ($)</MenuItem>
+                      <MenuItem value="fixed">مبلغ ثابت (ر.س)</MenuItem>
                     </Select>
                   </FormControl>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="date"
@@ -1532,7 +1529,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="date"
@@ -1540,21 +1537,6 @@ const ProductCreate = () => {
                     value={formData.discountEndDate}
                     onChange={handleInputChange('discountEndDate')}
                     InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="سعر البيع التجاري"
-                    value={formData.retailPrice}
-                    onChange={handleInputChange('retailPrice')}
-                    placeholder="0.00"
-                    helperText="سعر البيع التجاري المقترح"
-                    InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                    }}
                   />
                 </Grid>
 
@@ -1633,20 +1615,33 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                {/* Main Store Stock */}
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     type="number"
-                    label="المخزون الحالي"
-                    value={formData.stock}
-                    onChange={handleInputChange('stock')}
+                    label="الكمية في المخزن الرئيسي"
+                    value={formData.mainStoreStock}
+                    onChange={handleInputChange('mainStoreStock')}
                     placeholder="0"
-                    required
-                    helperText="الكمية المتاحة"
+                    helperText="الكمية المتاحة في المخزن الرئيسي"
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                {/* Suppliers Stock */}
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="الكمية في مخزن الموردين"
+                    value={formData.suppliersStock}
+                    onChange={handleInputChange('suppliersStock')}
+                    placeholder="0"
+                    helperText="الكمية المتاحة في مخزن الموردين"
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1658,7 +1653,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12, md: 6 }}>
                   <TextField
                     fullWidth
                     type="number"
@@ -1678,7 +1673,7 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="الوزن"
@@ -1692,7 +1687,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 6 }}>
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
                     <InputLabel>وحدة القياس</InputLabel>
                     <Select
@@ -1721,7 +1716,7 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="الطول"
@@ -1740,7 +1735,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="العرض"
@@ -1759,7 +1754,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="الإرتفاع"
@@ -1778,52 +1773,6 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                {/* Stock Status */}
-                <Grid size={{ xs: 12 }}>
-                  <Card sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                      حالة المخزون
-                    </Typography>
-                    <Stack direction="row" spacing={4} flexWrap="wrap">
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.digital}
-                            onChange={(e) =>
-                              setFormData((prev) => ({ ...prev, digital: e.target.checked }))
-                            }
-                          />
-                        }
-                        label="منتج رقمي"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.downloadable}
-                            onChange={(e) =>
-                              setFormData((prev) => ({ ...prev, downloadable: e.target.checked }))
-                            }
-                          />
-                        }
-                        label="قابل للتحميل"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.requiresShipping}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                requiresShipping: e.target.checked,
-                              }))
-                            }
-                          />
-                        }
-                        label="يتطلب شحن"
-                      />
-                    </Stack>
-                  </Card>
-                </Grid>
 
                 {/* Stock Alerts */}
                 <Grid size={{ xs: 12 }}>
@@ -1844,234 +1793,14 @@ const ProductCreate = () => {
               </Grid>
             )}
 
-            {/* SEO & Marketing Tab */}
-            {activeTab === 3 && (
-              <Grid container spacing={3}>
-                {/* SEO Settings */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom>
-                    <SearchIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    إعدادات SEO
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label={`عنوان محسن لمحركات البحث (${
-                      selectedLanguage === 'en' ? 'English' : 'العربية'
-                    })`}
-                    value={formData.seoTitle[selectedLanguage] || ''}
-                    onChange={handleLanguageInputChange('seoTitle', selectedLanguage)}
-                    placeholder={
-                      selectedLanguage === 'en'
-                        ? 'SEO optimized title (50-60 characters)'
-                        : 'عنوان محسن لمحركات البحث (50-60 حرف)'
-                    }
-                    helperText={`${(formData.seoTitle[selectedLanguage] || '').length}/60 كلمة`}
-                    inputProps={{ maxLength: 60 }}
-                    dir={selectedLanguage === 'ar' ? 'rtl' : 'ltr'}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={3}
-                    label={`وصف ميتا لمحركات البحث (${
-                      selectedLanguage === 'en' ? 'English' : 'العربية'
-                    })`}
-                    value={formData.seoDescription[selectedLanguage] || ''}
-                    onChange={handleLanguageInputChange('seoDescription', selectedLanguage)}
-                    placeholder={
-                      selectedLanguage === 'en'
-                        ? 'Meta description for search engines (150-160 characters)'
-                        : 'وصف ميتا لمحركات البحث (150-160 حرف)'
-                    }
-                    helperText={`${
-                      (formData.seoDescription[selectedLanguage] || '').length
-                    }/160 characters`}
-                    inputProps={{ maxLength: 160 }}
-                    dir={selectedLanguage === 'ar' ? 'rtl' : 'ltr'}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="كلمات البحث الميتا"
-                    value={formData.metaKeywords}
-                    onChange={handleInputChange('metaKeywords')}
-                    placeholder="أدخل كلمات البحث مفصولة بفواصل"
-                    helperText="كلمات البحث لتحسين محركات البحث"
-                  />
-                </Grid>
-
-                {/* Tags and Keywords */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                    <TagIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    الوسوم وكلمات البحث
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Autocomplete
-                    multiple
-                    freeSolo
-                    options={[]}
-                    value={formData.tags}
-                    onChange={(event, newValue) => {
-                      setFormData((prev) => ({ ...prev, tags: newValue }));
-                    }}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                      ))
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="وسوم المنتج"
-                        placeholder="أضف وسوم..."
-                        helperText="الوسوم تساعد العملاء على العثور على منتجك"
-                      />
-                    )}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <Autocomplete
-                    multiple
-                    freeSolo
-                    options={[]}
-                    value={formData.keywords}
-                    onChange={(event, newValue) => {
-                      setFormData((prev) => ({ ...prev, keywords: newValue }));
-                    }}
-                    renderTags={(value, getTagProps) =>
-                      value.map((option, index) => (
-                        <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-                      ))
-                    }
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        label="كلمات البحث"
-                        placeholder="أضف كلمات البحث..."
-                        helperText="كلمات البحث للبحث الداخلي"
-                      />
-                    )}
-                  />
-                </Grid>
-
-                {/* Marketing Settings */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                    <TrendingUpIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    إعدادات التسويق
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <Card sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                      رؤية المنتج
-                    </Typography>
-                    <Stack direction="row" spacing={4} flexWrap="wrap">
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.featured}
-                            onChange={(e) =>
-                              setFormData((prev) => ({ ...prev, featured: e.target.checked }))
-                            }
-                          />
-                        }
-                        label="منتج مميز"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.loyaltyProgram}
-                            onChange={(e) =>
-                              setFormData((prev) => ({ ...prev, loyaltyProgram: e.target.checked }))
-                            }
-                          />
-                        }
-                        label="برنامج اللايفو"
-                      />
-                    </Stack>
-                  </Card>
-                </Grid>
-
-                {/* Rewards & Loyalty */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom>
-                    <StarIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    المكافآت واللايفو
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="نقاط المكافآت"
-                    value={formData.rewardPoints}
-                    onChange={handleInputChange('rewardPoints')}
-                    placeholder="0"
-                    helperText="نقاط تحصل عليها عند شراء هذا المنتج"
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="مضاعف اللايفو"
-                    value={formData.loyaltyMultiplier}
-                    onChange={handleInputChange('loyaltyMultiplier')}
-                    placeholder="1"
-                    helperText="مضاعف لنقاط اللايفو"
-                    disabled={!formData.loyaltyProgram}
-                  />
-                </Grid>
-
-                {/* SEO Preview */}
-                <Grid size={{ xs: 12 }}>
-                  <Card sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                      معاينة SEO
-                    </Typography>
-                    <Box sx={{ border: 1, p: 2, borderRadius: 1 }}>
-                      <Typography variant="h6" sx={{ mb: 1 }}>
-                        {formData.seoTitle[selectedLanguage] ||
-                          formData.name[selectedLanguage] ||
-                          'عنوان المنتج'}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-                        {formData.seoDescription[selectedLanguage] ||
-                          formData.shortDescription[selectedLanguage] ||
-                          'وصف المنتج سيظهر هنا...'}
-                      </Typography>
-                      <Typography variant="caption" color="success.main">
-                        https://yourstore.com/products/{formData.sku || 'رمز-المنتج'}
-                      </Typography>
-                    </Box>
-                  </Card>
-                </Grid>
-              </Grid>
-            )}
 
             {/* Specifications Tab */}
-            {activeTab === 4 && (
+            {activeTab === 3 && (
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
                     <DescriptionIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    مواصفات المنتج
+                    خيارات المنتج
                   </Typography>
                 </Grid>
 
@@ -2140,7 +1869,7 @@ const ProductCreate = () => {
                   </Typography>
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="وصف الضمان"
@@ -2150,7 +1879,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <TextField
                     fullWidth
                     label="فترة الضمان"
@@ -2160,7 +1889,7 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-                <Grid size={{ xs: 12, md: 4 }}>
+                <Grid size={{ xs: 12 }}>
                   <FormControl fullWidth>
                     <InputLabel>نوع الضمان</InputLabel>
                     <Select
@@ -2176,9 +1905,144 @@ const ProductCreate = () => {
                   </FormControl>
                 </Grid>
 
+                {/* Image Properties */}
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6" gutterBottom sx={{ mt: 3 }}>
+                    <ImageIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                    خصائص الصور
+                  </Typography>
+                </Grid>
+
+                {/* Image Requirements */}
+                <Grid size={{ xs: 12 }}>
+                  <Card sx={{ p: 2 }}>
+                    <Typography variant="h6" gutterBottom>
+                      متطلبات الصور
+                    </Typography>
+                    <Stack direction="row" spacing={4} flexWrap="wrap" sx={{ mb: 2 }}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={formData.imageProperties.required}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                imageProperties: { ...prev.imageProperties, required: e.target.checked },
+                              }))
+                            }
+                          />
+                        }
+                        label="الصور إجبارية"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={formData.imageProperties.seoEnabled}
+                            onChange={(e) =>
+                              setFormData((prev) => ({
+                                ...prev,
+                                imageProperties: { ...prev.imageProperties, seoEnabled: e.target.checked },
+                              }))
+                            }
+                          />
+                        }
+                        label="تفعيل SEO للصور"
+                      />
+                    </Stack>
+                  </Card>
+                </Grid>
+
+                {/* Image Settings */}
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="الحد الأدنى للصور"
+                    value={formData.imageProperties.minImages}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        imageProperties: { ...prev.imageProperties, minImages: parseInt(e.target.value) },
+                      }))
+                    }
+                    placeholder="1"
+                    helperText="الحد الأدنى المطلوب من الصور"
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="الحد الأقصى للصور"
+                    value={formData.imageProperties.maxImages}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        imageProperties: { ...prev.imageProperties, maxImages: parseInt(e.target.value) },
+                      }))
+                    }
+                    placeholder="10"
+                    helperText="الحد الأقصى المسموح من الصور"
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    type="number"
+                    label="الحد الأقصى لحجم الملف (MB)"
+                    value={formData.imageProperties.maxFileSize}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        imageProperties: { ...prev.imageProperties, maxFileSize: parseInt(e.target.value) },
+                      }))
+                    }
+                    placeholder="5"
+                    helperText="الحد الأقصى لحجم كل صورة"
+                  />
+                </Grid>
+
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="الصيغ المسموحة"
+                    value={formData.imageProperties.allowedFormats.join(', ')}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        imageProperties: { ...prev.imageProperties, allowedFormats: e.target.value.split(', ') },
+                      }))
+                    }
+                    placeholder="jpg, jpeg, png, webp"
+                    helperText="الصيغ المسموحة للصور (مفصولة بفواصل)"
+                  />
+                </Grid>
+
+                {/* SEO for Images */}
+                {formData.imageProperties.seoEnabled && (
+                  <Grid size={{ xs: 12 }}>
+                    <Card sx={{ p: 2, bgcolor: 'primary.50' }}>
+                      <Typography variant="h6" gutterBottom>
+                        <SearchIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
+                        إعدادات SEO للصور
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        عند تفعيل SEO للصور، سيتم إضافة النصوص البديلة والوصف للصور تلقائياً
+                      </Typography>
+                      <Stack direction="row" spacing={2}>
+                        <Chip label="Alt Text" color="primary" />
+                        <Chip label="Title Attribute" color="primary" />
+                        <Chip label="Caption" color="primary" />
+                      </Stack>
+                    </Card>
+                  </Grid>
+                )}
+
                 {/* Custom Specifications */}
                 <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle1" gutterBottom>
+                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 3 }}>
                     مواصفات مخصصة
                   </Typography>
                   <Button
@@ -2246,7 +2110,7 @@ const ProductCreate = () => {
             )}
 
             {/* Offers & Promotions Tab */}
-            {activeTab === 5 && (
+            {activeTab === 4 && (
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
@@ -2489,7 +2353,7 @@ const ProductCreate = () => {
             )}
 
             {/* Stores & Availability Tab */}
-            {activeTab === 6 && (
+            {activeTab === 5 && (
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
@@ -2612,163 +2476,9 @@ const ProductCreate = () => {
               </Grid>
             )}
 
-            {/* Shipping & Delivery Tab */}
-            {activeTab === 7 && (
-              <Grid container spacing={3}>
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom>
-                    <ShippingIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    الشحن والتوصيل
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>فئة الشحن</InputLabel>
-                    <Select
-                      value={formData.shippingClass}
-                      label="فئة الشحن"
-                      onChange={handleInputChange('shippingClass')}
-                    >
-                      <MenuItem value="standard">معياري</MenuItem>
-                      <MenuItem value="express">سريع</MenuItem>
-                      <MenuItem value="overnight">ليلي</MenuItem>
-                      <MenuItem value="fragile">حساس</MenuItem>
-                      <MenuItem value="oversized">كبير</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="وزن الشحن"
-                    value={formData.shippingWeight}
-                    onChange={handleInputChange('shippingWeight')}
-                    placeholder="0.0"
-                    helperText="وزن لحساب الشحن"
-                    InputProps={{
-                      endAdornment: <Typography sx={{ ml: 1 }}>kg</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    أبعاد الشحن
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="الطول"
-                    value={formData.shippingDimensions.length}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        shippingDimensions: { ...prev.shippingDimensions, length: e.target.value },
-                      }))
-                    }
-                    placeholder="0"
-                    InputProps={{
-                      endAdornment: <Typography sx={{ ml: 1 }}>cm</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="العرض"
-                    value={formData.shippingDimensions.width}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        shippingDimensions: { ...prev.shippingDimensions, width: e.target.value },
-                      }))
-                    }
-                    placeholder="0"
-                    InputProps={{
-                      endAdornment: <Typography sx={{ ml: 1 }}>cm</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 4 }}>
-                  <TextField
-                    fullWidth
-                    label="الإرتفاع"
-                    value={formData.shippingDimensions.height}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        shippingDimensions: { ...prev.shippingDimensions, height: e.target.value },
-                      }))
-                    }
-                    placeholder="0"
-                    InputProps={{
-                      endAdornment: <Typography sx={{ ml: 1 }}>cm</Typography>,
-                    }}
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <Card sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                      خيارات الشحن
-                    </Typography>
-                    <Stack direction="row" spacing={4} flexWrap="wrap">
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.freeShipping}
-                            onChange={(e) =>
-                              setFormData((prev) => ({ ...prev, freeShipping: e.target.checked }))
-                            }
-                          />
-                        }
-                        label="الشحن المجاني"
-                      />
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.requiresShipping}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                requiresShipping: e.target.checked,
-                              }))
-                            }
-                          />
-                        }
-                        label="يتطلب شحن"
-                      />
-                    </Stack>
-                  </Card>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="تكلفة الشحن"
-                    value={formData.shippingCost}
-                    onChange={handleInputChange('shippingCost')}
-                    placeholder="0.00"
-                    disabled={formData.freeShipping}
-                    helperText="تكلفة شحن إضافية (إذا لم يكن مجانيا)"
-                    InputProps={{
-                      startAdornment: <Typography sx={{ mr: 1 }}>$</Typography>,
-                    }}
-                  />
-                </Grid>
-              </Grid>
-            )}
 
             {/* Media & Files Tab */}
-            {activeTab === 8 && (
+            {activeTab === 6 && (
               <Grid container spacing={3}>
                 <Grid size={{ xs: 12 }}>
                   <Typography variant="h6" gutterBottom>
@@ -2866,574 +2576,9 @@ const ProductCreate = () => {
               </Grid>
             )}
 
-            {/* Advanced Settings Tab */}
-            {activeTab === 9 && (
-              <Grid container spacing={3}>
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="h6" gutterBottom>
-                    <BuildIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                    الإعدادات المتقدمة
-                  </Typography>
-                </Grid>
-
-                {/* Tax Settings */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    إعدادات الضرائب
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <FormControl fullWidth>
-                    <InputLabel>فئة الضريبة</InputLabel>
-                    <Select
-                      value={formData.taxClass}
-                      label="فئة الضريبة"
-                      onChange={handleInputChange('taxClass')}
-                    >
-                      <MenuItem value="standard">معياري</MenuItem>
-                      <MenuItem value="reduced">مخفض</MenuItem>
-                      <MenuItem value="zero">صفر</MenuItem>
-                      <MenuItem value="exempt">معفي</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-
-                <Grid size={{ xs: 12, md: 6 }}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="نسبة الضريبة (%)"
-                    value={formData.taxRate}
-                    onChange={handleInputChange('taxRate')}
-                    placeholder="0"
-                    helperText="نسبة الضريبة"
-                  />
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.taxable}
-                        onChange={(e) =>
-                          setFormData((prev) => ({ ...prev, taxable: e.target.checked }))
-                        }
-                      />
-                    }
-                    label="المنتج الضريبي"
-                  />
-                </Grid>
-
-                {/* Approval Settings */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                    إعدادات الموافقة
-                  </Typography>
-                </Grid>
-
-                <Grid size={{ xs: 12 }}>
-                  <Card sx={{ p: 2 }}>
-                    <Typography variant="h6" gutterBottom>
-                      موافقة المنتج
-                    </Typography>
-                    <Stack direction="row" spacing={4} flexWrap="wrap">
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={formData.requiresApproval}
-                            onChange={(e) =>
-                              setFormData((prev) => ({
-                                ...prev,
-                                requiresApproval: e.target.checked,
-                              }))
-                            }
-                          />
-                        }
-                        label="الموافقة مطلوبة"
-                      />
-                    </Stack>
-
-                    {formData.requiresApproval && (
-                      <Grid size={{ xs: 12, md: 6 }} sx={{ mt: 2 }}>
-                        <FormControl fullWidth>
-                          <InputLabel>حالة الموافقة</InputLabel>
-                          <Select
-                            value={formData.approvalStatus}
-                            label="حالة الموافقة"
-                            onChange={handleInputChange('approvalStatus')}
-                          >
-                            <MenuItem value="pending">قيد المراجعة</MenuItem>
-                            <MenuItem value="approved">موافقة</MenuItem>
-                            <MenuItem value="rejected">رفض</MenuItem>
-                          </Select>
-                        </FormControl>
-                      </Grid>
-                    )}
-                  </Card>
-                </Grid>
-
-                {/* Custom Fields */}
-                <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle1" gutterBottom>
-                    الحقول المخصصة
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    startIcon={<AddIcon />}
-                    onClick={() => {
-                      const newField = { name: '', value: '', type: 'text' };
-                      setFormData((prev) => ({
-                        ...prev,
-                        customFields: [...prev.customFields, newField],
-                      }));
-                    }}
-                    sx={{ mb: 2 }}
-                  >
-                    إضافة حقل مخصص
-                  </Button>
-
-                  {formData.customFields.map((field, index) => (
-                    <Card key={index} sx={{ p: 2, mb: 2 }}>
-                      <Grid container spacing={2} alignItems="center">
-                        <Grid size={{ xs: 12, md: 3 }}>
-                          <TextField
-                            fullWidth
-                            label="اسم الحقل"
-                            value={field.name}
-                            onChange={(e) => {
-                              const newFields = [...formData.customFields];
-                              newFields[index].name = e.target.value;
-                              setFormData((prev) => ({ ...prev, customFields: newFields }));
-                            }}
-                            placeholder="مثلا, اللون, الحجم"
-                          />
-                        </Grid>
-                        <Grid size={{ xs: 12, md: 3 }}>
-                          <FormControl fullWidth>
-                            <InputLabel>نوع الحقل</InputLabel>
-                            <Select
-                              value={field.type}
-                              label="نوع الحقل"
-                              onChange={(e) => {
-                                const newFields = [...formData.customFields];
-                                newFields[index].type = e.target.value;
-                                setFormData((prev) => ({ ...prev, customFields: newFields }));
-                              }}
-                            >
-                              <MenuItem value="text">نص</MenuItem>
-                              <MenuItem value="number">رقم</MenuItem>
-                              <MenuItem value="date">تاريخ</MenuItem>
-                              <MenuItem value="boolean">منطقي</MenuItem>
-                            </Select>
-                          </FormControl>
-                        </Grid>
-                        <Grid size={{ xs: 12, md: 4 }}>
-                          <TextField
-                            fullWidth
-                            label="قيمة الحقل"
-                            value={field.value}
-                            onChange={(e) => {
-                              const newFields = [...formData.customFields];
-                              newFields[index].value = e.target.value;
-                              setFormData((prev) => ({ ...prev, customFields: newFields }));
-                            }}
-                            placeholder="أدخل القيمة..."
-                          />
-                        </Grid>
-                        <Grid size={{ xs: 12, md: 2 }}>
-                          <IconButton
-                            color="error"
-                            onClick={() => {
-                              const newFields = formData.customFields.filter((_, i) => i !== index);
-                              setFormData((prev) => ({ ...prev, customFields: newFields }));
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                    </Card>
-                  ))}
-                </Grid>
-              </Grid>
-            )}
           </Paper>
         </Grid>
 
-        {/* Sidebar */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Stack spacing={3}>
-            {/* Product Summary */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <InfoIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                ملخص المنتج
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Stack spacing={2}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    اسم المنتج:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                    {formData.name[selectedLanguage] || 'Not specified'}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    الباركود:
-                  </Typography>
-                  <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                    {formData.sku || 'Not specified'}
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    سعر التكلفة:
-                  </Typography>
-                  <Typography variant="h6" color="primary">
-                    {formData.cost || '0.00'} ر.س
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    سعر المتجر الرئيسي:
-                  </Typography>
-                  <Typography variant="h6" color="success.main">
-                    {formData.storeCostPrice || '0.00'} ر.س
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    سعر المتجر الفرعي:
-                  </Typography>
-                  <Typography variant="h6" color="info.main">
-                    {formData.branchPrice || '0.00'} ر.س
-                  </Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    المخزون:
-                  </Typography>
-                  <Typography variant="body1">{formData.stock || '0'} units</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    الحالة:
-                  </Typography>
-                  <Chip
-                    label={formData.status}
-                    color={formData.status === 'active' ? 'success' : 'default'}
-                    size="small"
-                  />
-                </Box>
-              </Stack>
-            </Paper>
-
-            {/* Quick Actions */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <SettingsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                الإجراءات السريعة
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Stack spacing={2}>
-                <Button
-                  variant="outlined"
-                  startIcon={<VisibilityIcon />}
-                  fullWidth
-                  onClick={() => setFormData((prev) => ({ ...prev, visibility: 'public' }))}
-                >
-                  عرض المنتج
-                </Button>
-
-                <Button variant="outlined" startIcon={<ShareIcon />} fullWidth>
-                  شارك المنتج
-                </Button>
-
-                <Button variant="outlined" startIcon={<DuplicateIcon />} fullWidth>
-                  نسخ المنتج
-                </Button>
-              </Stack>
-            </Paper>
-
-            {/* Product Settings */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                إعدادات المنتج
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Stack spacing={2}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.featured}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, featured: e.target.checked }))
-                      }
-                    />
-                  }
-                  label="المنتج المميز"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.digital}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, digital: e.target.checked }))
-                      }
-                    />
-                  }
-                  label="المنتج الرقمي"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.downloadable}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, downloadable: e.target.checked }))
-                      }
-                    />
-                  }
-                  label="قابل للتحميل"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.requiresShipping}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, requiresShipping: e.target.checked }))
-                      }
-                    />
-                  }
-                  label="الشحن مطلوب"
-                />
-
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.freeShipping}
-                      onChange={(e) =>
-                        setFormData((prev) => ({ ...prev, freeShipping: e.target.checked }))
-                      }
-                    />
-                  }
-                  label="الشحن مجاني"
-                />
-              </Stack>
-            </Paper>
-
-            {/* Product Images */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <ImageIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                صور المنتج
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Box sx={{ textAlign: 'center', py: 4 }}>
-                <ImageIcon sx={{ fontSize: 48, mb: 2 }} />
-                <Button
-                  variant="contained"
-                  startIcon={<CloudUploadIcon />}
-                  fullWidth
-                  sx={{ mb: 1 }}
-                >
-                  رفع الصور
-                </Button>
-                <Button variant="outlined" startIcon={<CameraIcon />} fullWidth sx={{ mb: 2 }}>
-                  التقط صورة
-                </Button>
-                <Typography variant="caption" color="text.secondary">
-                  اسحب وأفلت الصور هنا أو انقر للتصفح
-                </Typography>
-              </Box>
-
-              {formData.images.length > 0 && (
-                <Box>
-                  <Typography variant="subtitle2" gutterBottom>
-                    صور مرفوعة ({formData.images.length})
-                  </Typography>
-                  <Grid container spacing={1}>
-                    {formData.images.map((image, index) => (
-                      <Grid size={{ xs: 6 }} key={index}>
-                        <Box sx={{ position: 'relative' }}>
-                          <img
-                            src={image}
-                            alt={`Product ${index + 1}`}
-                            style={{
-                              width: '100%',
-                              height: '80px',
-                              objectFit: 'cover',
-                              borderRadius: '4px',
-                            }}
-                          />
-                          <IconButton
-                            size="small"
-                            sx={{
-                              position: 'absolute',
-                              top: 4,
-                              right: 4,
-                              '&:hover': { opacity: 0.8 },
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </IconButton>
-                        </Box>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </Box>
-              )}
-            </Paper>
-
-            {/* Product Variants */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <SettingsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                متغيرات المنتج
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Button variant="outlined" startIcon={<AddIcon />} fullWidth sx={{ mb: 2 }}>
-                إضافة متغير
-              </Button>
-
-              {formData.variants.length > 0 ? (
-                <Stack spacing={1}>
-                  {formData.variants.map((variant, index) => (
-                    <Card key={index} sx={{ p: 1 }}>
-                      <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Box>
-                          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-                            {variant.name}
-                          </Typography>
-                          <Typography variant="caption" color="text.secondary">
-                            ${variant.price}
-                          </Typography>
-                        </Box>
-                        <IconButton size="small" color="error">
-                          <DeleteIcon fontSize="small" />
-                        </IconButton>
-                      </Stack>
-                    </Card>
-                  ))}
-                </Stack>
-              ) : (
-                <Typography variant="body2" color="text.secondary">
-                  لا يوجد متغيرات مضافة بعد
-                </Typography>
-              )}
-            </Paper>
-
-            {/* SEO Status */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <SearchIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                حالة التحسين المحركي
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Stack spacing={2}>
-                <Box>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">عنوان التحسين المحركي</Typography>
-                    <Chip
-                      label={formData.seoTitle[selectedLanguage] ? 'Set' : 'Missing'}
-                      color={formData.seoTitle[selectedLanguage] ? 'success' : 'warning'}
-                      size="small"
-                    />
-                  </Stack>
-                </Box>
-
-                <Box>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">وصف التحسين المحركي</Typography>
-                    <Chip
-                      label={formData.seoDescription[selectedLanguage] ? 'Set' : 'Missing'}
-                      color={formData.seoDescription[selectedLanguage] ? 'success' : 'warning'}
-                      size="small"
-                    />
-                  </Stack>
-                </Box>
-
-                <Box>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">الكلمات المفتاحية</Typography>
-                    <Chip
-                      label={formData.keywords.length}
-                      color={formData.keywords.length > 0 ? 'success' : 'warning'}
-                      size="small"
-                    />
-                  </Stack>
-                </Box>
-
-                <Box>
-                  <Stack direction="row" justifyContent="space-between" alignItems="center">
-                    <Typography variant="body2">الوسوم</Typography>
-                    <Chip
-                      label={formData.tags.length}
-                      color={formData.tags.length > 0 ? 'success' : 'warning'}
-                      size="small"
-                    />
-                  </Stack>
-                </Box>
-              </Stack>
-            </Paper>
-
-            {/* Product Analytics */}
-            <Paper sx={{ p: 3 }}>
-              <Typography variant="h6" gutterBottom>
-                <AnalyticsIcon sx={{ mr: 1, verticalAlign: 'middle' }} />
-                تحليلات المنتج
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Stack spacing={2}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    المشاهدات
-                  </Typography>
-                  <Typography variant="h6">0</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    المبيعات
-                  </Typography>
-                  <Typography variant="h6">0</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    نسبة التحويل
-                  </Typography>
-                  <Typography variant="h6">0%</Typography>
-                </Box>
-
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    الإيرادات
-                  </Typography>
-                  <Typography variant="h6">$0.00</Typography>
-                </Box>
-              </Stack>
-            </Paper>
-          </Stack>
-        </Grid>
       </Grid>
 
       {/* Action Buttons */}
