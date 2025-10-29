@@ -41,12 +41,6 @@ const BrandsManager = Loadable(
 const ProductTagsManager = Loadable(
   lazy(() => import('../views/system/catalog/product-tags/ProductTagsManager.jsx')),
 );
-const CollectionsManager = Loadable(
-  lazy(() => import('../views/system/catalog/collections/CollectionsManager.jsx')),
-);
-const SearchSynonyms = Loadable(
-  lazy(() => import('../views/system/catalog/search/SearchSynonyms.jsx')),
-);
 const ReviewsModeration = Loadable(
   lazy(() => import('../views/system/catalog/reviews/ReviewsModeration.jsx')),
 );
@@ -57,30 +51,6 @@ const OrdersList = Loadable(lazy(() => import('../views/system/orders/list/Order
 const OrdersTracking = Loadable(
   lazy(() => import('../views/system/orders/tracking/OrdersTracking.jsx')),
 );
-
-const OrdersUnfulfilled = Loadable(
-  lazy(() => import('../views/system/orders/unfulfilled/OrdersUnfulfilled.jsx')),
-);
-const OrdersFulfillment = Loadable(
-  lazy(() => import('../views/system/orders/fulfillment/OrdersFulfillment.jsx')),
-);
-const OrdersShipped = Loadable(
-  lazy(() => import('../views/system/orders/shipped/OrdersShipped.jsx')),
-);
-const OrdersDelivered = Loadable(
-  lazy(() => import('../views/system/orders/delivered/OrdersDelivered.jsx')),
-);
-const OrdersCancellations = Loadable(
-  lazy(() => import('../views/system/orders/cancellations/OrdersCancellations.jsx')),
-);
-const OrdersFraudReview = Loadable(
-  lazy(() => import('../views/system/orders/fraud/OrdersFraudReview.jsx')),
-);
-const OrdersPayments = Loadable(lazy(() => import('../views/system/orders/payments/Payments.jsx')));
-const OrdersShipments = Loadable(
-  lazy(() => import('../views/system/orders/shipments/Shipments.jsx')),
-);
-const OrdersReturns = Loadable(lazy(() => import('../views/system/orders/returns/ReturnsRMA.jsx')));
 
 // Operations Components
 const Warehouses = Loadable(
@@ -319,14 +289,6 @@ const SystemRouter = [
         element: <ProductTagsManager />,
       },
       {
-        path: '/system/catalog/collections',
-        element: <CollectionsManager />,
-      },
-      {
-        path: '/system/catalog/search',
-        element: <SearchSynonyms />,
-      },
-      {
         path: '/system/catalog/reviews',
         element: <ReviewsModeration />,
       },
@@ -370,42 +332,6 @@ const SystemRouter = [
       {
         path: '/system/orders/orders-tracking',
         element: <OrdersTracking />,
-      },
-      {
-        path: '/system/orders/unfulfilled',
-        element: <OrdersUnfulfilled />,
-      },
-      {
-        path: '/system/orders/fulfillment',
-        element: <OrdersFulfillment />,
-      },
-      {
-        path: '/system/orders/shipped',
-        element: <OrdersShipped />,
-      },
-      {
-        path: '/system/orders/delivered',
-        element: <OrdersDelivered />,
-      },
-      {
-        path: '/system/orders/cancellations',
-        element: <OrdersCancellations />,
-      },
-      {
-        path: '/system/orders/fraud',
-        element: <OrdersFraudReview />,
-      },
-      {
-        path: '/system/orders/payments',
-        element: <OrdersPayments />,
-      },
-      {
-        path: '/system/orders/shipments',
-        element: <OrdersShipments />,
-      },
-      {
-        path: '/system/orders/returns',
-        element: <OrdersReturns />,
       },
 
       // المشتريات والموردين

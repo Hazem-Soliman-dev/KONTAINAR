@@ -52,12 +52,7 @@ import {
   AttachMoney as AttachMoneyIcon,
   Schedule as ScheduleIcon,
   CheckCircle as CheckCircleIcon,
-  Warning as WarningIcon,
-  TrendingUp as TrendingUpIcon,
-  TrendingDown as TrendingDownIcon,
-  LocalShipping as LocalShippingIcon,
   Person as PersonIcon,
-  CalendarToday as CalendarIcon,
 } from '@mui/icons-material';
 
 const OrdersList = () => {
@@ -77,64 +72,495 @@ const OrdersList = () => {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Mock data for orders
+  // Mock data for orders with comprehensive details
   const ordersData = [
     {
       id: 1,
       orderNo: 'ORD-001',
-      customer: 'أحمد محمد',
-      customerEmail: 'ahmed@example.com',
-      customerPhone: '+966501234567',
+      customer: {
+        name: 'أحمد محمد',
+        email: 'ahmed@example.com',
+        phone: '+966501234567',
+        address: 'الرياض، المملكة العربية السعودية',
+        loyaltyPoints: 1250,
+        membershipLevel: 'gold',
+      },
       totalAmount: 1250.5,
-      status: 'pending',
+      status: 'بانتظار التحويل البنكي',
       paymentStatus: 'pending',
       orderDate: '2024-01-15',
       deliveryDate: '2024-01-20',
       items: [
-        { name: 'لابتوب ديل', quantity: 1, price: 1200.0 },
-        { name: 'ماوس لاسلكي', quantity: 1, price: 50.5 },
+        {
+          name: 'لابتوب ديل XPS 13',
+          sku: 'DELL-XPS13-001',
+          quantity: 1,
+          price: 1200.0,
+          image: '/assets/images/products/laptop.jpg',
+          category: 'إلكترونيات',
+          brand: 'ديل',
+        },
+        {
+          name: 'ماوس لاسلكي',
+          sku: 'MOUSE-WIRELESS-001',
+          quantity: 1,
+          price: 50.5,
+          image: '/assets/images/products/mouse.jpg',
+          category: 'إلكترونيات',
+          brand: 'لوجيتك',
+        },
       ],
       shippingAddress: 'الرياض، المملكة العربية السعودية',
+      billingAddress: 'الرياض، المملكة العربية السعودية',
       notes: 'طلب عاجل',
       lastModified: '2024-01-15',
+      priority: 'high',
+      source: 'موقع إلكتروني',
+      trackingNumber: 'TRK123456789',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-20',
+      actualDelivery: null,
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-15 10:30', status: 'completed' },
+        { step: 'بانتظار التحويل البنكي', timestamp: null, status: 'current' },
+        { step: 'تأكيد بوابة الدفع', timestamp: null, status: 'pending' },
+        { step: 'جاري التجهيز', timestamp: null, status: 'pending' },
+        { step: 'تم التجهيز', timestamp: null, status: 'pending' },
+        { step: 'جاري الشحن', timestamp: null, status: 'pending' },
+        { step: 'تم التسليم', timestamp: null, status: 'pending' },
+      ],
+      payment: {
+        method: 'تحويل بنكي',
+        status: 'بانتظار التحويل',
+        transactionId: null,
+        amount: 1250.5,
+        currency: 'SAR',
+        bankDetails: {
+          bankName: 'البنك الأهلي التجاري',
+          accountNumber: '1234567890',
+          iban: 'SA1234567890123456789012',
+        },
+      },
+      shipping: {
+        method: 'شحن سريع',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK123456789',
+        weight: 2.5,
+        dimensions: { length: 50, width: 35, height: 10 },
+        insurance: true,
+        signatureRequired: true,
+      },
     },
     {
       id: 2,
       orderNo: 'ORD-002',
-      customer: 'فاطمة علي',
-      customerEmail: 'fatima@example.com',
-      customerPhone: '+966502345678',
+      customer: {
+        name: 'فاطمة علي',
+        email: 'fatima@example.com',
+        phone: '+966502345678',
+        address: 'جدة، المملكة العربية السعودية',
+        loyaltyPoints: 850,
+        membershipLevel: 'silver',
+      },
       totalAmount: 850.75,
-      status: 'processing',
+      status: 'جاري التجهيز',
       paymentStatus: 'paid',
       orderDate: '2024-01-14',
       deliveryDate: '2024-01-19',
       items: [
-        { name: 'هاتف ذكي', quantity: 1, price: 800.0 },
-        { name: 'حافظة هاتف', quantity: 1, price: 50.75 },
+        {
+          name: 'هاتف آيفون 15',
+          sku: 'IPHONE-15-001',
+          quantity: 1,
+          price: 800.0,
+          image: '/assets/images/products/iphone.jpg',
+          category: 'إلكترونيات',
+          brand: 'آبل',
+        },
+        {
+          name: 'حافظة هاتف',
+          sku: 'PHONE-CASE-001',
+          quantity: 1,
+          price: 50.75,
+          image: '/assets/images/products/case.jpg',
+          category: 'إلكترونيات',
+          brand: 'سبيجن',
+        },
       ],
       shippingAddress: 'جدة، المملكة العربية السعودية',
+      billingAddress: 'جدة، المملكة العربية السعودية',
       notes: '',
       lastModified: '2024-01-14',
+      priority: 'normal',
+      source: 'تطبيق الجوال',
+      trackingNumber: 'TRK987654321',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-19',
+      actualDelivery: null,
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-14 14:20', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: '2024-01-14 14:25', status: 'completed' },
+        { step: 'جاري التجهيز', timestamp: '2024-01-14 16:00', status: 'current' },
+        { step: 'تم التجهيز', timestamp: null, status: 'pending' },
+        { step: 'جاري الشحن', timestamp: null, status: 'pending' },
+        { step: 'تم التسليم', timestamp: null, status: 'pending' },
+      ],
+      payment: {
+        method: 'بطاقة ائتمان',
+        status: 'مدفوع',
+        transactionId: 'TXN-987654321',
+        amount: 850.75,
+        currency: 'SAR',
+        paidAt: '2024-01-14 14:25',
+        bank: 'البنك الأهلي التجاري',
+        last4Digits: '1234',
+      },
+      shipping: {
+        method: 'شحن سريع',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK987654321',
+        weight: 0.5,
+        dimensions: { length: 20, width: 15, height: 5 },
+        insurance: true,
+        signatureRequired: true,
+      },
     },
     {
       id: 3,
       orderNo: 'ORD-003',
-      customer: 'محمد عبدالله',
-      customerEmail: 'mohammed@example.com',
-      customerPhone: '+966503456789',
+      customer: {
+        name: 'محمد عبدالله',
+        email: 'mohammed@example.com',
+        phone: '+966503456789',
+        address: 'الدمام، المملكة العربية السعودية',
+        loyaltyPoints: 2100,
+        membershipLevel: 'platinum',
+      },
       totalAmount: 2100.0,
-      status: 'shipped',
+      status: 'جاري الشحن',
       paymentStatus: 'paid',
       orderDate: '2024-01-13',
       deliveryDate: '2024-01-18',
       items: [
-        { name: 'تلفزيون ذكي', quantity: 1, price: 2000.0 },
-        { name: 'كابل HDMI', quantity: 2, price: 50.0 },
+        {
+          name: 'تلفزيون ذكي 55 بوصة',
+          sku: 'TV-SMART-55-001',
+          quantity: 1,
+          price: 2000.0,
+          image: '/assets/images/products/tv.jpg',
+          category: 'إلكترونيات',
+          brand: 'سامسونج',
+        },
+        {
+          name: 'كابل HDMI',
+          sku: 'HDMI-CABLE-001',
+          quantity: 2,
+          price: 50.0,
+          image: '/assets/images/products/hdmi.jpg',
+          category: 'إلكترونيات',
+          brand: 'أمازون بيسك',
+        },
       ],
       shippingAddress: 'الدمام، المملكة العربية السعودية',
+      billingAddress: 'الدمام، المملكة العربية السعودية',
       notes: 'توصيل في المساء',
       lastModified: '2024-01-13',
+      priority: 'normal',
+      source: 'موقع إلكتروني',
+      trackingNumber: 'TRK456789123',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-18',
+      actualDelivery: null,
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-13 08:15', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: '2024-01-13 08:20', status: 'completed' },
+        { step: 'جاري التجهيز', timestamp: '2024-01-13 10:00', status: 'completed' },
+        { step: 'تم التجهيز', timestamp: '2024-01-14 11:00', status: 'completed' },
+        { step: 'جاري الشحن', timestamp: '2024-01-15 09:00', status: 'current' },
+        { step: 'تم التسليم', timestamp: null, status: 'pending' },
+      ],
+      payment: {
+        method: 'دفع عند الاستلام',
+        status: 'مدفوع',
+        transactionId: 'TXN-456789123',
+        amount: 2100.0,
+        currency: 'SAR',
+        paidAt: '2024-01-16 14:30',
+        bank: null,
+        last4Digits: null,
+      },
+      shipping: {
+        method: 'شحن عادي',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK456789123',
+        weight: 15.0,
+        dimensions: { length: 120, width: 70, height: 10 },
+        insurance: true,
+        signatureRequired: true,
+      },
+    },
+    {
+      id: 4,
+      orderNo: 'ORD-004',
+      customer: {
+        name: 'سارة أحمد',
+        email: 'sara@example.com',
+        phone: '+966501234570',
+        address: 'الرياض، المملكة العربية السعودية',
+        loyaltyPoints: 450,
+        membershipLevel: 'bronze',
+      },
+      totalAmount: 1500.0,
+      status: 'معلقة',
+      paymentStatus: 'failed',
+      orderDate: '2024-01-16',
+      deliveryDate: '2024-01-21',
+      items: [
+        {
+          name: 'ساعة ذكية',
+          sku: 'SMARTWATCH-001',
+          quantity: 1,
+          price: 1500.0,
+          image: '/assets/images/products/smartwatch.jpg',
+          category: 'إلكترونيات',
+          brand: 'سامسونج',
+        },
+      ],
+      shippingAddress: 'الرياض، المملكة العربية السعودية',
+      billingAddress: 'الرياض، المملكة العربية السعودية',
+      notes: 'فشل في الدفع - يرجى التواصل مع العميل',
+      lastModified: '2024-01-16',
+      priority: 'normal',
+      source: 'موقع إلكتروني',
+      trackingNumber: null,
+      carrier: null,
+      estimatedDelivery: '2024-01-21',
+      actualDelivery: null,
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-16 15:20', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: null, status: 'failed' },
+        { step: 'معلقة', timestamp: '2024-01-16 15:30', status: 'current' },
+      ],
+      payment: {
+        method: 'بطاقة ائتمان',
+        status: 'فشل',
+        transactionId: null,
+        amount: 1500.0,
+        currency: 'SAR',
+        paidAt: null,
+        bank: null,
+        last4Digits: null,
+        failureReason: 'رصيد غير كافي',
+      },
+      shipping: {
+        method: 'شحن سريع',
+        carrier: null,
+        trackingNumber: null,
+        weight: 0.1,
+        dimensions: { length: 5, width: 4, height: 1 },
+        insurance: false,
+        signatureRequired: false,
+      },
+    },
+    {
+      id: 5,
+      orderNo: 'ORD-005',
+      customer: {
+        name: 'خالد السعيد',
+        email: 'khalid@example.com',
+        phone: '+966501234571',
+        address: 'جدة، المملكة العربية السعودية',
+        loyaltyPoints: 3200,
+        membershipLevel: 'platinum',
+      },
+      totalAmount: 3200.0,
+      status: 'طلبات استعادة',
+      paymentStatus: 'refunded',
+      orderDate: '2024-01-10',
+      deliveryDate: '2024-01-15',
+      items: [
+        {
+          name: 'لابتوب ماك بوك برو',
+          sku: 'MACBOOK-PRO-001',
+          quantity: 1,
+          price: 3200.0,
+          image: '/assets/images/products/macbook.jpg',
+          category: 'إلكترونيات',
+          brand: 'آبل',
+        },
+      ],
+      shippingAddress: 'جدة، المملكة العربية السعودية',
+      billingAddress: 'جدة، المملكة العربية السعودية',
+      notes: 'طلب استعادة - المنتج لا يعمل بشكل صحيح',
+      lastModified: '2024-01-12',
+      priority: 'high',
+      source: 'موقع إلكتروني',
+      trackingNumber: 'TRK789123456',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-15',
+      actualDelivery: '2024-01-15',
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-10 10:00', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: '2024-01-10 10:05', status: 'completed' },
+        { step: 'جاري التجهيز', timestamp: '2024-01-10 12:00', status: 'completed' },
+        { step: 'تم التجهيز', timestamp: '2024-01-11 09:00', status: 'completed' },
+        { step: 'جاري الشحن', timestamp: '2024-01-11 14:00', status: 'completed' },
+        { step: 'تم التسليم', timestamp: '2024-01-15 16:00', status: 'completed' },
+        { step: 'طلبات استعادة', timestamp: '2024-01-12 10:00', status: 'current' },
+      ],
+      payment: {
+        method: 'بطاقة ائتمان',
+        status: 'مسترد',
+        transactionId: 'TXN-789123456',
+        amount: 3200.0,
+        currency: 'SAR',
+        paidAt: '2024-01-10 10:05',
+        refunded: true,
+        refundAmount: 3200.0,
+        refundDate: '2024-01-12 10:00',
+        bank: 'البنك الأهلي التجاري',
+        last4Digits: '5678',
+      },
+      shipping: {
+        method: 'شحن سريع',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK789123456',
+        weight: 2.0,
+        dimensions: { length: 35, width: 25, height: 2 },
+        insurance: true,
+        signatureRequired: true,
+      },
+    },
+    {
+      id: 6,
+      orderNo: 'ORD-006',
+      customer: {
+        name: 'نورا محمد',
+        email: 'nora@example.com',
+        phone: '+966501234572',
+        address: 'الدمام، المملكة العربية السعودية',
+        loyaltyPoints: 1800,
+        membershipLevel: 'gold',
+      },
+      totalAmount: 1800.0,
+      status: 'طلبات استبدال',
+      paymentStatus: 'paid',
+      orderDate: '2024-01-12',
+      deliveryDate: '2024-01-17',
+      items: [
+        {
+          name: 'هاتف سامسونج جالاكسي',
+          sku: 'SAMSUNG-GALAXY-001',
+          quantity: 1,
+          price: 1800.0,
+          image: '/assets/images/products/galaxy.jpg',
+          category: 'إلكترونيات',
+          brand: 'سامسونج',
+        },
+      ],
+      shippingAddress: 'الدمام، المملكة العربية السعودية',
+      billingAddress: 'الدمام، المملكة العربية السعودية',
+      notes: 'طلب استبدال - لون غير مرغوب فيه',
+      lastModified: '2024-01-14',
+      priority: 'normal',
+      source: 'تطبيق الجوال',
+      trackingNumber: 'TRK321654987',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-17',
+      actualDelivery: '2024-01-17',
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-12 11:00', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: '2024-01-12 11:05', status: 'completed' },
+        { step: 'جاري التجهيز', timestamp: '2024-01-12 13:00', status: 'completed' },
+        { step: 'تم التجهيز', timestamp: '2024-01-13 10:00', status: 'completed' },
+        { step: 'جاري الشحن', timestamp: '2024-01-13 14:00', status: 'completed' },
+        { step: 'تم التسليم', timestamp: '2024-01-17 15:00', status: 'completed' },
+        { step: 'طلبات استبدال', timestamp: '2024-01-14 09:00', status: 'current' },
+      ],
+      payment: {
+        method: 'بطاقة ائتمان',
+        status: 'مدفوع',
+        transactionId: 'TXN-321654987',
+        amount: 1800.0,
+        currency: 'SAR',
+        paidAt: '2024-01-12 11:05',
+        bank: 'البنك السعودي الفرنسي',
+        last4Digits: '9012',
+      },
+      shipping: {
+        method: 'شحن سريع',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK321654987',
+        weight: 0.2,
+        dimensions: { length: 15, width: 7, height: 1 },
+        insurance: true,
+        signatureRequired: true,
+      },
+    },
+    {
+      id: 7,
+      orderNo: 'ORD-007',
+      customer: {
+        name: 'عبدالرحمن العلي',
+        email: 'abdulrahman@example.com',
+        phone: '+966501234573',
+        address: 'الرياض، المملكة العربية السعودية',
+        loyaltyPoints: 950,
+        membershipLevel: 'silver',
+      },
+      totalAmount: 950.0,
+      status: 'تم التسليم',
+      paymentStatus: 'paid',
+      orderDate: '2024-01-08',
+      deliveryDate: '2024-01-12',
+      items: [
+        {
+          name: 'سماعات لاسلكية',
+          sku: 'HEADPHONES-WIRELESS-001',
+          quantity: 1,
+          price: 950.0,
+          image: '/assets/images/products/headphones.jpg',
+          category: 'إلكترونيات',
+          brand: 'سوني',
+        },
+      ],
+      shippingAddress: 'الرياض، المملكة العربية السعودية',
+      billingAddress: 'الرياض، المملكة العربية السعودية',
+      notes: 'تم التسليم بنجاح',
+      lastModified: '2024-01-12',
+      priority: 'normal',
+      source: 'موقع إلكتروني',
+      trackingNumber: 'TRK654321987',
+      carrier: 'شركة الشحن السريع',
+      estimatedDelivery: '2024-01-12',
+      actualDelivery: '2024-01-12 14:30',
+      timeline: [
+        { step: 'تم إنشاء الطلب', timestamp: '2024-01-08 09:00', status: 'completed' },
+        { step: 'تأكيد بوابة الدفع', timestamp: '2024-01-08 09:05', status: 'completed' },
+        { step: 'جاري التجهيز', timestamp: '2024-01-08 11:00', status: 'completed' },
+        { step: 'تم التجهيز', timestamp: '2024-01-09 10:00', status: 'completed' },
+        { step: 'جاري الشحن', timestamp: '2024-01-09 14:00', status: 'completed' },
+        { step: 'تم التسليم', timestamp: '2024-01-12 14:30', status: 'completed' },
+      ],
+      payment: {
+        method: 'دفع عند الاستلام',
+        status: 'مدفوع',
+        transactionId: 'TXN-654321987',
+        amount: 950.0,
+        currency: 'SAR',
+        paidAt: '2024-01-12 14:30',
+        bank: null,
+        last4Digits: null,
+      },
+      shipping: {
+        method: 'شحن عادي',
+        carrier: 'شركة الشحن السريع',
+        trackingNumber: 'TRK654321987',
+        weight: 0.3,
+        dimensions: { length: 20, width: 18, height: 8 },
+        insurance: false,
+        signatureRequired: false,
+      },
     },
   ];
 
@@ -149,10 +575,10 @@ const OrdersList = () => {
     },
     {
       title: 'طلبات معلقة',
-      value: ordersData.filter((o) => o.status === 'pending').length.toString(),
+      value: ordersData.filter((o) => o.status === 'معلقة').length.toString(),
       color: 'warning',
       icon: ScheduleIcon,
-      change: '3 معلقة',
+      change: '1 معلقة',
     },
     {
       title: 'طلبات مدفوعة',
@@ -271,36 +697,37 @@ const OrdersList = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'pending':
+      case 'بانتظار التحويل البنكي':
         return 'warning';
-      case 'processing':
+      case 'تأكيد بوابة الدفع':
         return 'info';
-      case 'shipped':
-        return 'primary';
-      case 'delivered':
-        return 'success';
-      case 'cancelled':
+      case 'جاري التجهيز':
+        return 'warning';
+      case 'تم التجهيز':
+        return 'info';
+      case 'معلقة':
         return 'error';
+      case 'طلبات ملغية':
+        return 'error';
+      case 'طلبات استعادة':
+        return 'secondary';
+      case 'طلبات استبدال':
+        return 'secondary';
+      case 'جاري الشحن':
+        return 'primary';
+      case 'بانتظار تسليم الشحن':
+        return 'info';
+      case 'تم الشحن':
+        return 'success';
+      case 'تم التسليم':
+        return 'success';
       default:
         return 'default';
     }
   };
 
   const getStatusLabel = (status) => {
-    switch (status) {
-      case 'pending':
-        return 'معلق';
-      case 'processing':
-        return 'قيد المعالجة';
-      case 'shipped':
-        return 'تم الشحن';
-      case 'delivered':
-        return 'تم التسليم';
-      case 'cancelled':
-        return 'ملغي';
-      default:
-        return status;
-    }
+    return status; // الحالات بالفعل بالعربية
   };
 
   const getPaymentStatusColor = (paymentStatus) => {
@@ -471,11 +898,18 @@ const OrdersList = () => {
                 onChange={(e) => setStatusFilter(e.target.value)}
               >
                 <MenuItem value="all">جميع الحالات</MenuItem>
-                <MenuItem value="pending">معلق</MenuItem>
-                <MenuItem value="processing">قيد المعالجة</MenuItem>
-                <MenuItem value="shipped">تم الشحن</MenuItem>
-                <MenuItem value="delivered">تم التسليم</MenuItem>
-                <MenuItem value="cancelled">ملغي</MenuItem>
+                <MenuItem value="بانتظار التحويل البنكي">بانتظار التحويل البنكي</MenuItem>
+                <MenuItem value="تأكيد بوابة الدفع">تأكيد بوابة الدفع</MenuItem>
+                <MenuItem value="جاري التجهيز">جاري التجهيز</MenuItem>
+                <MenuItem value="تم التجهيز">تم التجهيز</MenuItem>
+                <MenuItem value="معلقة">معلقة</MenuItem>
+                <MenuItem value="طلبات ملغية">طلبات ملغية</MenuItem>
+                <MenuItem value="طلبات استعادة">طلبات استعادة</MenuItem>
+                <MenuItem value="طلبات استبدال">طلبات استبدال</MenuItem>
+                <MenuItem value="جاري الشحن">جاري الشحن</MenuItem>
+                <MenuItem value="بانتظار تسليم الشحن">بانتظار تسليم الشحن</MenuItem>
+                <MenuItem value="تم الشحن">تم الشحن</MenuItem>
+                <MenuItem value="تم التسليم">تم التسليم</MenuItem>
               </Select>
             </FormControl>
           </Grid>
@@ -642,11 +1076,18 @@ const OrdersList = () => {
                           </Avatar>
                           <Box>
                             <Typography variant="body2" fontWeight="bold">
-                              {item.customer}
+                              {item.customer.name}
                             </Typography>
                             <Typography variant="caption" color="text.secondary">
-                              {item.customerEmail}
+                              {item.customer.email}
                             </Typography>
+                            <Chip
+                              label={item.customer.membershipLevel}
+                              size="small"
+                              color="primary"
+                              variant="outlined"
+                              sx={{ mt: 0.5, fontSize: '0.7rem' }}
+                            />
                           </Box>
                         </Box>
                       </TableCell>
@@ -742,7 +1183,7 @@ const OrdersList = () => {
                 fullWidth
                 label="اسم العميل"
                 placeholder="أدخل اسم العميل"
-                defaultValue={selectedOrder?.customer || ''}
+                defaultValue={selectedOrder?.customer?.name || ''}
                 required
               />
             </Grid>
@@ -751,7 +1192,7 @@ const OrdersList = () => {
                 fullWidth
                 label="البريد الإلكتروني"
                 placeholder="أدخل البريد الإلكتروني"
-                defaultValue={selectedOrder?.customerEmail || ''}
+                defaultValue={selectedOrder?.customer?.email || ''}
                 type="email"
               />
             </Grid>
@@ -760,7 +1201,7 @@ const OrdersList = () => {
                 fullWidth
                 label="رقم الهاتف"
                 placeholder="أدخل رقم الهاتف"
-                defaultValue={selectedOrder?.customerPhone || ''}
+                defaultValue={selectedOrder?.customer?.phone || ''}
               />
             </Grid>
             <Grid size={{ xs: 12, md: 6 }}>
@@ -861,8 +1302,21 @@ const OrdersList = () => {
                 <Box>
                   <Typography variant="h6">{selectedOrder.orderNo}</Typography>
                   <Typography variant="body2" color="text.secondary">
-                    العميل: {selectedOrder.customer}
+                    العميل: {selectedOrder.customer.name}
                   </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    البريد: {selectedOrder.customer.email}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    الهاتف: {selectedOrder.customer.phone}
+                  </Typography>
+                  <Chip
+                    label={selectedOrder.customer.membershipLevel}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                    sx={{ mt: 1 }}
+                  />
                 </Box>
               </Box>
               <Divider sx={{ my: 2 }} />

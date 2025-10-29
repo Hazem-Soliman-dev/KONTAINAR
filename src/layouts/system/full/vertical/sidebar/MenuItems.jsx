@@ -124,18 +124,6 @@ const Menuitems = [
       },
       {
         id: uniqueId(),
-        title: 'المجموعات (Collections)',
-        icon: IconFolders,
-        href: '/system/catalog/collections',
-      },
-      {
-        id: uniqueId(),
-        title: 'البحث والمرادفات',
-        icon: IconFile,
-        href: '/system/catalog/search',
-      },
-      {
-        id: uniqueId(),
         title: 'التقييمات',
         icon: IconStars,
         href: '/system/catalog/reviews',
@@ -220,60 +208,6 @@ const Menuitems = [
         title: 'مراقبة او تتبع الطلبات',
         icon: IconPoint,
         href: '/system/orders/orders-tracking',
-      },
-      {
-        id: uniqueId(),
-        title: 'جديدة / غير منفذة',
-        icon: IconPoint,
-        href: '/system/orders/unfulfilled',
-      },
-      {
-        id: uniqueId(),
-        title: 'قيد التنفيذ',
-        icon: IconPoint,
-        href: '/system/orders/fulfillment',
-      },
-      {
-        id: uniqueId(),
-        title: 'تم الشحن',
-        icon: IconPoint,
-        href: '/system/orders/shipped',
-      },
-      {
-        id: uniqueId(),
-        title: 'تم التسليم',
-        icon: IconPoint,
-        href: '/system/orders/delivered',
-      },
-      {
-        id: uniqueId(),
-        title: 'الإلغاءات',
-        icon: IconPoint,
-        href: '/system/orders/cancellations',
-      },
-      {
-        id: uniqueId(),
-        title: 'مراجعة الاحتيال',
-        icon: IconPoint,
-        href: '/system/orders/fraud',
-      },
-      {
-        id: uniqueId(),
-        title: 'المدفوعات',
-        icon: IconCreditCard,
-        href: '/system/orders/payments',
-      },
-      {
-        id: uniqueId(),
-        title: 'الشحنات',
-        icon: IconTruckDelivery,
-        href: '/system/orders/shipments',
-      },
-      {
-        id: uniqueId(),
-        title: 'الإرجاعات (RMA)',
-        icon: IconCash,
-        href: '/system/orders/returns',
       },
     ],
   },
@@ -482,33 +416,33 @@ const Menuitems = [
   { navlabel: true, subheader: 'المشاريع والموارد البشرية' },
 
   // --- 1. إدارة المشاريع ---
-  {
-    id: uniqueId(),
-    title: 'إدارة المشاريع',
-    icon: IconFolders,
-    href: '/system/projects',
-    children: [
-      // العناصر الجديدة لـ إدارة المشاريع
-      {
-        id: uniqueId(),
-        title: 'قائمة المشاريع',
-        icon: IconPoint,
-        href: '/system/projects/list',
-      },
-      {
-        id: uniqueId(),
-        title: 'المهام',
-        icon: IconPoint,
-        href: '/system/projects/tasks',
-      },
-      {
-        id: uniqueId(),
-        title: 'تخصيص الموارد',
-        icon: IconPoint,
-        href: '/system/projects/resources',
-      },
-    ],
-  },
+  // {
+  //   id: uniqueId(),
+  //   title: 'إدارة المشاريع',
+  //   icon: IconFolders,
+  //   href: '/system/projects',
+  //   children: [
+  //     // العناصر الجديدة لـ إدارة المشاريع
+  //     {
+  //       id: uniqueId(),
+  //       title: 'قائمة المشاريع',
+  //       icon: IconPoint,
+  //       href: '/system/projects/list',
+  //     },
+  //     {
+  //       id: uniqueId(),
+  //       title: 'المهام',
+  //       icon: IconPoint,
+  //       href: '/system/projects/tasks',
+  //     },
+  //     {
+  //       id: uniqueId(),
+  //       title: 'تخصيص الموارد',
+  //       icon: IconPoint,
+  //       href: '/system/projects/resources',
+  //     },
+  //   ],
+  // },
 
   // --- 2. شؤون الموظفين (HR) ---
   {
