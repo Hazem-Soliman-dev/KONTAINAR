@@ -63,7 +63,7 @@ const YearlyBreakup = () => {
   const seriescolumnchart = [38, 40, 25];
 
   return (
-    <DashboardCard title="Store Performance Breakup">
+    <DashboardCard title="تقسيم أداء جميع المتاجر">
       <Grid container spacing={3}>
         {/* column */}
         <Grid size={7}>

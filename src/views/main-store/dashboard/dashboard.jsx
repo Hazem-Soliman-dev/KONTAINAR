@@ -2,6 +2,7 @@ import React from 'react';
 import { Box } from '@mui/material';
 import { Grid } from '@mui/material';
 
+// Using Main Store specific dashboard components
 import TopCards from '../../../components/platform/main-store/dashboards/TopCards.jsx';
 import RevenueUpdates from '../../../components/platform/main-store/dashboards/RevenueUpdates.jsx';
 import YearlyBreakup from '../../../components/platform/main-store/dashboards/YearlyBreakup.jsx';

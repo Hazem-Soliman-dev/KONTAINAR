@@ -4,14 +4,14 @@ import PageContainer from '../../../components/container/PageContainer';
 import Breadcrumb from '../../../layouts/shared/breadcrumb/Breadcrumb';
 
 import AllStatistics from '../../../components/platform/suppliers/dashboards/AllStatistics.jsx';
-// Reuse system analytics widgets for a consistent analytics experience
-import TopCards from '../../../components/platform/system/dashboards/TopCards.jsx';
-import RevenueUpdates from '../../../components/platform/system/dashboards/RevenueUpdates.jsx';
-import YearlyBreakup from '../../../components/platform/system/dashboards/YearlyBreakup.jsx';
-import MonthlyEarnings from '../../../components/platform/system/dashboards/MonthlyEarnings.jsx';
-import WeeklyStats from '../../../components/platform/system/dashboards/WeeklyStats.jsx';
-import SellingProducts from '../../../components/platform/system/dashboards/SellingProducts.jsx';
-import TopPerformers from '../../../components/platform/system/dashboards/TopPerformers.jsx';
+// Using Supplier specific dashboard components
+import TopCards from '../../../components/platform/suppliers/dashboards/TopCards.jsx';
+import RevenueUpdates from '../../../components/platform/suppliers/dashboards/RevenueUpdates.jsx';
+import YearlyBreakup from '../../../components/platform/suppliers/dashboards/YearlyBreakup.jsx';
+import MonthlyEarnings from '../../../components/platform/suppliers/dashboards/MonthlyEarnings.jsx';
+import WeeklyStats from '../../../components/platform/suppliers/dashboards/WeeklyStats.jsx';
+import SellingProducts from '../../../components/platform/suppliers/dashboards/SellingProducts.jsx';
+import TopPerformers from '../../../components/platform/suppliers/dashboards/TopPerformers.jsx';
 import Welcome from '../../../layouts/shared/welcome/Welcome.jsx';
 
 const BCrumb = [
@@ -67,11 +67,6 @@ const Modern = () => {
           </Grid>
           <Grid size={{ xs: 12, lg: 8 }}>
             <TopPerformers />
-          </Grid>
-
-          {/* Supplier-specific rollup */}
-          <Grid item xs={12}>
-            <AllStatistics />
           </Grid>
         </Grid>
 

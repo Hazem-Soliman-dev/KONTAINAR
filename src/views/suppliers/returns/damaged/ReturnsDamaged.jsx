@@ -1,5 +1,4 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
 import {
   Box,
   Grid,
@@ -17,6 +16,18 @@ import {
   IconButton,
   alpha,
   useTheme,
+  Drawer,
+  Divider,
+  Stack,
+  Tooltip,
+  Snackbar,
+  Alert,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
 } from '@mui/material';
 import {
   IconAlertCircle,
@@ -25,6 +36,10 @@ import {
   IconReplace,
   IconEye,
   IconCheck,
+  IconCurrencyDollar,
+  IconClock,
+  IconX,
+  IconEdit,
 } from '@tabler/icons-react';
 import PageContainer from '../../../../components/container/PageContainer';
 import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
@@ -42,7 +57,37 @@ const BCrumb = [
 
 const ReturnsDamaged = () => {
   const theme = useTheme();
-  const navigate = useNavigate();
+  const [openViewDrawer, setOpenViewDrawer] = useState(false);
+  const [openReportDialog, setOpenReportDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [damageReport, setDamageReport] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleViewProduct = (product) => {
+    setSelectedProduct(product);
+    setOpenViewDrawer(true);
+  };
+
+  const handleReportDamage = (product) => {
+    setSelectedProduct(product);
+    setDamageReport('');
+    setOpenReportDialog(true);
+  };
+
+  const handleSaveReport = () => {
+    setSnackbar({
+      open: true,
+      message: `تم تحديث تقرير التلف للمنتج ${selectedProduct?.id}`,
+      severity: 'success',
+    });
+    setOpenReportDialog(false);
+    setDamageReport('');
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
   // Mock data
   const damagedProducts = [
     {
@@ -99,30 +144,37 @@ const ReturnsDamaged = () => {
     },
   ];
 
+  // Calculate damaged products statistics
+  const totalDamaged = damagedProducts.length;
+  const shippingDamage = damagedProducts.filter((p) => p.damageType === 'تلف أثناء الشحن').length;
+  const replaced = damagedProducts.filter((p) => p.status === 'تم الاستبدال').length;
+  const underReview = damagedProducts.filter((p) => p.status === 'قيد المراجعة').length;
+  const totalLoss = damagedProducts.reduce((sum, p) => sum + p.estimatedLoss, 0);
+
   const stats = [
     {
       icon: IconPackageOff,
       title: 'منتجات تالفة',
-      value: '23',
+      value: totalDamaged.toString(),
       color: 'error',
     },
     {
-      icon: IconTruckDelivery,
-      title: 'تلف أثناء الشحن',
-      value: '15',
+      icon: IconClock,
+      title: 'قيد المراجعة',
+      value: underReview.toString(),
       color: 'warning',
-    },
-    {
-      icon: IconAlertCircle,
-      title: 'عيوب تصنيع',
-      value: '8',
-      color: 'info',
     },
     {
       icon: IconReplace,
       title: 'تم الاستبدال',
-      value: '18',
+      value: replaced.toString(),
       color: 'success',
+    },
+    {
+      icon: IconCurrencyDollar,
+      title: 'الخسائر المقدرة',
+      value: `${(totalLoss / 1000).toFixed(0)}K ر.س`,
+      color: 'info',
     },
   ];
 
@@ -274,24 +326,43 @@ const ReturnsDamaged = () => {
                       />
                     </TableCell>
                     <TableCell align="center">
-                      <Box display="flex" gap={1} justifyContent="center">
-                        <IconButton
-                          color="primary"
-                          size="small"
-                          onClick={() => navigate(`/suppliers/returns/details/${product.id}`)}
-                        >
-                          <IconEye size={18} />
-                        </IconButton>
-                        {product.status === 'قيد المراجعة' && (
+                      <Stack direction="row" spacing={1} justifyContent="center">
+                        <Tooltip title="عرض التفاصيل">
                           <IconButton
-                            color="success"
+                            color="primary"
                             size="small"
-                            onClick={() => alert(`تم قبول التلف ${product.id}`)}
+                            onClick={() => handleViewProduct(product)}
                           >
-                            <IconCheck size={18} />
+                            <IconEye size={18} />
                           </IconButton>
+                        </Tooltip>
+                        <Tooltip title="تقرير التلف">
+                          <IconButton
+                            color="warning"
+                            size="small"
+                            onClick={() => handleReportDamage(product)}
+                          >
+                            <IconEdit size={18} />
+                          </IconButton>
+                        </Tooltip>
+                        {product.status === 'قيد المراجعة' && (
+                          <Tooltip title="تأكيد التلف">
+                            <IconButton
+                              color="success"
+                              size="small"
+                              onClick={() => {
+                                setSnackbar({
+                                  open: true,
+                                  message: `تم قبول التلف ${product.id}`,
+                                  severity: 'success',
+                                });
+                              }}
+                            >
+                              <IconCheck size={18} />
+                            </IconButton>
+                          </Tooltip>
                         )}
-                      </Box>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -299,6 +370,156 @@ const ReturnsDamaged = () => {
             </Table>
           </TableContainer>
         </DashboardCard>
+
+        {/* View Product Drawer */}
+        <Drawer
+          anchor="left"
+          open={openViewDrawer}
+          onClose={() => setOpenViewDrawer(false)}
+          PaperProps={{ sx: { width: { xs: '100%', sm: 500 } } }}
+        >
+          {selectedProduct && (
+            <Box sx={{ p: 3 }}>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                <Typography variant="h5" fontWeight={600}>
+                  تفاصيل المنتج التالف
+                </Typography>
+                <IconButton onClick={() => setOpenViewDrawer(false)}>
+                  <IconX />
+                </IconButton>
+              </Box>
+              <Divider sx={{ mb: 3 }} />
+
+              <Stack spacing={3}>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    رقم التلف
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="error">
+                    {selectedProduct.id}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    رقم الطلب
+                  </Typography>
+                  <Typography variant="body1">{selectedProduct.orderId}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    اسم المنتج
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600}>
+                    {selectedProduct.productName}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    تاريخ الاكتشاف
+                  </Typography>
+                  <Typography variant="body1">{selectedProduct.date}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الكمية التالفة
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="error.main">
+                    {selectedProduct.quantity} وحدة
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    قيمة الخسارة
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="error.main">
+                    {selectedProduct.estimatedLoss.toLocaleString()} ر.س
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    نوع التلف
+                  </Typography>
+                  <Chip label={selectedProduct.damageType} size="small" color="error" />
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    السبب
+                  </Typography>
+                  <Typography variant="body1">{selectedProduct.reason}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الحالة
+                  </Typography>
+                  <Chip
+                    label={selectedProduct.status}
+                    size="small"
+                    color={getStatusColor(selectedProduct.status)}
+                  />
+                </Box>
+              </Stack>
+
+              <Box mt={4}>
+                <Button
+                  fullWidth
+                  variant="outlined"
+                  startIcon={<IconEdit />}
+                  onClick={() => {
+                    setOpenViewDrawer(false);
+                    handleReportDamage(selectedProduct);
+                  }}
+                >
+                  تحديث تقرير التلف
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </Drawer>
+
+        {/* Report Damage Dialog */}
+        <Dialog
+          open={openReportDialog}
+          onClose={() => setOpenReportDialog(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>تقرير التلف</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                المنتج: {selectedProduct?.id}
+              </Typography>
+              <TextField
+                fullWidth
+                multiline
+                rows={6}
+                label="تفاصيل التلف"
+                value={damageReport}
+                onChange={(e) => setDamageReport(e.target.value)}
+                sx={{ mt: 2 }}
+                placeholder="اكتب تفاصيل التلف والإجراءات المتخذة..."
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenReportDialog(false)}>إلغاء</Button>
+            <Button variant="contained" onClick={handleSaveReport} disabled={!damageReport}>
+              حفظ التقرير
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </PageContainer>
   );

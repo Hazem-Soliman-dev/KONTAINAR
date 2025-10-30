@@ -11,39 +11,39 @@ import icon6 from '../../../../assets/images/svgs/icon-dd-message-box.svg';
 
 const topcards = [
   {
-    icon: icon2,
-    title: 'المتاجر الفرعية',
-    digits: '47',
-    bgcolor: 'success',
-  },
-  {
     icon: icon3,
-    title: 'العملاء',
-    digits: '8,942',
+    title: 'عملائي',
+    digits: '1,247',
     bgcolor: 'info',
   },
   {
     icon: icon4,
-    title: 'المنتجات',
-    digits: '2,847',
+    title: 'منتجاتي',
+    digits: '284',
     bgcolor: 'warning',
   },
   {
     icon: icon5,
-    title: 'الطلبات',
-    digits: '12,847',
+    title: 'طلباتي',
+    digits: '847',
     bgcolor: 'error',
   },
   {
     icon: icon6,
-    title: 'الإيرادات',
-    digits: '2.8 مليون',
+    title: 'مبيعاتي',
+    digits: '156K',
     bgcolor: 'primary',
   },
   {
+    icon: icon2,
+    title: 'المرتجعات',
+    digits: '12',
+    bgcolor: 'warning',
+  },
+  {
     icon: icon1,
-    title: 'الدعم الفني',
-    digits: '156',
+    title: 'القضايا',
+    digits: '8',
     bgcolor: 'secondary',
   },
 ];

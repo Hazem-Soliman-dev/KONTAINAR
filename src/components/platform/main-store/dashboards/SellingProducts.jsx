@@ -30,10 +30,10 @@ const SellingProducts = () => {
     <Paper sx={{ bgcolor: primary, border: `1px solid ${borderColor}` }} variant="outlined">
       <CardContent>
         <Typography variant="h5" color="white">
-          Top performing stores
+          أفضل المتاجر أداءً
         </Typography>
         <Typography variant="subtitle1" color="white" mb={4}>
-          Overview 2025
+          نظرة عامة 2025
         </Typography>
 
         <Box textAlign="center" mt={2} mb="-90px">

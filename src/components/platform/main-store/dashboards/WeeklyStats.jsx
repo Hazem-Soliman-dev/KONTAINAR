@@ -90,7 +90,7 @@ const WeeklyStats = () => {
   ];
 
   return (
-    <DashboardCard title="Weekly Store Stats" subtitle="Average performance">
+    <DashboardCard title="إحصائيات المتاجر الأسبوعية" subtitle="متوسط الأداء الكلي">
       <>
         <Stack mt={4}>
           <Chart

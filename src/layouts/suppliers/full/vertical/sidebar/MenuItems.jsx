@@ -14,6 +14,12 @@ import {
   IconCash,
   IconAlertCircle,
   IconFileDescription,
+  IconReportAnalytics,
+  IconUsers,
+  IconTrademark,
+  IconAdjustmentsHorizontal,
+  IconTruckDelivery,
+  IconClipboardList,
 } from '@tabler/icons-react';
 
 const Menuitems = [
@@ -27,8 +33,8 @@ const Menuitems = [
     title: 'لوحة التحكم',
     icon: IconHome,
     href: '/suppliers',
-    chip: 'جديد',
-    chipColor: 'secondary',
+    chip: 'مورد',
+    chipColor: 'primary',
   },
 
   // ===== إدارة المنتجات =====
@@ -50,12 +56,6 @@ const Menuitems = [
       },
       {
         id: uniqueId(),
-        title: 'إضافة منتج جديد',
-        icon: IconPoint,
-        href: '/suppliers/products/add',
-      },
-      {
-        id: uniqueId(),
         title: 'التصنيفات',
         icon: IconCategory,
         href: '/suppliers/products/categories',
@@ -65,6 +65,24 @@ const Menuitems = [
         title: 'إحصائيات المنتجات',
         icon: IconChartBar,
         href: '/suppliers/products/statistics',
+      },
+      {
+        id: uniqueId(),
+        title: 'إدارة التصنيفات',
+        icon: IconCategory,
+        href: '/suppliers/catalog/categories-manager',
+      },
+      {
+        id: uniqueId(),
+        title: 'الخصائص',
+        icon: IconAdjustmentsHorizontal,
+        href: '/suppliers/catalog/attributes',
+      },
+      {
+        id: uniqueId(),
+        title: 'العلامات التجارية',
+        icon: IconTrademark,
+        href: '/suppliers/catalog/brands',
       },
     ],
   },
@@ -95,7 +113,7 @@ const Menuitems = [
       {
         id: uniqueId(),
         title: 'تتبع الطلبات',
-        icon: IconPoint,
+        icon: IconTruckDelivery,
         href: '/suppliers/orders/tracking',
       },
     ],
@@ -147,6 +165,68 @@ const Menuitems = [
     ],
   },
 
+  // ===== التحليلات والتقارير =====
+  {
+    navlabel: true,
+    subheader: 'التحليلات والتقارير',
+  },
+  {
+    id: uniqueId(),
+    title: 'التقارير والإحصائيات',
+    icon: IconReportAnalytics,
+    href: '/suppliers/analytics',
+    children: [
+      {
+        id: uniqueId(),
+        title: 'تقارير المبيعات',
+        icon: IconPoint,
+        href: '/suppliers/analytics/sales',
+      },
+      {
+        id: uniqueId(),
+        title: 'تقارير المخزون',
+        icon: IconPoint,
+        href: '/suppliers/analytics/inventory',
+      },
+      {
+        id: uniqueId(),
+        title: 'أداء المنتجات',
+        icon: IconPoint,
+        href: '/suppliers/analytics/products',
+      },
+      {
+        id: uniqueId(),
+        title: 'تحليل العملاء',
+        icon: IconPoint,
+        href: '/suppliers/analytics/customers',
+      },
+      {
+        id: uniqueId(),
+        title: 'تقرير الأداء',
+        icon: IconPoint,
+        href: '/suppliers/analytics/performance',
+      },
+      {
+        id: uniqueId(),
+        title: 'منشئ التقارير',
+        icon: IconPoint,
+        href: '/suppliers/analytics/builder',
+      },
+    ],
+  },
+
+  // ===== إدارة العملاء =====
+  {
+    navlabel: true,
+    subheader: 'العلاقات',
+  },
+  {
+    id: uniqueId(),
+    title: 'العملاء',
+    icon: IconUsers,
+    href: '/suppliers/customers',
+  },
+
   // ===== الدعم والعقد =====
   {
     navlabel: true,
@@ -157,6 +237,8 @@ const Menuitems = [
     title: 'الدعم الفني',
     icon: IconMessageCircle,
     href: '/suppliers/support',
+    chip: 'دردشة',
+    chipColor: 'success',
   },
   {
     id: uniqueId(),

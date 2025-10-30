@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import {
   Box,
   Typography,
@@ -17,8 +16,32 @@ import {
   FormControl,
   InputLabel,
   IconButton,
+  Grid,
+  Card,
+  CardContent,
+  Drawer,
+  Divider,
+  Stack,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  Snackbar,
+  Alert,
+  Tooltip,
 } from '@mui/material';
-import { IconSearch, IconEye, IconDownload } from '@tabler/icons-react';
+import {
+  IconSearch,
+  IconEye,
+  IconDownload,
+  IconFileInvoice,
+  IconCheck,
+  IconClock,
+  IconCurrencyDollar,
+  IconX,
+  IconEdit,
+} from '@tabler/icons-react';
 import PageContainer from '../../../../components/container/PageContainer';
 import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
 import DashboardCard from '../../../../components/shared/DashboardCard';
@@ -35,9 +58,37 @@ const BCrumb = [
 ];
 
 const InvoicesList = () => {
-  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState('الكل');
+  const [openViewDrawer, setOpenViewDrawer] = useState(false);
+  const [openStatusDialog, setOpenStatusDialog] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [newStatus, setNewStatus] = useState('');
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+
+  const handleViewInvoice = (invoice) => {
+    setSelectedInvoice(invoice);
+    setOpenViewDrawer(true);
+  };
+
+  const handleUpdateStatus = (invoice) => {
+    setSelectedInvoice(invoice);
+    setNewStatus(invoice.status);
+    setOpenStatusDialog(true);
+  };
+
+  const handleSaveStatus = () => {
+    setSnackbar({
+      open: true,
+      message: 'تم تحديث حالة الفاتورة بنجاح',
+      severity: 'success',
+    });
+    setOpenStatusDialog(false);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
 
   // Mock data
   const invoices = [
@@ -120,11 +171,67 @@ const InvoicesList = () => {
         invoice.customerName.toLowerCase().includes(searchTerm.toLowerCase())),
   );
 
+  // Calculate invoice statistics
+  const totalInvoices = invoices.length;
+  const paidInvoices = invoices.filter((i) => i.status === 'مدفوعة').length;
+  const pendingInvoices = invoices.filter((i) => i.status === 'معلقة').length;
+  const totalAmount = invoices.reduce((sum, i) => sum + i.amount, 0);
+  const totalPaid = invoices.reduce((sum, i) => sum + i.paid, 0);
+
+  const invoiceStats = [
+    {
+      title: 'إجمالي الفواتير',
+      value: totalInvoices,
+      icon: IconFileInvoice,
+      color: 'primary',
+    },
+    {
+      title: 'فواتير مدفوعة',
+      value: paidInvoices,
+      icon: IconCheck,
+      color: 'success',
+    },
+    {
+      title: 'فواتير معلقة',
+      value: pendingInvoices,
+      icon: IconClock,
+      color: 'warning',
+    },
+    {
+      title: 'المبلغ المدفوع',
+      value: `${(totalPaid / 1000).toFixed(0)}K ر.س`,
+      icon: IconCurrencyDollar,
+      color: 'info',
+    },
+  ];
+
   return (
     <PageContainer title="قائمة الفواتير" description="عرض جميع الفواتير">
       <Breadcrumb title="قائمة الفواتير" items={BCrumb} />
 
       <Box>
+        {/* Invoice Statistics */}
+        <Grid container spacing={3} mb={3}>
+          {invoiceStats.map((stat, index) => (
+            <Grid item xs={12} sm={6} lg={3} key={index}>
+              <Card>
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <Typography variant="h6" color="textSecondary" gutterBottom>
+                        {stat.title}
+                      </Typography>
+                      <Typography variant="h3" fontWeight={600}>
+                        {stat.value}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         {/* Invoices Table */}
         <DashboardCard
           title="قائمة الفواتير"
@@ -223,22 +330,35 @@ const InvoicesList = () => {
                       />
                     </TableCell>
                     <TableCell align="center">
-                      <Box display="flex" gap={1} justifyContent="center">
-                        <IconButton
-                          color="primary"
-                          size="small"
-                          onClick={() => navigate(`/suppliers/invoices/details/${invoice.id}`)}
-                        >
-                          <IconEye size={18} />
-                        </IconButton>
-                        <IconButton
-                          color="info"
-                          size="small"
-                          onClick={() => downloadInvoicePdf(invoice.id)}
-                        >
-                          <IconDownload size={18} />
-                        </IconButton>
-                      </Box>
+                      <Stack direction="row" spacing={1} justifyContent="center">
+                        <Tooltip title="عرض التفاصيل">
+                          <IconButton
+                            color="primary"
+                            size="small"
+                            onClick={() => handleViewInvoice(invoice)}
+                          >
+                            <IconEye size={18} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="تحديث الحالة">
+                          <IconButton
+                            color="secondary"
+                            size="small"
+                            onClick={() => handleUpdateStatus(invoice)}
+                          >
+                            <IconEdit size={18} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="تحميل الفاتورة">
+                          <IconButton
+                            color="info"
+                            size="small"
+                            onClick={() => downloadInvoicePdf(invoice.id)}
+                          >
+                            <IconDownload size={18} />
+                          </IconButton>
+                        </Tooltip>
+                      </Stack>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -246,6 +366,157 @@ const InvoicesList = () => {
             </Table>
           </TableContainer>
         </DashboardCard>
+
+        {/* View Invoice Drawer */}
+        <Drawer
+          anchor="left"
+          open={openViewDrawer}
+          onClose={() => setOpenViewDrawer(false)}
+          PaperProps={{ sx: { width: { xs: '100%', sm: 500 } } }}
+        >
+          {selectedInvoice && (
+            <Box sx={{ p: 3 }}>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                <Typography variant="h5" fontWeight={600}>
+                  تفاصيل الفاتورة
+                </Typography>
+                <IconButton onClick={() => setOpenViewDrawer(false)}>
+                  <IconX />
+                </IconButton>
+              </Box>
+              <Divider sx={{ mb: 3 }} />
+
+              <Stack spacing={3}>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    رقم الفاتورة
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="primary">
+                    {selectedInvoice.id}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    رقم الطلب
+                  </Typography>
+                  <Typography variant="body1">{selectedInvoice.orderId}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    العميل
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600}>
+                    {selectedInvoice.customerName}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    تاريخ الفاتورة
+                  </Typography>
+                  <Typography variant="body1">{selectedInvoice.date}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    تاريخ الاستحقاق
+                  </Typography>
+                  <Typography variant="body1">{selectedInvoice.dueDate}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    المبلغ الإجمالي
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600}>
+                    {selectedInvoice.amount.toLocaleString()} ر.س
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    المبلغ المدفوع
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="success.main">
+                    {selectedInvoice.paid.toLocaleString()} ر.س
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    طريقة الدفع
+                  </Typography>
+                  <Typography variant="body1">{selectedInvoice.paymentMethod}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الحالة
+                  </Typography>
+                  <Chip
+                    label={selectedInvoice.status}
+                    size="small"
+                    color={getStatusColor(selectedInvoice.status)}
+                  />
+                </Box>
+              </Stack>
+
+              <Box mt={4}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  startIcon={<IconDownload />}
+                  onClick={() => downloadInvoicePdf(selectedInvoice.id)}
+                >
+                  تحميل الفاتورة
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </Drawer>
+
+        {/* Update Status Dialog */}
+        <Dialog
+          open={openStatusDialog}
+          onClose={() => setOpenStatusDialog(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>تحديث حالة الفاتورة</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2 }}>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                الفاتورة: {selectedInvoice?.id}
+              </Typography>
+              <FormControl fullWidth sx={{ mt: 2 }}>
+                <InputLabel>الحالة الجديدة</InputLabel>
+                <Select
+                  value={newStatus}
+                  label="الحالة الجديدة"
+                  onChange={(e) => setNewStatus(e.target.value)}
+                >
+                  <MenuItem value="معلقة">معلقة</MenuItem>
+                  <MenuItem value="مدفوعة">مدفوعة</MenuItem>
+                  <MenuItem value="مدفوعة جزئياً">مدفوعة جزئياً</MenuItem>
+                  <MenuItem value="متأخرة">متأخرة</MenuItem>
+                  <MenuItem value="ملغاة">ملغاة</MenuItem>
+                </Select>
+              </FormControl>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenStatusDialog(false)}>إلغاء</Button>
+            <Button variant="contained" onClick={handleSaveStatus}>
+              حفظ
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </PageContainer>
   );

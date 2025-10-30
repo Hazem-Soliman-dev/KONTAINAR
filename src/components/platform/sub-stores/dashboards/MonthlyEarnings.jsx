@@ -57,7 +57,7 @@ const MonthlyEarnings = () => {
 
   return (
     <DashboardCard
-      title="Monthly Store Earnings"
+      title="أرباحي الشهرية"
       action={
         <Fab color="secondary" size="medium">
           <IconCurrencyDollar width={24} />

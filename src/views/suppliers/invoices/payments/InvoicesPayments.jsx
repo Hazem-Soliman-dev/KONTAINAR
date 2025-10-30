@@ -11,9 +11,15 @@ import {
   TableRow,
   Chip,
   LinearProgress,
+  Card,
+  CardContent,
 } from '@mui/material';
 import {
   IconCheck,
+  IconCurrencyDollar,
+  IconCreditCard,
+  IconClock,
+  IconReceipt,
 } from '@tabler/icons-react';
 import PageContainer from '../../../../components/container/PageContainer';
 import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
@@ -81,11 +87,66 @@ const InvoicesPayments = () => {
     { method: 'شيك', count: 28, percentage: 9, color: 'error' },
   ];
 
+  // Calculate payment statistics
+  const totalPayments = payments.length;
+  const completedPayments = payments.filter((p) => p.status === 'مكتمل').length;
+  const pendingPayments = payments.filter((p) => p.status === 'قيد المعالجة').length;
+  const totalAmount = payments.reduce((sum, p) => sum + p.amount, 0);
+
+  const paymentStats = [
+    {
+      title: 'إجمالي المدفوعات',
+      value: totalPayments,
+      icon: IconReceipt,
+      color: 'primary',
+    },
+    {
+      title: 'مدفوعات مكتملة',
+      value: completedPayments,
+      icon: IconCheck,
+      color: 'success',
+    },
+    {
+      title: 'قيد المعالجة',
+      value: pendingPayments,
+      icon: IconClock,
+      color: 'warning',
+    },
+    {
+      title: 'المبلغ الإجمالي',
+      value: `${(totalAmount / 1000).toFixed(0)}K ر.س`,
+      icon: IconCurrencyDollar,
+      color: 'info',
+    },
+  ];
+
   return (
     <PageContainer title="المدفوعات" description="عرض جميع المدفوعات">
       <Breadcrumb title="المدفوعات" items={BCrumb} />
 
       <Box>
+        {/* Payment Statistics */}
+        <Grid container spacing={3} mb={3}>
+          {paymentStats.map((stat, index) => (
+            <Grid item xs={12} sm={6} lg={3} key={index}>
+              <Card>
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <Typography variant="h6" color="textSecondary" gutterBottom>
+                        {stat.title}
+                      </Typography>
+                      <Typography variant="h3" fontWeight={600}>
+                        {stat.value}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         <Grid container spacing={3}>
           {/* Payment Methods */}
           <Grid item xs={12} lg={4}>
@@ -183,4 +244,3 @@ const InvoicesPayments = () => {
 };
 
 export default InvoicesPayments;
-

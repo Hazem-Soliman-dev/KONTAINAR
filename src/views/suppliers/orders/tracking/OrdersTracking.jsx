@@ -9,6 +9,8 @@ import {
   Paper,
   Chip,
   Divider,
+  Card,
+  CardContent,
 } from '@mui/material';
 import {
   IconPackage,
@@ -16,6 +18,8 @@ import {
   IconCheck,
   IconMapPin,
   IconClock,
+  IconShoppingCart,
+  IconCircleCheck,
 } from '@tabler/icons-react';
 import PageContainer from '../../../../components/container/PageContainer';
 import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
@@ -107,11 +111,66 @@ const OrdersTracking = () => {
     },
   ];
 
+  // Calculate tracking statistics
+  const totalTracking = trackingOrders.length;
+  const inTransit = trackingOrders.filter((o) => o.status === 'قيد التوصيل').length;
+  const inPreparation = trackingOrders.filter((o) => o.status === 'قيد التجهيز').length;
+  const delivered = trackingOrders.filter((o) => o.status === 'تم التسليم').length;
+
+  const trackingStats = [
+    {
+      title: 'طلبات قيد التتبع',
+      value: totalTracking,
+      icon: IconShoppingCart,
+      color: 'primary',
+    },
+    {
+      title: 'قيد التجهيز',
+      value: inPreparation,
+      icon: IconPackage,
+      color: 'warning',
+    },
+    {
+      title: 'قيد التوصيل',
+      value: inTransit,
+      icon: IconTruck,
+      color: 'info',
+    },
+    {
+      title: 'تم التسليم',
+      value: delivered,
+      icon: IconCircleCheck,
+      color: 'success',
+    },
+  ];
+
   return (
     <PageContainer title="تتبع الطلبات" description="تتبع حالة الطلبات">
       <Breadcrumb title="تتبع الطلبات" items={BCrumb} />
 
       <Box>
+        {/* Tracking Statistics */}
+        <Grid container spacing={3} mb={3}>
+          {trackingStats.map((stat, index) => (
+            <Grid item xs={12} sm={6} lg={3} key={index}>
+              <Card>
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Box>
+                      <Typography variant="h6" color="textSecondary" gutterBottom>
+                        {stat.title}
+                      </Typography>
+                      <Typography variant="h3" fontWeight={600}>
+                        {stat.value}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
         {/* Tracking Details */}
         <Grid container spacing={3}>
           {trackingOrders.map((order) => (
@@ -147,7 +206,7 @@ const OrdersTracking = () => {
                         <Typography variant="body2" color="textSecondary">
                           التسليم المتوقع
                         </Typography>
-                      <Box display="flex" alignItems="center" gap={0.5} mt={0.5}>
+                        <Box display="flex" alignItems="center" gap={0.5} mt={0.5}>
                           <DateWithIcon date={order.estimatedDelivery} />
                         </Box>
                       </Grid>
@@ -193,4 +252,3 @@ const OrdersTracking = () => {
 };
 
 export default OrdersTracking;
-

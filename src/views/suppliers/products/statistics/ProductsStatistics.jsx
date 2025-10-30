@@ -80,19 +80,28 @@ const ProductsStatistics = () => {
     },
   ];
 
+  // Calculate product statistics
+  const totalProducts = topProducts.length;
+  const totalSales = topProducts.reduce((sum, p) => sum + p.sales, 0);
+  const totalRevenue = topProducts.reduce((sum, p) => sum + p.revenue, 0);
+  const avgRating = (
+    topProducts.reduce((sum, p) => sum + p.rating, 0) / topProducts.length
+  ).toFixed(1);
+  const trendingUp = topProducts.filter((p) => p.trend === 'up').length;
+
   const stats = [
     {
       icon: IconPackage,
-      title: 'المنتجات النشطة',
-      value: '142',
+      title: 'أفضل المنتجات',
+      value: totalProducts.toString(),
       change: '+12%',
       trend: 'up',
       color: 'primary',
     },
     {
       icon: IconShoppingCart,
-      title: 'إجمالي الطلبات',
-      value: '1,247',
+      title: 'إجمالي المبيعات',
+      value: totalSales.toString(),
       change: '+23%',
       trend: 'up',
       color: 'success',
@@ -100,7 +109,7 @@ const ProductsStatistics = () => {
     {
       icon: IconCash,
       title: 'إجمالي الإيرادات',
-      value: '3.2M',
+      value: `${(totalRevenue / 1000).toFixed(0)}K ر.س`,
       change: '+18%',
       trend: 'up',
       color: 'warning',
@@ -108,7 +117,7 @@ const ProductsStatistics = () => {
     {
       icon: IconStar,
       title: 'متوسط التقييم',
-      value: '4.7',
+      value: avgRating,
       change: '+0.3',
       trend: 'up',
       color: 'error',
@@ -255,4 +264,3 @@ const ProductsStatistics = () => {
 };
 
 export default ProductsStatistics;
-

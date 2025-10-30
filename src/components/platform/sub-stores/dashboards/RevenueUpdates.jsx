@@ -90,8 +90,8 @@ const RevenueUpdates = () => {
 
   return (
     <DashboardCard
-      title="تحديثات إيرادات المتجر"
-      subtitle="Overview of Store Performance"
+      title="تحديثات مبيعاتي"
+      subtitle="Overview of My Store Performance"
       action={
         <CustomSelect
           labelId="month-dd"

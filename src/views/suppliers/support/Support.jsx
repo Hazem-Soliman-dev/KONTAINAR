@@ -14,6 +14,22 @@ import {
   IconButton,
   alpha,
   useTheme,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Stack,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Drawer,
+  Snackbar,
+  Alert,
+  Badge,
 } from '@mui/material';
 import {
   IconMessageCircle,
@@ -22,6 +38,13 @@ import {
   IconClock,
   IconCheck,
   IconAlertCircle,
+  IconEye,
+  IconPlus,
+  IconX,
+  IconEdit,
+  IconTrash,
+  IconRefresh,
+  IconCheckbox,
 } from '@tabler/icons-react';
 import PageContainer from '../../../components/container/PageContainer';
 import Breadcrumb from '../../../layouts/shared/breadcrumb/Breadcrumb';
@@ -40,7 +63,20 @@ const BCrumb = [
 const Support = () => {
   const theme = useTheme();
   const [message, setMessage] = useState('');
-  const [visibleTickets, setVisibleTickets] = useState(3);
+  const [openViewDrawer, setOpenViewDrawer] = useState(false);
+  const [openNewTicketDialog, setOpenNewTicketDialog] = useState(false);
+  const [openEditTicketDialog, setOpenEditTicketDialog] = useState(false);
+  const [openStatusDialog, setOpenStatusDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [selectedTicket, setSelectedTicket] = useState(null);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [newTicket, setNewTicket] = useState({ subject: '', priority: 'متوسطة', description: '' });
+  const [editTicket, setEditTicket] = useState({
+    subject: '',
+    priority: 'متوسطة',
+    description: '',
+  });
+  const [newStatus, setNewStatus] = useState('');
 
   // Mock data
   const tickets = [
@@ -67,6 +103,22 @@ const Support = () => {
       status: 'مغلقة',
       priority: 'منخفضة',
       lastReply: 'منذ 3 أيام',
+    },
+    {
+      id: 'TKT-2024-004',
+      subject: 'طلب تحديث منتج',
+      date: '2024-01-10 11:00',
+      status: 'مغلقة',
+      priority: 'منخفضة',
+      lastReply: 'منذ 5 أيام',
+    },
+    {
+      id: 'TKT-2024-005',
+      subject: 'مشكلة في السداد',
+      date: '2024-01-16 08:45',
+      status: 'مفتوحة',
+      priority: 'عالية',
+      lastReply: 'منذ 30 دقيقة',
     },
   ];
 
@@ -105,29 +157,36 @@ const Support = () => {
     },
   ];
 
+  // Calculate support statistics
+  const totalTickets = tickets.length;
+  const openTickets = tickets.filter((t) => t.status === 'مفتوحة').length;
+  const inProgressTickets = tickets.filter((t) => t.status === 'قيد المعالجة').length;
+  const closedTickets = tickets.filter((t) => t.status === 'مغلقة').length;
+  const highPriorityTickets = tickets.filter((t) => t.priority === 'عالية').length;
+
   const stats = [
     {
       icon: IconMessageCircle,
       title: 'تذاكر مفتوحة',
-      value: '5',
+      value: openTickets.toString(),
       color: 'primary',
     },
     {
       icon: IconClock,
       title: 'قيد المعالجة',
-      value: '3',
+      value: inProgressTickets.toString(),
       color: 'warning',
     },
     {
       icon: IconCheck,
       title: 'تم الحل',
-      value: '47',
+      value: closedTickets.toString(),
       color: 'success',
     },
     {
       icon: IconAlertCircle,
       title: 'عاجل',
-      value: '2',
+      value: highPriorityTickets.toString(),
       color: 'error',
     },
   ];
@@ -164,6 +223,93 @@ const Support = () => {
       console.log('Sending message:', message);
       setMessage('');
     }
+  };
+
+  const handleViewTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setOpenViewDrawer(true);
+  };
+
+  const handleNewTicket = () => {
+    setNewTicket({ subject: '', priority: 'متوسطة', description: '' });
+    setOpenNewTicketDialog(true);
+  };
+
+  const handleCreateTicket = () => {
+    setSnackbar({
+      open: true,
+      message: 'تم إنشاء التذكرة بنجاح',
+      severity: 'success',
+    });
+    setOpenNewTicketDialog(false);
+  };
+
+  const handleCloseSnackbar = () => {
+    setSnackbar({ ...snackbar, open: false });
+  };
+
+  const handleEditTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setEditTicket({
+      subject: ticket.subject,
+      priority: ticket.priority,
+      description: ticket.subject,
+    });
+    setOpenEditTicketDialog(true);
+  };
+
+  const handleSaveEdit = () => {
+    setSnackbar({
+      open: true,
+      message: `تم تحديث التذكرة ${selectedTicket?.id} بنجاح`,
+      severity: 'success',
+    });
+    setOpenEditTicketDialog(false);
+  };
+
+  const handleChangeStatus = (ticket) => {
+    setSelectedTicket(ticket);
+    setNewStatus(ticket.status);
+    setOpenStatusDialog(true);
+  };
+
+  const handleSaveStatus = () => {
+    setSnackbar({
+      open: true,
+      message: `تم تحديث حالة التذكرة ${selectedTicket?.id}`,
+      severity: 'success',
+    });
+    setOpenStatusDialog(false);
+  };
+
+  const handleDeleteTicket = (ticket) => {
+    setSelectedTicket(ticket);
+    setOpenDeleteDialog(true);
+  };
+
+  const handleConfirmDelete = () => {
+    setSnackbar({
+      open: true,
+      message: `تم حذف التذكرة ${selectedTicket?.id}`,
+      severity: 'error',
+    });
+    setOpenDeleteDialog(false);
+  };
+
+  const handleCloseTicket = (ticket) => {
+    setSnackbar({
+      open: true,
+      message: `تم إغلاق التذكرة ${ticket.id}`,
+      severity: 'success',
+    });
+  };
+
+  const handleReopenTicket = (ticket) => {
+    setSnackbar({
+      open: true,
+      message: `تم إعادة فتح التذكرة ${ticket.id}`,
+      severity: 'info',
+    });
   };
 
   return (
@@ -205,177 +351,497 @@ const Support = () => {
                   >
                     <stat.icon />
                   </Avatar>
-                  <Typography variant="h4" fontWeight={700} mb={1}>
-                    {stat.value}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {stat.title}
-                  </Typography>
+                  <Box
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                    justifyContent="center"
+                    gap={1}
+                  >
+                    <Typography variant="h5" fontWeight={600}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body1" color="text.secondary">
+                      {stat.title}
+                    </Typography>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>
           ))}
         </Grid>
 
-        <Grid container rowSpacing={3} columnSpacing={0}>
-          {/* Chat Box */}
+        {/* Support Tickets Table */}
+        <Grid container spacing={3}>
           <DashboardCard
-            title="محادثة مباشرة"
-            subtitle="تواصل مع فريق الدعم"
-            sx={(theme) => ({
-              borderRadius: 12,
-              background: `linear-gradient(135deg, ${theme.palette.primary.main}0F 0%, ${theme.palette.primary.main}08 100%)`,
-              border: `1px solid ${theme.palette.primary.main}22`,
-            })}
-          >
-            <Box>
-              {/* Chat Messages */}
-              <Paper
-                variant="outlined"
-                sx={{
-                  height: '400px',
-                  overflowY: 'auto',
-                  p: 2,
-                  mb: 2,
-                  bgcolor: 'grey.50',
-                }}
+            title="تذاكر الدعم الفني"
+            subtitle="إدارة جميع تذاكر الدعم"
+            action={
+              <Button
+                variant="contained"
+                color="primary"
+                startIcon={<IconPlus />}
+                onClick={handleNewTicket}
               >
-                {chatMessages.map((msg) => (
-                  <Box
-                    key={msg.id}
-                    display="flex"
-                    justifyContent={msg.sender === 'supplier' ? 'flex-end' : 'flex-start'}
-                    mb={2}
-                  >
-                    <Box
-                      sx={{
-                        maxWidth: '70%',
-                        display: 'flex',
-                        gap: 1,
-                        flexDirection: msg.sender === 'supplier' ? 'row-reverse' : 'row',
-                      }}
-                    >
-                      <Avatar src={msg.avatar} sx={{ width: 40, height: 40 }} />
-                      <Box>
-                        <Paper
-                          sx={{
-                            p: 2,
-                            bgcolor: msg.sender === 'supplier' ? 'primary.main' : 'white',
-                            color: msg.sender === 'supplier' ? 'white' : 'text.primary',
-                          }}
-                        >
-                          <Typography variant="body2">{msg.message}</Typography>
-                        </Paper>
-                        <Typography
-                          variant="caption"
-                          color="textSecondary"
-                          sx={{
-                            display: 'block',
-                            mt: 0.5,
-                            textAlign: msg.sender === 'supplier' ? 'right' : 'left',
-                          }}
-                        >
-                          {msg.time}
+                تذكرة جديدة
+              </Button>
+            }
+          >
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>رقم التذكرة</TableCell>
+                    <TableCell>الموضوع</TableCell>
+                    <TableCell align="center">الأولوية</TableCell>
+                    <TableCell align="center">الحالة</TableCell>
+                    <TableCell>التاريخ</TableCell>
+                    <TableCell>آخر رد</TableCell>
+                    <TableCell align="center">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {tickets.map((ticket) => (
+                    <TableRow key={ticket.id} hover flexDirection="column">
+                      <TableCell>
+                        <Typography variant="body2" fontWeight={600} color="primary">
+                          {ticket.id}
                         </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2">{ticket.subject}</Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={ticket.priority}
+                          size="small"
+                          color={getPriorityColor(ticket.priority)}
+                          variant="outlined"
+                        />
+                      </TableCell>
+                      <TableCell align="center">
+                        <Chip
+                          label={ticket.status}
+                          size="small"
+                          color={getStatusColor(ticket.status)}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2">{ticket.date}</Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="caption" color="textSecondary">
+                          {ticket.lastReply}
+                        </Typography>
+                      </TableCell>
+                      <TableCell align="center">
+                        <Stack direction="row" spacing={1} justifyContent="center">
+                          <Tooltip title="عرض التفاصيل">
+                            <IconButton
+                              color="primary"
+                              size="small"
+                              onClick={() => handleViewTicket(ticket)}
+                            >
+                              <IconEye size={18} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="تعديل التذكرة">
+                            <IconButton
+                              color="warning"
+                              size="small"
+                              onClick={() => handleEditTicket(ticket)}
+                            >
+                              <IconEdit size={18} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="تغيير الحالة">
+                            <IconButton
+                              color="info"
+                              size="small"
+                              onClick={() => handleChangeStatus(ticket)}
+                            >
+                              <IconRefresh size={18} />
+                            </IconButton>
+                          </Tooltip>
+                          {ticket.status === 'مفتوحة' || ticket.status === 'قيد المعالجة' ? (
+                            <Tooltip title="إغلاق التذكرة">
+                              <IconButton
+                                color="success"
+                                size="small"
+                                onClick={() => handleCloseTicket(ticket)}
+                              >
+                                <IconCheck size={18} />
+                              </IconButton>
+                            </Tooltip>
+                          ) : (
+                            <Tooltip title="إعادة فتح">
+                              <IconButton
+                                color="secondary"
+                                size="small"
+                                onClick={() => handleReopenTicket(ticket)}
+                              >
+                                <IconCheckbox size={18} />
+                              </IconButton>
+                            </Tooltip>
+                          )}
+                          <Tooltip title="حذف">
+                            <IconButton
+                              color="error"
+                              size="small"
+                              onClick={() => handleDeleteTicket(ticket)}
+                            >
+                              <IconTrash size={18} />
+                            </IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </DashboardCard>
+        </Grid>
+
+        {/* View Ticket Drawer */}
+        <Drawer
+          anchor="left"
+          open={openViewDrawer}
+          onClose={() => setOpenViewDrawer(false)}
+          PaperProps={{ sx: { width: { xs: '100%', sm: 500 } } }}
+        >
+          {selectedTicket && (
+            <Box sx={{ p: 3 }}>
+              <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+                <Typography variant="h5" fontWeight={600}>
+                  تفاصيل التذكرة
+                </Typography>
+                <IconButton onClick={() => setOpenViewDrawer(false)}>
+                  <IconX />
+                </IconButton>
+              </Box>
+              <Divider sx={{ mb: 3 }} />
+
+              <Stack spacing={3}>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    رقم التذكرة
+                  </Typography>
+                  <Typography variant="h6" fontWeight={600} color="primary">
+                    {selectedTicket.id}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الموضوع
+                  </Typography>
+                  <Typography variant="body1" fontWeight={600}>
+                    {selectedTicket.subject}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    التاريخ
+                  </Typography>
+                  <Typography variant="body1">{selectedTicket.date}</Typography>
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الأولوية
+                  </Typography>
+                  <Chip
+                    label={selectedTicket.priority}
+                    size="small"
+                    color={getPriorityColor(selectedTicket.priority)}
+                  />
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    الحالة
+                  </Typography>
+                  <Chip
+                    label={selectedTicket.status}
+                    size="small"
+                    color={getStatusColor(selectedTicket.status)}
+                  />
+                </Box>
+                <Box>
+                  <Typography variant="subtitle2" color="textSecondary">
+                    آخر رد
+                  </Typography>
+                  <Typography variant="body1">{selectedTicket.lastReply}</Typography>
+                </Box>
+              </Stack>
+
+              {/* Chat Messages */}
+              <Box mt={4}>
+                <Typography variant="subtitle2" color="textSecondary" mb={2}>
+                  المحادثة
+                </Typography>
+                <Paper
+                  variant="outlined"
+                  sx={{ p: 2, bgcolor: 'grey.50', maxHeight: 300, overflowY: 'auto' }}
+                >
+                  {chatMessages.map((msg) => (
+                    <Box
+                      key={msg.id}
+                      display="flex"
+                      justifyContent={msg.sender === 'supplier' ? 'flex-end' : 'flex-start'}
+                      mb={2}
+                    >
+                      <Box
+                        sx={{
+                          maxWidth: '80%',
+                          display: 'flex',
+                          gap: 1,
+                          flexDirection: msg.sender === 'supplier' ? 'row-reverse' : 'row',
+                        }}
+                      >
+                        <Avatar src={msg.avatar} sx={{ width: 32, height: 32 }} />
+                        <Box>
+                          <Paper
+                            sx={{
+                              p: 1.5,
+                              bgcolor: msg.sender === 'supplier' ? 'primary.main' : 'white',
+                              color: msg.sender === 'supplier' ? 'white' : 'text.primary',
+                            }}
+                          >
+                            <Typography variant="body2">{msg.message}</Typography>
+                          </Paper>
+                          <Typography
+                            variant="caption"
+                            color="textSecondary"
+                            sx={{
+                              display: 'block',
+                              mt: 0.5,
+                              textAlign: msg.sender === 'supplier' ? 'right' : 'left',
+                            }}
+                          >
+                            {msg.time}
+                          </Typography>
+                        </Box>
                       </Box>
                     </Box>
-                  </Box>
-                ))}
-              </Paper>
+                  ))}
+                </Paper>
+              </Box>
 
-              {/* Message Input */}
-              <Box display="flex" gap={1}>
-                <IconButton color="primary">
-                  <IconPaperclip size={20} />
-                </IconButton>
+              {/* Reply Input */}
+              <Box mt={3}>
                 <TextField
                   fullWidth
-                  placeholder="اكتب رسالتك هنا..."
+                  multiline
+                  rows={3}
+                  placeholder="اكتب ردك هنا..."
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  onKeyPress={(e) => {
-                    if (e.key === 'Enter' && !e.shiftKey) {
-                      e.preventDefault();
-                      handleSendMessage();
-                    }
-                  }}
-                  multiline
-                  maxRows={3}
                 />
                 <Button
+                  fullWidth
                   variant="contained"
                   color="primary"
+                  startIcon={<IconSend />}
                   onClick={handleSendMessage}
-                  endIcon={<IconSend size={20} />}
+                  sx={{ mt: 2 }}
                 >
-                  إرسال
+                  إرسال الرد
                 </Button>
               </Box>
             </Box>
-          </DashboardCard>
-        </Grid>
+          )}
+        </Drawer>
 
-        {/* Support Tickets */}
-        <Grid item xs={12} lg={4}>
-          <DashboardCard
-            title="تذاكر الدعم"
-            subtitle="آخر التذاكر المفتوحة"
-            sx={(theme) => ({
-              borderRadius: 12,
-              background: `linear-gradient(135deg, ${theme.palette.info.main}0F 0%, ${theme.palette.info.main}08 100%)`,
-              border: `1px solid ${theme.palette.info.main}22`,
-            })}
-          >
-            <Box>
-              {tickets.slice(0, visibleTickets).map((ticket, index) => (
-                <Box key={ticket.id}>
-                  <Box py={2}>
-                    <Box display="flex" justifyContent="space-between" alignItems="start" mb={1}>
-                      <Typography variant="subtitle2" fontWeight={700} color="primary">
-                        {ticket.id}
-                      </Typography>
-                      <Chip
-                        label={ticket.status}
-                        size="small"
-                        color={getStatusColor(ticket.status)}
-                      />
-                    </Box>
-                    <Typography variant="body2" fontWeight={600} mb={1}>
-                      {ticket.subject}
-                    </Typography>
-                    <Box display="flex" gap={1} mb={1}>
-                      <Chip
-                        label={ticket.priority}
-                        size="small"
-                        color={getPriorityColor(ticket.priority)}
-                        variant="outlined"
-                      />
-                      <Typography variant="caption" color="textSecondary">
-                        {ticket.lastReply}
-                      </Typography>
-                    </Box>
-                    <Typography variant="caption" color="textSecondary">
-                      {ticket.date}
-                    </Typography>
-                  </Box>
-                  {index < tickets.length - 1 && <Divider />}
-                </Box>
-              ))}
-              <Button
-                variant="outlined"
-                fullWidth
-                sx={{ mt: 2 }}
-                onClick={() =>
-                  setVisibleTickets((prev) =>
-                    prev < tickets.length ? Math.min(prev + 3, tickets.length) : 3,
-                  )
-                }
-              >
-                {visibleTickets < tickets.length ? 'عرض المزيد' : 'عرض أقل'}
-              </Button>
+        {/* New Ticket Dialog */}
+        <Dialog
+          open={openNewTicketDialog}
+          onClose={() => setOpenNewTicketDialog(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>تذكرة دعم جديدة</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  label="الموضوع"
+                  value={newTicket.subject}
+                  onChange={(e) => setNewTicket({ ...newTicket, subject: e.target.value })}
+                  required
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  select
+                  label="الأولوية"
+                  value={newTicket.priority}
+                  onChange={(e) => setNewTicket({ ...newTicket, priority: e.target.value })}
+                  SelectProps={{ native: true }}
+                >
+                  <option value="عالية">عالية</option>
+                  <option value="متوسطة">متوسطة</option>
+                  <option value="منخفضة">منخفضة</option>
+                </TextField>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={4}
+                  label="الوصف"
+                  value={newTicket.description}
+                  onChange={(e) => setNewTicket({ ...newTicket, description: e.target.value })}
+                  placeholder="اشرح مشكلتك بالتفصيل..."
+                  required
+                />
+              </Grid>
             </Box>
-          </DashboardCard>
-        </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenNewTicketDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              onClick={handleCreateTicket}
+              disabled={!newTicket.subject || !newTicket.description}
+            >
+              إنشاء التذكرة
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Edit Ticket Dialog */}
+        <Dialog
+          open={openEditTicketDialog}
+          onClose={() => setOpenEditTicketDialog(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <DialogTitle>تعديل التذكرة</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                التذكرة: {selectedTicket?.id}
+              </Typography>
+              <TextField
+                fullWidth
+                label="الموضوع"
+                value={editTicket.subject}
+                onChange={(e) => setEditTicket({ ...editTicket, subject: e.target.value })}
+                required
+              />
+              <TextField
+                fullWidth
+                select
+                label="الأولوية"
+                value={editTicket.priority}
+                onChange={(e) => setEditTicket({ ...editTicket, priority: e.target.value })}
+                SelectProps={{ native: true }}
+              >
+                <option value="عالية">عالية</option>
+                <option value="متوسطة">متوسطة</option>
+                <option value="منخفضة">منخفضة</option>
+              </TextField>
+              <TextField
+                fullWidth
+                multiline
+                rows={4}
+                label="الوصف"
+                value={editTicket.description}
+                onChange={(e) => setEditTicket({ ...editTicket, description: e.target.value })}
+                placeholder="تفاصيل التذكرة..."
+                required
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenEditTicketDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              onClick={handleSaveEdit}
+              disabled={!editTicket.subject || !editTicket.description}
+            >
+              حفظ التغييرات
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Change Status Dialog */}
+        <Dialog
+          open={openStatusDialog}
+          onClose={() => setOpenStatusDialog(false)}
+          maxWidth="xs"
+          fullWidth
+        >
+          <DialogTitle>تغيير حالة التذكرة</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2, display: 'flex', flexDirection: 'column' }}>
+              <Typography variant="body2" color="textSecondary" gutterBottom>
+                التذكرة: {selectedTicket?.id}
+              </Typography>
+              <TextField
+                fullWidth
+                select
+                label="الحالة الجديدة"
+                value={newStatus}
+                onChange={(e) => setNewStatus(e.target.value)}
+                SelectProps={{ native: true }}
+                sx={{ mt: 2 }}
+              >
+                <option value="مفتوحة">مفتوحة</option>
+                <option value="قيد المعالجة">قيد المعالجة</option>
+                <option value="مغلقة">مغلقة</option>
+              </TextField>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenStatusDialog(false)}>إلغاء</Button>
+            <Button variant="contained" onClick={handleSaveStatus}>
+              تحديث الحالة
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Delete Confirmation Dialog */}
+        <Dialog
+          open={openDeleteDialog}
+          onClose={() => setOpenDeleteDialog(false)}
+          maxWidth="xs"
+          fullWidth
+        >
+          <DialogTitle>تأكيد الحذف</DialogTitle>
+          <DialogContent>
+            <Box sx={{ pt: 2 }}>
+              <Typography variant="body1" gutterBottom>
+                هل أنت متأكد من حذف التذكرة؟
+              </Typography>
+              <Typography variant="body2" color="error" fontWeight={600}>
+                {selectedTicket?.id}
+              </Typography>
+              <Typography variant="caption" color="textSecondary" display="block" sx={{ mt: 1 }}>
+                لا يمكن التراجع عن هذا الإجراء
+              </Typography>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+            <Button variant="contained" color="error" onClick={handleConfirmDelete}>
+              حذف التذكرة
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar for notifications */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={3000}
+          onClose={handleCloseSnackbar}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+        >
+          <Alert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </PageContainer>
   );
