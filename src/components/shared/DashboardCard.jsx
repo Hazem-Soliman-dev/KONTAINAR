@@ -14,6 +14,7 @@ const DashboardCard = ({
   headtitle,
   headsubtitle,
   middlecontent,
+  sx,
 }) => {
   const { isCardShadow } = useContext(CustomizerContext);
 
@@ -23,7 +24,7 @@ const DashboardCard = ({
 
   return (
     <Card
-      sx={{ padding: 0, border: !isCardShadow ? `1px solid ${borderColor}` : 'none' }}
+      sx={{ padding: 0, border: !isCardShadow ? `1px solid ${borderColor}` : 'none', ...(sx || {}) }}
       elevation={isCardShadow ? 9 : 0}
       variant={!isCardShadow ? 'outlined' : undefined}
     >

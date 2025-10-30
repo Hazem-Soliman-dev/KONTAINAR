@@ -1,0 +1,186 @@
+import React from 'react';
+import {
+  Box,
+  Grid,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Chip,
+  LinearProgress,
+} from '@mui/material';
+import {
+  IconCheck,
+} from '@tabler/icons-react';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+import DashboardCard from '../../../../components/shared/DashboardCard';
+
+const BCrumb = [
+  {
+    to: '/suppliers',
+    title: 'الرئيسية',
+  },
+  {
+    title: 'المدفوعات',
+  },
+];
+
+const InvoicesPayments = () => {
+  // Mock data
+  const payments = [
+    {
+      id: 'PAY-2024-001',
+      invoiceId: 'INV-2024-001',
+      date: '2024-01-12',
+      customerName: 'شركة التقنية المتقدمة',
+      amount: 112500,
+      method: 'تحويل بنكي',
+      status: 'مكتمل',
+      reference: 'TRF-2024-12345',
+    },
+    {
+      id: 'PAY-2024-002',
+      invoiceId: 'INV-2024-003',
+      date: '2024-01-05',
+      customerName: 'شركة الأمل',
+      amount: 36000,
+      method: 'بطاقة ائتمان',
+      status: 'مكتمل',
+      reference: 'CC-2024-67890',
+    },
+    {
+      id: 'PAY-2023-158',
+      invoiceId: 'INV-2023-158',
+      date: '2023-12-30',
+      customerName: 'مؤسسة النجاح',
+      amount: 67500,
+      method: 'تحويل بنكي',
+      status: 'مكتمل',
+      reference: 'TRF-2023-54321',
+    },
+    {
+      id: 'PAY-2023-157',
+      invoiceId: 'INV-2023-145',
+      date: '2023-12-28',
+      customerName: 'شركة الابتكار الرقمي',
+      amount: 54000,
+      method: 'شيك',
+      status: 'قيد المعالجة',
+      reference: 'CHK-2023-11111',
+    },
+  ];
+
+  const paymentMethods = [
+    { method: 'تحويل بنكي', count: 142, percentage: 45, color: 'primary' },
+    { method: 'بطاقة ائتمان', count: 89, percentage: 28, color: 'success' },
+    { method: 'نقداً', count: 56, percentage: 18, color: 'warning' },
+    { method: 'شيك', count: 28, percentage: 9, color: 'error' },
+  ];
+
+  return (
+    <PageContainer title="المدفوعات" description="عرض جميع المدفوعات">
+      <Breadcrumb title="المدفوعات" items={BCrumb} />
+
+      <Box>
+        <Grid container spacing={3}>
+          {/* Payment Methods */}
+          <Grid item xs={12} lg={4}>
+            <DashboardCard title="طرق الدفع" subtitle="توزيع المدفوعات حسب الطريقة">
+              <Box>
+                {paymentMethods.map((method, index) => (
+                  <Box key={index} mb={3}>
+                    <Box display="flex" justifyContent="space-between" mb={1}>
+                      <Typography variant="subtitle2" fontWeight={600}>
+                        {method.method}
+                      </Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        {method.count} مدفوعة
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={method.percentage}
+                      color={method.color}
+                      sx={{ height: 8, borderRadius: 5 }}
+                    />
+                    <Typography variant="caption" color="textSecondary" mt={0.5}>
+                      {method.percentage}% من إجمالي المدفوعات
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </DashboardCard>
+          </Grid>
+
+          {/* Recent Payments */}
+          <Grid item xs={12} lg={8}>
+            <DashboardCard title="المدفوعات الأخيرة" subtitle="آخر المدفوعات المستلمة">
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>رقم الدفعة</TableCell>
+                      <TableCell>رقم الفاتورة</TableCell>
+                      <TableCell>التاريخ</TableCell>
+                      <TableCell>العميل</TableCell>
+                      <TableCell align="center">المبلغ (ر.س)</TableCell>
+                      <TableCell align="center">الطريقة</TableCell>
+                      <TableCell align="center">الحالة</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {payments.map((payment) => (
+                      <TableRow key={payment.id} hover>
+                        <TableCell>
+                          <Typography variant="subtitle2" fontWeight={700} color="primary">
+                            {payment.id}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" color="textSecondary">
+                            {payment.invoiceId}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">{payment.date}</Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="subtitle2" fontWeight={600}>
+                            {payment.customerName}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Typography variant="subtitle2" fontWeight={600} color="success.main">
+                            {payment.amount.toLocaleString()}
+                          </Typography>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip label={payment.method} size="small" variant="outlined" />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip
+                            icon={payment.status === 'مكتمل' ? <IconCheck size={16} /> : undefined}
+                            label={payment.status}
+                            size="small"
+                            color={payment.status === 'مكتمل' ? 'success' : 'warning'}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            </DashboardCard>
+          </Grid>
+        </Grid>
+      </Box>
+    </PageContainer>
+  );
+};
+
+export default InvoicesPayments;
+

@@ -1,77 +1,84 @@
 import React from 'react';
-import { Box } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import PageContainer from '../../../components/container/PageContainer';
+import Breadcrumb from '../../../layouts/shared/breadcrumb/Breadcrumb';
 
-import TopCards from '../../../components/platform/suppliers/dashboards/TopCards.jsx';
-import RevenueUpdates from '../../../components/platform/suppliers/dashboards/RevenueUpdates.jsx';
-import YearlyBreakup from '../../../components/platform/suppliers/dashboards/YearlyBreakup.jsx';
-import MonthlyEarnings from '../../../components/platform/suppliers/dashboards/MonthlyEarnings.jsx';
-import EmployeeSalary from '../../../components/platform/suppliers/dashboards/EmployeeSalary.jsx';
-import Customers from '../../../components/platform/suppliers/dashboards/Customers.jsx';
-import Projects from '../../../components/platform/suppliers/dashboards/Projects.jsx';
-import Social from '../../../components/platform/suppliers/dashboards/Social.jsx';
-import SellingProducts from '../../../components/platform/suppliers/dashboards/SellingProducts.jsx';
-import WeeklyStats from '../../../components/platform/suppliers/dashboards/WeeklyStats.jsx';
-import TopPerformers from '../../../components/platform/suppliers/dashboards/TopPerformers.jsx';
+import AllStatistics from '../../../components/platform/suppliers/dashboards/AllStatistics.jsx';
+// Reuse system analytics widgets for a consistent analytics experience
+import TopCards from '../../../components/platform/system/dashboards/TopCards.jsx';
+import RevenueUpdates from '../../../components/platform/system/dashboards/RevenueUpdates.jsx';
+import YearlyBreakup from '../../../components/platform/system/dashboards/YearlyBreakup.jsx';
+import MonthlyEarnings from '../../../components/platform/system/dashboards/MonthlyEarnings.jsx';
+import WeeklyStats from '../../../components/platform/system/dashboards/WeeklyStats.jsx';
+import SellingProducts from '../../../components/platform/system/dashboards/SellingProducts.jsx';
+import TopPerformers from '../../../components/platform/system/dashboards/TopPerformers.jsx';
 import Welcome from '../../../layouts/shared/welcome/Welcome.jsx';
 
+const BCrumb = [
+  {
+    to: '/suppliers',
+    title: 'لوحة التحكم',
+  },
+];
+
 const Modern = () => {
+  // TODO: Get supplier name from authentication context
+  const supplierName = 'شركة التقنية المتقدمة'; // Replace with actual supplier data
+
   return (
-    <Box>
-      <Grid container spacing={3}>
-        {/* column */}
-        <Grid size={12}>
-          <TopCards />
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 8 }}>
-          <RevenueUpdates />
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <Grid spacing={3} container columns={{ xs: 12, sm: 6 }}>
-            <Grid size={12}>
-              <YearlyBreakup />
-            </Grid>
-            <Grid size={12}>
-              <MonthlyEarnings />
+    <PageContainer title="لوحة تحكم المورد" description="إحصائيات ومعلومات المورد">
+      <Breadcrumb title={`مرحباً، ${supplierName}`} items={BCrumb} />
+
+      <Box>
+        <Box mb={3}>
+          <Typography variant="h4" fontWeight={700} mb={1}>
+            إحصائياتك
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            نظرة شاملة على أداء منتجاتك وطلباتك
+          </Typography>
+        </Box>
+
+        <Grid container spacing={3}>
+          {/* Top cards */}
+          <Grid size={12}>
+            <TopCards />
+          </Grid>
+          {/* Revenue + right column widgets */}
+          <Grid size={{ xs: 12, lg: 8 }}>
+            <RevenueUpdates />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <Grid spacing={3} container columns={{ xs: 12, sm: 6 }}>
+              <Grid size={12}>
+                <YearlyBreakup />
+              </Grid>
+              <Grid size={12}>
+                <MonthlyEarnings />
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <EmployeeSalary />
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <Grid spacing={3} container columns={{ xs: 12, sm: 6 }}>
-            <Grid size={{ xs: 12, md: 6, lg: 'grow' }}>
-              <Customers />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6, lg: 'grow' }}>
-              <Projects />
-            </Grid>
-            <Grid size={12}>
-              <Social />
-            </Grid>
+          {/* Additional analytics */}
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <WeeklyStats />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <SellingProducts />
+          </Grid>
+          <Grid size={{ xs: 12, lg: 8 }}>
+            <TopPerformers />
+          </Grid>
+
+          {/* Supplier-specific rollup */}
+          <Grid item xs={12}>
+            <AllStatistics />
           </Grid>
         </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <SellingProducts />
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 4 }}>
-          <WeeklyStats />
-        </Grid>
-        {/* column */}
-        <Grid size={{ xs: 12, lg: 8 }}>
-          <TopPerformers />
-        </Grid>
-      </Grid>
-      {/* column */}
-      <Welcome />
-    </Box>
+
+        {/* Welcome */}
+        <Welcome />
+      </Box>
+    </PageContainer>
   );
 };
 

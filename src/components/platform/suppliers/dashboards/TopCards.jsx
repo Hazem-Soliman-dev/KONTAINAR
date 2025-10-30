@@ -11,39 +11,39 @@ import icon6 from '../../../../assets/images/svgs/icon-dd-message-box.svg';
 
 const topcards = [
   {
-    icon: icon2,
-    title: 'الموردين',
-    digits: '47',
+    icon: icon4,
+    title: 'إجمالي المنتجات',
+    digits: '142',
+    bgcolor: 'primary',
+  },
+  {
+    icon: icon5,
+    title: 'الطلبات الجديدة',
+    digits: '28',
     bgcolor: 'success',
   },
   {
     icon: icon3,
-    title: 'العملاء',
-    digits: '8,942',
-    bgcolor: 'info',
-  },
-  {
-    icon: icon4,
-    title: 'المنتجات',
-    digits: '2,847',
+    title: 'الفواتير المعلقة',
+    digits: '12',
     bgcolor: 'warning',
   },
   {
-    icon: icon5,
-    title: 'طلبات الشراء',
-    digits: '12,847',
+    icon: icon2,
+    title: 'المرتجعات',
+    digits: '5',
     bgcolor: 'error',
   },
   {
     icon: icon6,
-    title: 'الإيرادات',
-    digits: '2.8 مليون',
-    bgcolor: 'primary',
+    title: 'الإيرادات الشهرية',
+    digits: '456K',
+    bgcolor: 'info',
   },
   {
     icon: icon1,
-    title: 'الدعم الفني',
-    digits: '156',
+    title: 'تذاكر الدعم',
+    digits: '8',
     bgcolor: 'secondary',
   },
 ];

@@ -1,0 +1,196 @@
+import React from 'react';
+import {
+  Box,
+  Grid,
+  Typography,
+  Stepper,
+  Step,
+  StepLabel,
+  Paper,
+  Chip,
+  Divider,
+} from '@mui/material';
+import {
+  IconPackage,
+  IconTruck,
+  IconCheck,
+  IconMapPin,
+  IconClock,
+} from '@tabler/icons-react';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+import DashboardCard from '../../../../components/shared/DashboardCard';
+import { DateWithIcon } from '../common/shared';
+
+const BCrumb = [
+  {
+    to: '/suppliers',
+    title: 'الرئيسية',
+  },
+  {
+    title: 'تتبع الطلبات',
+  },
+];
+
+const OrdersTracking = () => {
+  // Mock data
+  const trackingOrders = [
+    {
+      id: 'ORD-2024-005',
+      customerName: 'شركة التقنية المتقدمة',
+      status: 'قيد التوصيل',
+      currentStep: 2,
+      estimatedDelivery: '2024-01-18',
+      trackingNumber: 'TRK-2024-12345',
+      carrier: 'شركة الشحن السريع',
+      steps: [
+        {
+          label: 'تم الاستلام',
+          description: 'تم استلام الطلب وجاري المعالجة',
+          date: '2024-01-15 10:30',
+          completed: true,
+        },
+        {
+          label: 'قيد التجهيز',
+          description: 'جاري تجهيز المنتجات للشحن',
+          date: '2024-01-16 14:20',
+          completed: true,
+        },
+        {
+          label: 'قيد التوصيل',
+          description: 'الشحنة في طريقها إلى العميل',
+          date: '2024-01-17 09:15',
+          completed: true,
+        },
+        {
+          label: 'تم التسليم',
+          description: 'سيتم التسليم قريباً',
+          date: '-',
+          completed: false,
+        },
+      ],
+    },
+    {
+      id: 'ORD-2024-006',
+      customerName: 'متجر الإلكترونيات',
+      status: 'قيد التجهيز',
+      currentStep: 1,
+      estimatedDelivery: '2024-01-20',
+      trackingNumber: 'TRK-2024-12346',
+      carrier: 'شركة التوصيل السريع',
+      steps: [
+        {
+          label: 'تم الاستلام',
+          description: 'تم استلام الطلب وجاري المعالجة',
+          date: '2024-01-16 11:00',
+          completed: true,
+        },
+        {
+          label: 'قيد التجهيز',
+          description: 'جاري تجهيز المنتجات للشحن',
+          date: '2024-01-17 10:30',
+          completed: true,
+        },
+        {
+          label: 'قيد التوصيل',
+          description: 'سيتم الشحن قريباً',
+          date: '-',
+          completed: false,
+        },
+        {
+          label: 'تم التسليم',
+          description: 'في انتظار التوصيل',
+          date: '-',
+          completed: false,
+        },
+      ],
+    },
+  ];
+
+  return (
+    <PageContainer title="تتبع الطلبات" description="تتبع حالة الطلبات">
+      <Breadcrumb title="تتبع الطلبات" items={BCrumb} />
+
+      <Box>
+        {/* Tracking Details */}
+        <Grid container spacing={3}>
+          {trackingOrders.map((order) => (
+            <Grid item xs={12} lg={6} key={order.id}>
+              <DashboardCard title={`طلب ${order.id}`} subtitle={order.customerName}>
+                <Box>
+                  {/* Order Info */}
+                  <Box mb={3}>
+                    <Grid container spacing={2}>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="textSecondary">
+                          رقم التتبع
+                        </Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                          {order.trackingNumber}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="textSecondary">
+                          شركة الشحن
+                        </Typography>
+                        <Typography variant="subtitle2" fontWeight={600}>
+                          {order.carrier}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="textSecondary">
+                          الحالة
+                        </Typography>
+                        <Chip label={order.status} size="small" color="primary" sx={{ mt: 0.5 }} />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="body2" color="textSecondary">
+                          التسليم المتوقع
+                        </Typography>
+                      <Box display="flex" alignItems="center" gap={0.5} mt={0.5}>
+                          <DateWithIcon date={order.estimatedDelivery} />
+                        </Box>
+                      </Grid>
+                    </Grid>
+                  </Box>
+
+                  <Divider sx={{ my: 2 }} />
+
+                  {/* Tracking Steps */}
+                  <Stepper activeStep={order.currentStep} orientation="vertical">
+                    {order.steps.map((step, index) => (
+                      <Step key={index}>
+                        <StepLabel
+                          StepIconProps={{
+                            sx: {
+                              color: step.completed ? 'success.main' : 'grey.400',
+                            },
+                          }}
+                        >
+                          <Typography variant="subtitle2" fontWeight={600}>
+                            {step.label}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            {step.description}
+                          </Typography>
+                          {step.date !== '-' && (
+                            <Typography variant="caption" color="textSecondary">
+                              {step.date}
+                            </Typography>
+                          )}
+                        </StepLabel>
+                      </Step>
+                    ))}
+                  </Stepper>
+                </Box>
+              </DashboardCard>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
+    </PageContainer>
+  );
+};
+
+export default OrdersTracking;
+
