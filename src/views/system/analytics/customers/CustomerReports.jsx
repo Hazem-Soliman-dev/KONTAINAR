@@ -470,20 +470,20 @@ const CustomerReports = () => {
 
       <Box>
         {/* Enhanced Stats Cards */}
-        <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mb: 3 }}>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 textAlign: 'center',
                 background:
                   'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
                 border: '1px solid rgba(25, 118, 210, 0.2)',
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+                  transform: { xs: 'none', sm: 'translateY(-4px)' },
+                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(25, 118, 210, 0.15)' },
                 },
               }}
             >
@@ -507,16 +507,16 @@ const CustomerReports = () => {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 textAlign: 'center',
                 background:
                   'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
                 border: '1px solid rgba(46, 125, 50, 0.2)',
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(46, 125, 50, 0.15)',
+                  transform: { xs: 'none', sm: 'translateY(-4px)' },
+                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(46, 125, 50, 0.15)' },
                 },
               }}
             >
@@ -540,16 +540,16 @@ const CustomerReports = () => {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 textAlign: 'center',
                 background:
                   'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
                 border: '1px solid rgba(255, 152, 0, 0.2)',
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                  transform: { xs: 'none', sm: 'translateY(-4px)' },
+                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(255, 152, 0, 0.15)' },
                 },
               }}
             >
@@ -573,16 +573,16 @@ const CustomerReports = () => {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: 3,
+                p: { xs: 2, sm: 3 },
                 textAlign: 'center',
                 background:
                   'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
                 border: '1px solid rgba(156, 39, 176, 0.2)',
-                borderRadius: 3,
+                borderRadius: { xs: 2, sm: 3 },
                 transition: 'all 0.3s ease',
                 '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                  transform: { xs: 'none', sm: 'translateY(-4px)' },
+                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(156, 39, 176, 0.15)' },
                 },
               }}
             >
@@ -604,778 +604,464 @@ const CustomerReports = () => {
             </Card>
           </Grid>
         </Grid>
-      </Box>
 
-      {/* المرشحات المحسنة */}
-      <Paper sx={{ p: 3, mb: 3 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            المرشحات والبحث المتقدم
-          </Typography>
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => {
-              setSearchTerm('');
-              setDateFrom(
-                new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
-              );
-              setDateTo(new Date().toISOString().split('T')[0]);
-              setReportType('all');
+        {/* المرشحات المحسنة */}
+        <Paper sx={{ p: { xs: 2, md: 3 }, mb: 3 }}>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              justifyContent: 'space-between',
+              alignItems: { xs: 'flex-start', sm: 'center' },
+              mb: 2,
+              gap: { xs: 2, sm: 0 },
             }}
           >
-            مسح المرشحات
-          </Button>
-        </Box>
-        <Grid container spacing={2} alignItems="center">
-          <Grid size={{ xs: 12, md: 3 }}>
-            <TextField
-              fullWidth
-              label="البحث في العملاء"
-              size="small"
-              placeholder="البحث بالاسم أو المعرف أو الإيميل..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 2 }}>
-            <TextField
-              fullWidth
-              type="date"
-              label="من تاريخ"
-              value={dateFrom}
-              onChange={(e) => setDateFrom(e.target.value)}
-              size="small"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 2 }}>
-            <TextField
-              fullWidth
-              type="date"
-              label="إلى تاريخ"
-              value={dateTo}
-              onChange={(e) => setDateTo(e.target.value)}
-              size="small"
-              InputLabelProps={{ shrink: true }}
-            />
-          </Grid>
-          <Grid size={{ xs: 12, md: 2 }}>
-            <FormControl fullWidth size="small">
-              <InputLabel>نوع التقرير</InputLabel>
-              <Select
-                value={reportType}
-                label="نوع التقرير"
-                onChange={(e) => setReportType(e.target.value)}
-              >
-                <MenuItem value="all">جميع الأنواع</MenuItem>
-                {reportTypes.map((type) => (
-                  <MenuItem key={type} value={type}>
-                    {type}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid size={{ xs: 12, md: 3 }}>
-            <Typography variant="body2" color="text.secondary">
-              تم العثور على {filteredData.length} عميل
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              المرشحات والبحث المتقدم
             </Typography>
+            <Button
+              variant="outlined"
+              size="small"
+              fullWidth={false}
+              onClick={() => {
+                setSearchTerm('');
+                setDateFrom(
+                  new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                );
+                setDateTo(new Date().toISOString().split('T')[0]);
+                setReportType('all');
+              }}
+            >
+              مسح المرشحات
+            </Button>
+          </Box>
+          <Grid container spacing={2} alignItems="center">
+            <Grid size={{ xs: 12, md: 3 }}>
+              <TextField
+                fullWidth
+                label="البحث في العملاء"
+                size="small"
+                placeholder="البحث بالاسم أو المعرف أو الإيميل..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 2 }}>
+              <TextField
+                fullWidth
+                type="date"
+                label="من تاريخ"
+                value={dateFrom}
+                onChange={(e) => setDateFrom(e.target.value)}
+                size="small"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 2 }}>
+              <TextField
+                fullWidth
+                type="date"
+                label="إلى تاريخ"
+                value={dateTo}
+                onChange={(e) => setDateTo(e.target.value)}
+                size="small"
+                InputLabelProps={{ shrink: true }}
+              />
+            </Grid>
+            <Grid size={{ xs: 12, md: 2 }}>
+              <FormControl fullWidth size="small">
+                <InputLabel>نوع التقرير</InputLabel>
+                <Select
+                  value={reportType}
+                  label="نوع التقرير"
+                  onChange={(e) => setReportType(e.target.value)}
+                >
+                  <MenuItem value="all">جميع الأنواع</MenuItem>
+                  {reportTypes.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+            <Grid size={{ xs: 12, md: 3 }}>
+              <Typography variant="body2" color="text.secondary">
+                تم العثور على {filteredData.length} عميل
+              </Typography>
+            </Grid>
           </Grid>
-        </Grid>
-      </Paper>
+        </Paper>
 
-      {/* المحتوى المحسن */}
-      <Paper sx={{ overflow: 'auto' }}>
-        <Box sx={{ p: 2 }}>
-          <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
-            تفاصيل العملاء
-          </Typography>
+        {/* المحتوى المحسن */}
+        <Paper>
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
+              تفاصيل العملاء
+            </Typography>
 
-          {loading ? (
-            <Box sx={{ p: 2 }}>
-              <LinearProgress />
-              {[...Array(3)].map((_, index) => (
-                <Skeleton key={index} height={60} sx={{ mb: 1 }} />
-              ))}
-            </Box>
-          ) : error ? (
-            <Box sx={{ p: 4, textAlign: 'center' }}>
-              <Alert severity="error">خطأ في تحميل بيانات العملاء. يرجى المحاولة مرة أخرى.</Alert>
-            </Box>
-          ) : filteredData.length === 0 ? (
-            <Box sx={{ p: 4, textAlign: 'center' }}>
-              <Alert severity="info">لم يتم العثور على عملاء للفترة المحددة.</Alert>
-            </Box>
-          ) : (
-            <>
-              <TableContainer sx={{ overflowX: 'auto' }}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          indeterminate={
-                            selectedItems.length > 0 && selectedItems.length < customerData.length
-                          }
-                          checked={
-                            customerData.length > 0 && selectedItems.length === customerData.length
-                          }
-                          onChange={handleSelectAll}
+            {loading ? (
+              <Box sx={{ p: 2 }}>
+                <LinearProgress />
+                {[...Array(3)].map((_, index) => (
+                  <Skeleton key={index} height={60} sx={{ mb: 1 }} />
+                ))}
+              </Box>
+            ) : error ? (
+              <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Alert severity="error">خطأ في تحميل بيانات العملاء. يرجى المحاولة مرة أخرى.</Alert>
+              </Box>
+            ) : filteredData.length === 0 ? (
+              <Box sx={{ p: 4, textAlign: 'center' }}>
+                <Alert severity="info">لم يتم العثور على عملاء للفترة المحددة.</Alert>
+              </Box>
+            ) : (
+              <>
+                <TableContainer sx={{ overflowX: 'auto' }}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            indeterminate={
+                              selectedItems.length > 0 && selectedItems.length < customerData.length
+                            }
+                            checked={
+                              customerData.length > 0 &&
+                              selectedItems.length === customerData.length
+                            }
+                            onChange={handleSelectAll}
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <TableSortLabel
+                            active={sortBy === 'reportDate'}
+                            direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
+                            onClick={() => handleSort('reportDate')}
+                          >
+                            تاريخ التقرير
+                          </TableSortLabel>
+                        </TableCell>
+                        <TableCell>اسم العميل</TableCell>
+                        <TableCell>معرف العميل</TableCell>
+                        <TableCell>الإيميل</TableCell>
+                        <TableCell align="right">عدد الطلبات</TableCell>
+                        <TableCell align="right">إجمالي الإنفاق</TableCell>
+                        <TableCell align="right">متوسط قيمة الطلب</TableCell>
+                        <TableCell align="right">معدل الرضا</TableCell>
+                        <TableCell>مستوى الولاء</TableCell>
+                        <TableCell>المنطقة</TableCell>
+                        <TableCell>الحالة</TableCell>
+                        <TableCell>الأولوية</TableCell>
+                        <TableCell align="center">الإجراءات</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sortedData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((item) => (
+                          <TableRow key={item.id} hover>
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={selectedItems.includes(item.id)}
+                                onChange={() => handleSelectItem(item.id)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{item.reportDate}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                {item.customerName}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                                {item.customerId}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{item.email}</Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Typography variant="subtitle2" fontWeight="bold">
+                                {item.totalOrders}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Typography variant="body2" color="primary.main">
+                                ${item.totalSpent.toLocaleString()}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Typography variant="body2">
+                                ${item.avgOrderValue.toFixed(2)}
+                              </Typography>
+                            </TableCell>
+                            <TableCell align="right">
+                              <Box
+                                sx={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'flex-end',
+                                }}
+                              >
+                                <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
+                                <Typography variant="body2" color="warning.main">
+                                  {item.satisfactionScore}
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.loyaltyLevel}
+                                color={getLoyaltyColor(item.loyaltyLevel)}
+                                size="small"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip label={item.region} size="small" variant="outlined" />
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.status}
+                                color={getStatusColor(item.status)}
+                                size="small"
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.priority}
+                                color={getPriorityColor(item.priority)}
+                                size="small"
+                              />
+                            </TableCell>
+                            <TableCell align="center">
+                              <Stack direction="row" spacing={1} justifyContent="center">
+                                <Tooltip title="عرض التفاصيل" arrow>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => handleView(item)}
+                                    aria-label="view report"
+                                  >
+                                    <VisibilityIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="تعديل التقرير" arrow>
+                                  <IconButton
+                                    size="small"
+                                    onClick={() => handleEdit(item)}
+                                    aria-label="edit report"
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="حذف التقرير" arrow>
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleDelete(item)}
+                                    aria-label="delete report"
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  component="div"
+                  count={filteredData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+              </>
+            )}
+          </Box>
+        </Paper>
+
+        {/* أقسام التحليل */}
+        <Grid container spacing={{ xs: 2, sm: 3 }} sx={{ mt: 3 }}>
+          <Grid size={{ xs: 12, md: 8 }}>
+            <Card>
+              <CardContent>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    flexDirection: { xs: 'column', sm: 'row' },
+                    alignItems: { xs: 'flex-start', sm: 'center' },
+                    justifyContent: 'space-between',
+                    mb: 2,
+                    gap: { xs: 1, sm: 0 },
+                  }}
+                >
+                  <Typography variant="h6">عمليات تحليل العملاء</Typography>
+                  <Chip label={`${sections.length} عمليات`} color="primary" size="small" />
+                </Box>
+                <Divider sx={{ mb: 2 }} />
+
+                {sections.map((section) => (
+                  <Accordion
+                    key={section.id}
+                    expanded={section.isExpanded}
+                    onChange={() => handleToggleExpanded(section.id)}
+                    sx={{ mb: 1 }}
+                  >
+                    <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+                        <PeopleIcon sx={{ mr: 1, color: 'primary.main' }} />
+                        <TextField
+                          value={section.title}
+                          onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
+                          size="small"
+                          sx={{ flexGrow: 1, mr: 2 }}
+                          onClick={(e) => e.stopPropagation()}
                         />
-                      </TableCell>
-                      <TableCell>
-                        <TableSortLabel
-                          active={sortBy === 'reportDate'}
-                          direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
-                          onClick={() => handleSort('reportDate')}
-                        >
-                          تاريخ التقرير
-                        </TableSortLabel>
-                      </TableCell>
-                      <TableCell>اسم العميل</TableCell>
-                      <TableCell>معرف العميل</TableCell>
-                      <TableCell>الإيميل</TableCell>
-                      <TableCell align="right">عدد الطلبات</TableCell>
-                      <TableCell align="right">إجمالي الإنفاق</TableCell>
-                      <TableCell align="right">متوسط قيمة الطلب</TableCell>
-                      <TableCell align="right">معدل الرضا</TableCell>
-                      <TableCell>مستوى الولاء</TableCell>
-                      <TableCell>المنطقة</TableCell>
-                      <TableCell>الحالة</TableCell>
-                      <TableCell>الأولوية</TableCell>
-                      <TableCell align="center">الإجراءات</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {sortedData
-                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                      .map((item) => (
-                        <TableRow key={item.id} hover>
-                          <TableCell padding="checkbox">
-                            <Checkbox
-                              checked={selectedItems.includes(item.id)}
-                              onChange={() => handleSelectItem(item.id)}
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="body2">{item.reportDate}</Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                              {item.customerName}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                              {item.customerId}
-                            </Typography>
-                          </TableCell>
-                          <TableCell>
-                            <Typography variant="body2">{item.email}</Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Typography variant="subtitle2" fontWeight="bold">
-                              {item.totalOrders}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Typography variant="body2" color="primary.main">
-                              ${item.totalSpent.toLocaleString()}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Typography variant="body2">
-                              ${item.avgOrderValue.toFixed(2)}
-                            </Typography>
-                          </TableCell>
-                          <TableCell align="right">
-                            <Box
-                              sx={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'flex-end',
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                          <Tooltip title="حذف العملية">
+                            <IconButton
+                              size="small"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteSection(section.id);
                               }}
                             >
-                              <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
-                              <Typography variant="body2" color="warning.main">
-                                {item.satisfactionScore}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={item.loyaltyLevel}
-                              color={getLoyaltyColor(item.loyaltyLevel)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip label={item.region} size="small" variant="outlined" />
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={item.status}
-                              color={getStatusColor(item.status)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell>
-                            <Chip
-                              label={item.priority}
-                              color={getPriorityColor(item.priority)}
-                              size="small"
-                            />
-                          </TableCell>
-                          <TableCell align="center">
-                            <Stack direction="row" spacing={1} justifyContent="center">
-                              <Tooltip title="عرض التفاصيل" arrow>
-                                <IconButton
-                                  size="small"
-                                  onClick={() => handleView(item)}
-                                  aria-label="view report"
-                                >
-                                  <VisibilityIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="تعديل التقرير" arrow>
-                                <IconButton
-                                  size="small"
-                                  onClick={() => handleEdit(item)}
-                                  aria-label="edit report"
-                                >
-                                  <EditIcon />
-                                </IconButton>
-                              </Tooltip>
-                              <Tooltip title="حذف التقرير" arrow>
-                                <IconButton
-                                  size="small"
-                                  color="error"
-                                  onClick={() => handleDelete(item)}
-                                  aria-label="delete report"
-                                >
-                                  <DeleteIcon />
-                                </IconButton>
-                              </Tooltip>
-                            </Stack>
-                          </TableCell>
-                        </TableRow>
-                      ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 25, 50]}
-                component="div"
-                count={filteredData.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-              />
-            </>
-          )}
-        </Box>
-      </Paper>
-
-      {/* أقسام التحليل */}
-      <Grid container spacing={3} sx={{ mt: 3 }}>
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Card>
-            <CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h6">عمليات تحليل العملاء</Typography>
-                <Chip label={`${sections.length} عمليات`} color="primary" size="small" />
-              </Box>
-              <Divider sx={{ mb: 2 }} />
-
-              {sections.map((section) => (
-                <Accordion
-                  key={section.id}
-                  expanded={section.isExpanded}
-                  onChange={() => handleToggleExpanded(section.id)}
-                  sx={{ mb: 1 }}
-                >
-                  <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
-                      <PeopleIcon sx={{ mr: 1, color: 'primary.main' }} />
-                      <TextField
-                        value={section.title}
-                        onChange={(e) => handleSectionChange(section.id, 'title', e.target.value)}
-                        size="small"
-                        sx={{ flexGrow: 1, mr: 2 }}
-                        onClick={(e) => e.stopPropagation()}
-                      />
-                      <Box sx={{ display: 'flex', gap: 1 }}>
-                        <Tooltip title="حذف العملية">
-                          <IconButton
-                            size="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleDeleteSection(section.id);
-                            }}
-                          >
-                            <DeleteIcon fontSize="small" />
-                          </IconButton>
-                        </Tooltip>
+                              <DeleteIcon fontSize="small" />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
                       </Box>
-                    </Box>
-                  </AccordionSummary>
-                  <AccordionDetails>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                      <TextField
+                        fullWidth
+                        multiline
+                        rows={4}
+                        value={section.content}
+                        onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
+                        placeholder="أدخل تفاصيل العملية..."
+                        size="small"
+                      />
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+
+                {sections.length === 0 && (
+                  <Box sx={{ textAlign: 'center', py: 4 }}>
+                    <PeopleIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                    <Typography variant="h6" color="text.secondary">
+                      لا توجد عمليات تحليل بعد
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      أضف أول عملية تحليل للبدء
+                    </Typography>
+                    <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
+                      إضافة أول عملية
+                    </Button>
+                  </Box>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 4 }}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  إعدادات التقرير
+                </Typography>
+                <Divider sx={{ mb: 2 }} />
+
+                <Grid container spacing={2}>
+                  <Grid size={{ xs: 12 }}>
+                    <FormControl fullWidth size="small">
+                      <InputLabel>حالة التقرير</InputLabel>
+                      <Select value="نشط" label="حالة التقرير">
+                        {statusOptions.map((status) => (
+                          <MenuItem key={status} value={status}>
+                            {status}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid size={{ xs: 12 }}>
                     <TextField
                       fullWidth
-                      multiline
-                      rows={4}
-                      value={section.content}
-                      onChange={(e) => handleSectionChange(section.id, 'content', e.target.value)}
-                      placeholder="أدخل تفاصيل العملية..."
+                      label="تاريخ التقرير"
+                      type="date"
+                      value={new Date().toISOString().split('T')[0]}
                       size="small"
+                      InputLabelProps={{ shrink: true }}
                     />
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-
-              {sections.length === 0 && (
-                <Box sx={{ textAlign: 'center', py: 4 }}>
-                  <PeopleIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
-                    لا توجد عمليات تحليل بعد
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                    أضف أول عملية تحليل للبدء
-                  </Typography>
-                  <Button variant="contained" startIcon={<AddIcon />} onClick={handleAddSection}>
-                    إضافة أول عملية
-                  </Button>
-                </Box>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
-
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات التقرير
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة التقرير</InputLabel>
-                    <Select value="نشط" label="حالة التقرير">
-                      {statusOptions.map((status) => (
-                        <MenuItem key={status} value={status}>
-                          {status}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+                  </Grid>
+                  <Grid size={{ xs: 12 }}>
+                    <FormControlLabel control={<Switch defaultChecked />} label="التقرير نشط" />
+                  </Grid>
+                  <Grid size={{ xs: 12 }}>
+                    <TextField
+                      fullWidth
+                      label="نوع التقرير"
+                      size="small"
+                      placeholder="نوع التقرير..."
+                    />
+                  </Grid>
                 </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ التقرير"
-                    type="date"
-                    value={new Date().toISOString().split('T')[0]}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel control={<Switch defaultChecked />} label="التقرير نشط" />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="نوع التقرير"
-                    size="small"
-                    placeholder="نوع التقرير..."
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Dialog إضافة عميل جديد */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="h6">إضافة عميل جديد</Typography>
-            <IconButton onClick={() => setOpenDialog(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="اسم العميل"
-                size="small"
-                placeholder="أدخل اسم العميل..."
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="معرف العميل" size="small" placeholder="CUST-XXX" />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="البريد الإلكتروني"
-                type="email"
-                size="small"
-                placeholder="example@email.com"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="رقم الهاتف" size="small" placeholder="+966501234567" />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField fullWidth label="عدد الطلبات" type="number" size="small" placeholder="0" />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="إجمالي الإنفاق"
-                type="number"
-                size="small"
-                placeholder="0.00"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>مستوى الولاء</InputLabel>
-                <Select label="مستوى الولاء">
-                  {loyaltyLevelOptions.map((level) => (
-                    <MenuItem key={level} value={level}>
-                      {level}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>المنطقة</InputLabel>
-                <Select label="المنطقة">
-                  {regionOptions.map((region) => (
-                    <MenuItem key={region} value={region}>
-                      {region}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الفئة العمرية</InputLabel>
-                <Select label="الفئة العمرية">
-                  {ageGroupOptions.map((age) => (
-                    <MenuItem key={age} value={age}>
-                      {age}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الجنس</InputLabel>
-                <Select label="الجنس">
-                  {genderOptions.map((gender) => (
-                    <MenuItem key={gender} value={gender}>
-                      {gender}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الحالة</InputLabel>
-                <Select label="الحالة">
-                  {statusOptions.map((status) => (
-                    <MenuItem key={status} value={status}>
-                      {status}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الأولوية</InputLabel>
-                <Select label="الأولوية">
-                  {priorityOptions.map((priority) => (
-                    <MenuItem key={priority} value={priority}>
-                      {priority}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="ملاحظات إضافية"
-                multiline
-                rows={3}
-                size="small"
-                placeholder="أي ملاحظات أو تفاصيل إضافية..."
-              />
-            </Grid>
+              </CardContent>
+            </Card>
           </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={() => {
-              notify('إضافة عميل جديد', 'تم إضافة العميل بنجاح');
-              setOpenDialog(false);
-            }}
-          >
-            حفظ العميل
-          </Button>
-        </DialogActions>
-      </Dialog>
+        </Grid>
 
-      {/* Dialog عرض التفاصيل */}
-      <Dialog
-        open={openViewDialog}
-        onClose={() => setOpenViewDialog(false)}
-        maxWidth="sm"
-        fullWidth
-      >
-        <DialogTitle>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="h6">تفاصيل العميل</Typography>
-            <IconButton onClick={() => setOpenViewDialog(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          {selectedReport && (
-            <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  اسم العميل
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                  {selectedReport.customerName}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  معرف العميل
-                </Typography>
-                <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
-                  {selectedReport.customerId}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  البريد الإلكتروني
-                </Typography>
-                <Typography variant="body1">{selectedReport.email}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  رقم الهاتف
-                </Typography>
-                <Typography variant="body1">{selectedReport.phone}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  عدد الطلبات
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600 }}>
-                  {selectedReport.totalOrders}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  إجمالي الإنفاق
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
-                  ${selectedReport.totalSpent.toLocaleString()}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  متوسط قيمة الطلب
-                </Typography>
-                <Typography variant="body1">${selectedReport.avgOrderValue.toFixed(2)}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  آخر طلب
-                </Typography>
-                <Typography variant="body1">{selectedReport.lastOrderDate}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  عمر العميل (أيام)
-                </Typography>
-                <Typography variant="body1">{selectedReport.customerLifetime}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  معدل الرضا
-                </Typography>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
-                  <Typography variant="body1" color="warning.main">
-                    {selectedReport.satisfactionScore}
-                  </Typography>
-                </Box>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  مستوى الولاء
-                </Typography>
-                <Chip
-                  label={selectedReport.loyaltyLevel}
-                  color={getLoyaltyColor(selectedReport.loyaltyLevel)}
-                  size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  المنطقة
-                </Typography>
-                <Chip label={selectedReport.region} size="small" />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  الفئة العمرية
-                </Typography>
-                <Typography variant="body1">{selectedReport.ageGroup}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  الجنس
-                </Typography>
-                <Typography variant="body1">{selectedReport.gender}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  المدير المسؤول
-                </Typography>
-                <Typography variant="body1">{selectedReport.manager}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  الحالة
-                </Typography>
-                <Chip
-                  label={selectedReport.status}
-                  color={getStatusColor(selectedReport.status)}
-                  size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  الأولوية
-                </Typography>
-                <Chip
-                  label={selectedReport.priority}
-                  color={getPriorityColor(selectedReport.priority)}
-                  size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12 }}>
-                <Typography variant="subtitle2" color="text.secondary">
-                  الملاحظات
-                </Typography>
-                <Typography variant="body1">{selectedReport.notes}</Typography>
-              </Grid>
-            </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
-          <Button
-            variant="contained"
-            startIcon={<EditIcon />}
-            onClick={() => {
-              setOpenViewDialog(false);
-              setOpenEditDialog(true);
-            }}
-          >
-            تعديل
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Dialog تعديل العميل */}
-      <Dialog
-        open={openEditDialog}
-        onClose={() => setOpenEditDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Typography variant="h6">تعديل بيانات العميل</Typography>
-            <IconButton onClick={() => setOpenEditDialog(false)}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-        </DialogTitle>
-        <DialogContent>
-          {selectedReport && (
+        {/* Dialog إضافة عميل جديد */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant="h6">إضافة عميل جديد</Typography>
+              <IconButton onClick={() => setOpenDialog(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
             <Grid container spacing={2} sx={{ mt: 1 }}>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   label="اسم العميل"
-                  value={selectedReport.customerName}
                   size="small"
+                  placeholder="أدخل اسم العميل..."
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label="معرف العميل"
-                  value={selectedReport.customerId}
-                  size="small"
-                />
+                <TextField fullWidth label="معرف العميل" size="small" placeholder="CUST-XXX" />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   label="البريد الإلكتروني"
                   type="email"
-                  value={selectedReport.email}
                   size="small"
+                  placeholder="example@email.com"
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField fullWidth label="رقم الهاتف" value={selectedReport.phone} size="small" />
+                <TextField fullWidth label="رقم الهاتف" size="small" placeholder="+966501234567" />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <TextField
                   fullWidth
                   label="عدد الطلبات"
                   type="number"
-                  value={selectedReport.totalOrders}
                   size="small"
+                  placeholder="0"
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
@@ -1383,32 +1069,14 @@ const CustomerReports = () => {
                   fullWidth
                   label="إجمالي الإنفاق"
                   type="number"
-                  value={selectedReport.totalSpent}
                   size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label="متوسط قيمة الطلب"
-                  type="number"
-                  value={selectedReport.avgOrderValue}
-                  size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label="معدل الرضا"
-                  type="number"
-                  value={selectedReport.satisfactionScore}
-                  size="small"
+                  placeholder="0.00"
                 />
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>مستوى الولاء</InputLabel>
-                  <Select value={selectedReport.loyaltyLevel} label="مستوى الولاء">
+                  <Select label="مستوى الولاء">
                     {loyaltyLevelOptions.map((level) => (
                       <MenuItem key={level} value={level}>
                         {level}
@@ -1420,7 +1088,7 @@ const CustomerReports = () => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>المنطقة</InputLabel>
-                  <Select value={selectedReport.region} label="المنطقة">
+                  <Select label="المنطقة">
                     {regionOptions.map((region) => (
                       <MenuItem key={region} value={region}>
                         {region}
@@ -1432,7 +1100,7 @@ const CustomerReports = () => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>الفئة العمرية</InputLabel>
-                  <Select value={selectedReport.ageGroup} label="الفئة العمرية">
+                  <Select label="الفئة العمرية">
                     {ageGroupOptions.map((age) => (
                       <MenuItem key={age} value={age}>
                         {age}
@@ -1444,7 +1112,7 @@ const CustomerReports = () => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>الجنس</InputLabel>
-                  <Select value={selectedReport.gender} label="الجنس">
+                  <Select label="الجنس">
                     {genderOptions.map((gender) => (
                       <MenuItem key={gender} value={gender}>
                         {gender}
@@ -1454,17 +1122,9 @@ const CustomerReports = () => {
                 </FormControl>
               </Grid>
               <Grid size={{ xs: 12, md: 6 }}>
-                <TextField
-                  fullWidth
-                  label="المدير المسؤول"
-                  value={selectedReport.manager}
-                  size="small"
-                />
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>الحالة</InputLabel>
-                  <Select value={selectedReport.status} label="الحالة">
+                  <Select label="الحالة">
                     {statusOptions.map((status) => (
                       <MenuItem key={status} value={status}>
                         {status}
@@ -1476,7 +1136,7 @@ const CustomerReports = () => {
               <Grid size={{ xs: 12, md: 6 }}>
                 <FormControl fullWidth size="small">
                   <InputLabel>الأولوية</InputLabel>
-                  <Select value={selectedReport.priority} label="الأولوية">
+                  <Select label="الأولوية">
                     {priorityOptions.map((priority) => (
                       <MenuItem key={priority} value={priority}>
                         {priority}
@@ -1491,43 +1151,409 @@ const CustomerReports = () => {
                   label="ملاحظات إضافية"
                   multiline
                   rows={3}
-                  value={selectedReport.notes}
                   size="small"
+                  placeholder="أي ملاحظات أو تفاصيل إضافية..."
                 />
               </Grid>
             </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenEditDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            startIcon={<SaveIcon />}
-            onClick={() => {
-              notify('تحديث بيانات العميل', 'تم تحديث بيانات العميل بنجاح');
-              setOpenEditDialog(false);
-            }}
-          >
-            حفظ التغييرات
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                notify('إضافة عميل جديد', 'تم إضافة العميل بنجاح');
+                setOpenDialog(false);
+              }}
+            >
+              حفظ العميل
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={2500}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
+        {/* Dialog عرض التفاصيل */}
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          maxWidth="sm"
+          fullWidth
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <DialogTitle>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant="h6">تفاصيل العميل</Typography>
+              <IconButton onClick={() => setOpenViewDialog(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            {selectedReport && (
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    اسم العميل
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                    {selectedReport.customerName}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    معرف العميل
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontFamily: 'monospace' }}>
+                    {selectedReport.customerId}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    البريد الإلكتروني
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.email}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    رقم الهاتف
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.phone}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    عدد الطلبات
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600 }}>
+                    {selectedReport.totalOrders}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    إجمالي الإنفاق
+                  </Typography>
+                  <Typography variant="body1" sx={{ fontWeight: 600, color: 'primary.main' }}>
+                    ${selectedReport.totalSpent.toLocaleString()}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    متوسط قيمة الطلب
+                  </Typography>
+                  <Typography variant="body1">
+                    ${selectedReport.avgOrderValue.toFixed(2)}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    آخر طلب
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.lastOrderDate}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    عمر العميل (أيام)
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.customerLifetime}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    معدل الرضا
+                  </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
+                    <Typography variant="body1" color="warning.main">
+                      {selectedReport.satisfactionScore}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    مستوى الولاء
+                  </Typography>
+                  <Chip
+                    label={selectedReport.loyaltyLevel}
+                    color={getLoyaltyColor(selectedReport.loyaltyLevel)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    المنطقة
+                  </Typography>
+                  <Chip label={selectedReport.region} size="small" />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    الفئة العمرية
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.ageGroup}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    الجنس
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.gender}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    المدير المسؤول
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.manager}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    الحالة
+                  </Typography>
+                  <Chip
+                    label={selectedReport.status}
+                    color={getStatusColor(selectedReport.status)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    الأولوية
+                  </Typography>
+                  <Chip
+                    label={selectedReport.priority}
+                    color={getPriorityColor(selectedReport.priority)}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="subtitle2" color="text.secondary">
+                    الملاحظات
+                  </Typography>
+                  <Typography variant="body1">{selectedReport.notes}</Typography>
+                </Grid>
+              </Grid>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
+            <Button
+              variant="contained"
+              startIcon={<EditIcon />}
+              onClick={() => {
+                setOpenViewDialog(false);
+                setOpenEditDialog(true);
+              }}
+            >
+              تعديل
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Dialog تعديل العميل */}
+        <Dialog
+          open={openEditDialog}
+          onClose={() => setOpenEditDialog(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant="h6">تعديل بيانات العميل</Typography>
+              <IconButton onClick={() => setOpenEditDialog(false)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent>
+            {selectedReport && (
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="اسم العميل"
+                    value={selectedReport.customerName}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="معرف العميل"
+                    value={selectedReport.customerId}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="البريد الإلكتروني"
+                    type="email"
+                    value={selectedReport.email}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="رقم الهاتف"
+                    value={selectedReport.phone}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="عدد الطلبات"
+                    type="number"
+                    value={selectedReport.totalOrders}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="إجمالي الإنفاق"
+                    type="number"
+                    value={selectedReport.totalSpent}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="متوسط قيمة الطلب"
+                    type="number"
+                    value={selectedReport.avgOrderValue}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="معدل الرضا"
+                    type="number"
+                    value={selectedReport.satisfactionScore}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>مستوى الولاء</InputLabel>
+                    <Select value={selectedReport.loyaltyLevel} label="مستوى الولاء">
+                      {loyaltyLevelOptions.map((level) => (
+                        <MenuItem key={level} value={level}>
+                          {level}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المنطقة</InputLabel>
+                    <Select value={selectedReport.region} label="المنطقة">
+                      {regionOptions.map((region) => (
+                        <MenuItem key={region} value={region}>
+                          {region}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الفئة العمرية</InputLabel>
+                    <Select value={selectedReport.ageGroup} label="الفئة العمرية">
+                      {ageGroupOptions.map((age) => (
+                        <MenuItem key={age} value={age}>
+                          {age}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الجنس</InputLabel>
+                    <Select value={selectedReport.gender} label="الجنس">
+                      {genderOptions.map((gender) => (
+                        <MenuItem key={gender} value={gender}>
+                          {gender}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <TextField
+                    fullWidth
+                    label="المدير المسؤول"
+                    value={selectedReport.manager}
+                    size="small"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الحالة</InputLabel>
+                    <Select value={selectedReport.status} label="الحالة">
+                      {statusOptions.map((status) => (
+                        <MenuItem key={status} value={status}>
+                          {status}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select value={selectedReport.priority} label="الأولوية">
+                      {priorityOptions.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="ملاحظات إضافية"
+                    multiline
+                    rows={3}
+                    value={selectedReport.notes}
+                    size="small"
+                  />
+                </Grid>
+              </Grid>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenEditDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              startIcon={<SaveIcon />}
+              onClick={() => {
+                notify('تحديث بيانات العميل', 'تم تحديث بيانات العميل بنجاح');
+                setOpenEditDialog(false);
+              }}
+            >
+              حفظ التغييرات
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2500}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
     </PageContainer>
   );
 };

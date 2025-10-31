@@ -308,11 +308,6 @@ const Blogs = () => {
     enableExport: true,
     enableImport: true,
     enableSync: true,
-    enableBackup: true,
-    enableRestore: true,
-    enableExport: true,
-    enableImport: true,
-    enableSync: true,
   });
 
   const handleSave = () => {
