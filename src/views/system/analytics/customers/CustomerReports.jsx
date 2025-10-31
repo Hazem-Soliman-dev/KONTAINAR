@@ -1528,7 +1528,6 @@ const CustomerReports = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-      </Box>
     </PageContainer>
   );
 };
