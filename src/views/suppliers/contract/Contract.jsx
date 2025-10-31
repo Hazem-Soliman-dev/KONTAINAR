@@ -353,10 +353,13 @@ const Contract = () => {
         {/* Statistics Cards */}
         <Grid container spacing={3} mb={3}>
           {stats.map((stat, index) => (
-            <Grid item xs={12} sm={6} lg={3} key={index}>
+            <Grid size={{ xs: 12, sm: 6, lg: 3 }} key={index}>
               <Card
                 sx={{
-                  borderRadius: 2,
+                  p: 3,
+                  textAlign: 'center',
+                  borderRadius: 3,
+                  flexDirection: 'row',
                   background: `linear-gradient(135deg, ${alpha(
                     theme.palette[stat.color].main,
                     0.08,
@@ -367,28 +370,26 @@ const Contract = () => {
                     transform: 'translateY(-2px)',
                     boxShadow: 4,
                   },
+                  '& .stat-icon': {
+                    transform: 'scale(1.1)',
+                  },
                 }}
               >
                 <CardContent sx={{ p: 2 }}>
                   <Stack direction="row" spacing={2} alignItems="center">
-                    <Avatar
-                      sx={{
-                        bgcolor: alpha(theme.palette[stat.color].main, 0.1),
-                        color: theme.palette[stat.color].main,
-                        width: 48,
-                        height: 48,
-                      }}
-                    >
-                      <stat.icon size={24} />
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                      <stat.icon />
                     </Avatar>
-                    <Box flex={1}>
-                      <Typography variant="body2" color="text.secondary" mb={0.5}>
-                        {stat.title}
-                      </Typography>
-                      <Typography variant="h6" fontWeight={700}>
+                    <Box>
+                      <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
                         {stat.value}
                       </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        {stat.title}
+                      </Typography>
                     </Box>
+                  </Box>
                   </Stack>
                 </CardContent>
               </Card>
@@ -398,7 +399,7 @@ const Contract = () => {
 
         <Grid container spacing={3}>
           {/* Contract Details */}
-          <Grid size={{ xs: 12, lg: 8 }}>
+          <Grid size={{ xs: 12, sm: 6, lg: 8 }}>
             <DashboardCard
               title="تفاصيل العقد"
               subtitle="الاتفاقية بين المورد ومنصة كونتينر"
@@ -657,7 +658,7 @@ const Contract = () => {
           </Grid>
 
           {/* Contract Status */}
-          <Grid item xs={12} lg={4}>
+          <Grid size={{ xs: 12, sm: 6, lg: 4 }}>
             <DashboardCard
               title="حالة العقد"
               subtitle="معلومات إضافية"

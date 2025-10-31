@@ -108,8 +108,26 @@ import {
   Folder as FolderIcon,
   FolderOpen as FolderOpenIcon,
 } from '@mui/icons-material';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+import { useTheme } from '@mui/material/styles';
+
+const BCrumb = [
+  {
+    to: '/system',
+    title: 'الرئيسية',
+  },
+  {
+    to: '/system/catalog',
+    title: 'الكتالوج',
+  },
+  {
+    title: 'التصنيفات',
+  },
+];
 
 const CategoriesManager = () => {
+  const theme = useTheme();
   // State management
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState(0);
@@ -1173,262 +1191,246 @@ const CategoriesManager = () => {
   );
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة التصنيفات" aria-hidden="false" tabIndex={0}>
-      {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
-          إدارة التصنيفات
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          إدارة تصنيفات المنتجات وتنظيم الكتالوج بطريقة احترافية.
-        </Typography>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }} aria-label="مسار التنقل">
-          <Link color="inherit" href="/main-store" sx={{ display: 'flex', alignItems: 'center' }}>
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            المتجر الرئيسي
-          </Link>
-          <Link color="inherit" href="/main-store/catalog">
-            الكتالوج
-          </Link>
-          <Typography color="text.primary">التصنيفات</Typography>
-        </Breadcrumbs>
-      </Box>
+    <PageContainer title="إدارة التصنيفات" description="إدارة تصنيفات المنتجات">
+      <Breadcrumb title="إدارة التصنيفات" items={BCrumb} />
 
-      {/* Tabs */}
-      <Paper sx={{ mb: 3 }}>
-        <Tabs
-          value={activeTab}
-          onChange={(e, newValue) => setActiveTab(newValue)}
-          variant="fullWidth"
-          sx={{ borderBottom: 1, borderColor: 'divider' }}
-        >
-          <Tab label="التصنيفات النشطة" icon={<CategoryIcon />} iconPosition="start" />
-          <Tab label="التصنيفات المحذوفة" icon={<ArchiveIcon />} iconPosition="start" />
-        </Tabs>
-      </Paper>
-
-      {/* Loading State */}
-      {loading && <LinearProgress sx={{ mb: 2 }} />}
-
-      {/* Content based on active tab */}
-      {activeTab === 0 ? renderActiveCategories() : renderDeletedCategories()}
-
-      {/* Table */}
-      {renderTable()}
-
-      {/* Create/Edit Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>{selectedCategory ? 'تعديل التصنيف' : 'إضافة تصنيف جديد'}</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="اسم التصنيف"
-                placeholder="أدخل اسم التصنيف"
-                defaultValue={selectedCategory?.name || ''}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="الوصف"
-                placeholder="أدخل وصف التصنيف"
-                multiline
-                rows={3}
-                defaultValue={selectedCategory?.description || ''}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الحالة</InputLabel>
-                <Select label="الحالة" defaultValue={selectedCategory?.status || 'active'}>
-                  <MenuItem value="active">نشط</MenuItem>
-                  <MenuItem value="inactive">غير نشط</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setOpenDialog(false);
-              notify('حفظ التصنيف', 'تم حفظ التصنيف بنجاح');
-            }}
+      <Box>
+        {/* Tabs */}
+        <Paper sx={{ mb: 3 }}>
+          <Tabs
+            value={activeTab}
+            onChange={(e, newValue) => setActiveTab(newValue)}
+            variant="fullWidth"
+            sx={{ borderBottom: 1, borderColor: 'divider' }}
           >
-            حفظ
-          </Button>
-        </DialogActions>
-      </Dialog>
+            <Tab label="التصنيفات النشطة" icon={<CategoryIcon />} iconPosition="start" />
+            <Tab label="التصنيفات المحذوفة" icon={<ArchiveIcon />} iconPosition="start" />
+          </Tabs>
+        </Paper>
 
-      {/* View Dialog */}
-      <Dialog
-        open={openViewDialog}
-        onClose={() => setOpenViewDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>تفاصيل التصنيف</DialogTitle>
-        <DialogContent>
-          {selectedCategory && (
+        {/* Loading State */}
+        {loading && <LinearProgress sx={{ mb: 2 }} />}
+
+        {/* Content based on active tab */}
+        {activeTab === 0 ? renderActiveCategories() : renderDeletedCategories()}
+
+        {/* Table */}
+        {renderTable()}
+
+        {/* Create/Edit Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>{selectedCategory ? 'تعديل التصنيف' : 'إضافة تصنيف جديد'}</DialogTitle>
+          <DialogContent>
             <Grid container spacing={2} sx={{ mt: 1 }}>
               <Grid size={{ xs: 12 }}>
-                <Typography variant="h6">{selectedCategory.name}</Typography>
-                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-                  {selectedCategory.description}
-                </Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">عدد المنتجات</Typography>
-                <Typography variant="body2">{selectedCategory.productsCount}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">الحالة</Typography>
-                <Chip
-                  label={selectedCategory.status}
-                  size="small"
-                  color={getStatusColor(selectedCategory.status)}
+                <TextField
+                  fullWidth
+                  label="اسم التصنيف"
+                  placeholder="أدخل اسم التصنيف"
+                  defaultValue={selectedCategory?.name || ''}
+                  required
                 />
               </Grid>
-            </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Delete Dialog */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>حذف التصنيف</DialogTitle>
-        <DialogContent>
-          {selectedCategory && (
-            <Typography>
-              هل أنت متأكد من حذف "{selectedCategory.name}"؟ لا يمكن التراجع عن هذا الإجراء.
-            </Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
-          <Button
-            color="error"
-            onClick={() => {
-              setOpenDeleteDialog(false);
-              notify('حذف التصنيف', `تم حذف التصنيف "${selectedCategory?.name}"`);
-            }}
-          >
-            حذف
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Restore Dialog */}
-      <Dialog
-        open={openRestoreDialog}
-        onClose={() => setOpenRestoreDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle sx={{ pb: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ bgcolor: 'success.main' }}>
-              <RestoreIcon />
-            </Avatar>
-            <Box>
-              <Typography variant="h6">استعادة التصنيف</Typography>
-              <Typography variant="body2" color="text.secondary">
-                استعادة هذا التصنيف إلى الكتالوج
-              </Typography>
-            </Box>
-          </Box>
-        </DialogTitle>
-        <DialogContent sx={{ pt: 2 }}>
-          <Grid container spacing={3}>
-            <Grid size={{ xs: 12 }}>
-              <Alert severity="info" sx={{ mb: 2 }}>
-                سيتم استعادة التصنيف إلى الكتالوج الرئيسي. سيتم استعادة جميع بيانات التصنيف
-                والإعدادات والهيكل.
-              </Alert>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="سبب الاستعادة"
-                placeholder="لماذا تقوم باستعادة هذا التصنيف؟"
-                multiline
-                rows={3}
-                helperText="سبب اختياري لاستعادة هذا التصنيف"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>استعادة إلى التصنيف الأب</InputLabel>
-                <Select label="استعادة إلى التصنيف الأب">
-                  <MenuItem value="">لا يوجد تصنيف أب (تصنيف جذر)</MenuItem>
-                  <MenuItem value="electronics">الإلكترونيات</MenuItem>
-                  <MenuItem value="clothing">الملابس</MenuItem>
-                  <MenuItem value="books">الكتب</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الحالة</InputLabel>
-                <Select label="الحالة">
-                  <MenuItem value="draft">مسودة</MenuItem>
-                  <MenuItem value="active">نشط</MenuItem>
-                  <MenuItem value="scheduled">مجدول</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Stack direction="row" spacing={2}>
-                <FormControlLabel control={<Switch defaultChecked />} label="استعادة المنتجات" />
-                <FormControlLabel
-                  control={<Switch defaultChecked />}
-                  label="استعادة التصنيفات الفرعية"
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  label="الوصف"
+                  placeholder="أدخل وصف التصنيف"
+                  multiline
+                  rows={3}
+                  defaultValue={selectedCategory?.description || ''}
                 />
-                <FormControlLabel control={<Switch defaultChecked />} label="استعادة الإعدادات" />
-              </Stack>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>الحالة</InputLabel>
+                  <Select label="الحالة" defaultValue={selectedCategory?.status || 'active'}>
+                    <MenuItem value="active">نشط</MenuItem>
+                    <MenuItem value="inactive">غير نشط</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
             </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions sx={{ p: 3, pt: 1 }}>
-          <Button onClick={() => setOpenRestoreDialog(false)} variant="outlined">
-            إلغاء
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={loading ? <LinearProgress size={20} /> : <RestoreIcon />}
-          >
-            {loading ? 'جاري الاستعادة...' : 'استعادة التصنيف'}
-          </Button>
-        </DialogActions>
-      </Dialog>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setOpenDialog(false);
+                notify('حفظ التصنيف', 'تم حفظ التصنيف بنجاح');
+              }}
+            >
+              حفظ
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        autoHideDuration={2500}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
+        {/* View Dialog */}
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          maxWidth="md"
+          fullWidth
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <DialogTitle>تفاصيل التصنيف</DialogTitle>
+          <DialogContent>
+            {selectedCategory && (
+              <Grid container spacing={2} sx={{ mt: 1 }}>
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="h6">{selectedCategory.name}</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                    {selectedCategory.description}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">عدد المنتجات</Typography>
+                  <Typography variant="body2">{selectedCategory.productsCount}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">الحالة</Typography>
+                  <Chip
+                    label={selectedCategory.status}
+                    size="small"
+                    color={getStatusColor(selectedCategory.status)}
+                  />
+                </Grid>
+              </Grid>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Delete Dialog */}
+        <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+          <DialogTitle>حذف التصنيف</DialogTitle>
+          <DialogContent>
+            {selectedCategory && (
+              <Typography>
+                هل أنت متأكد من حذف "{selectedCategory.name}"؟ لا يمكن التراجع عن هذا الإجراء.
+              </Typography>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+            <Button
+              color="error"
+              onClick={() => {
+                setOpenDeleteDialog(false);
+                notify('حذف التصنيف', `تم حذف التصنيف "${selectedCategory?.name}"`);
+              }}
+            >
+              حذف
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Restore Dialog */}
+        <Dialog
+          open={openRestoreDialog}
+          onClose={() => setOpenRestoreDialog(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle sx={{ pb: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Avatar sx={{ bgcolor: 'success.main' }}>
+                <RestoreIcon />
+              </Avatar>
+              <Box>
+                <Typography variant="h6">استعادة التصنيف</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  استعادة هذا التصنيف إلى الكتالوج
+                </Typography>
+              </Box>
+            </Box>
+          </DialogTitle>
+          <DialogContent sx={{ pt: 2 }}>
+            <Grid container spacing={3}>
+              <Grid size={{ xs: 12 }}>
+                <Alert severity="info" sx={{ mb: 2 }}>
+                  سيتم استعادة التصنيف إلى الكتالوج الرئيسي. سيتم استعادة جميع بيانات التصنيف
+                  والإعدادات والهيكل.
+                </Alert>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  label="سبب الاستعادة"
+                  placeholder="لماذا تقوم باستعادة هذا التصنيف؟"
+                  multiline
+                  rows={3}
+                  helperText="سبب اختياري لاستعادة هذا التصنيف"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>استعادة إلى التصنيف الأب</InputLabel>
+                  <Select label="استعادة إلى التصنيف الأب">
+                    <MenuItem value="">لا يوجد تصنيف أب (تصنيف جذر)</MenuItem>
+                    <MenuItem value="electronics">الإلكترونيات</MenuItem>
+                    <MenuItem value="clothing">الملابس</MenuItem>
+                    <MenuItem value="books">الكتب</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>الحالة</InputLabel>
+                  <Select label="الحالة">
+                    <MenuItem value="draft">مسودة</MenuItem>
+                    <MenuItem value="active">نشط</MenuItem>
+                    <MenuItem value="scheduled">مجدول</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Stack direction="row" spacing={2}>
+                  <FormControlLabel control={<Switch defaultChecked />} label="استعادة المنتجات" />
+                  <FormControlLabel
+                    control={<Switch defaultChecked />}
+                    label="استعادة التصنيفات الفرعية"
+                  />
+                  <FormControlLabel control={<Switch defaultChecked />} label="استعادة الإعدادات" />
+                </Stack>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions sx={{ p: 3, pt: 1 }}>
+            <Button onClick={() => setOpenRestoreDialog(false)} variant="outlined">
+              إلغاء
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={handleSave}
+              disabled={loading}
+              startIcon={loading ? <LinearProgress size={20} /> : <RestoreIcon />}
+            >
+              {loading ? 'جاري الاستعادة...' : 'استعادة التصنيف'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={snackbar.open}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          autoHideDuration={2500}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </PageContainer>
   );
 };
 

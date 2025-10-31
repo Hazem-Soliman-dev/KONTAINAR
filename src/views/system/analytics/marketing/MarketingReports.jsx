@@ -23,6 +23,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
   TablePagination,
   LinearProgress,
   Stack,
@@ -701,7 +702,7 @@ const MarketingReports = () => {
       </Paper>
 
       {/* المحتوى المحسن */}
-      <Paper>
+      <Paper sx={{ overflow: 'auto' }}>
         <Box sx={{ p: 2 }}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             تفاصيل أداء الحملات التسويقية
@@ -724,7 +725,8 @@ const MarketingReports = () => {
             </Box>
           ) : (
             <>
-              <Table>
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table>
                 <TableHead>
                   <TableRow>
                     <TableCell padding="checkbox">
@@ -878,6 +880,7 @@ const MarketingReports = () => {
                     ))}
                 </TableBody>
               </Table>
+              </TableContainer>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"

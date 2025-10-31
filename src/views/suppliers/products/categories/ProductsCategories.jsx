@@ -97,171 +97,78 @@ const ProductsCategories = () => {
       <Breadcrumb title="تصنيفات المنتجات" items={BCrumb} />
 
       <Box>
-        {/* Summary Cards */}
+        {/* Statistics Cards */}
         <Grid container spacing={3} mb={3}>
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={{
-                p: 3,
-                textAlign: 'center',
-                borderRadius: 3,
-                background: `linear-gradient(135deg, ${alpha(
-                  theme.palette.primary.main,
-                  0.08,
-                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
-                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
-                transition: 'all .3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 8,
-                },
-              }}
-            >
-              <CardContent>
-                <Avatar
-                  sx={{
-                    bgcolor: alpha(theme.palette.primary.main, 0.1),
-                    color: theme.palette.primary.main,
-                    width: 56,
-                    height: 56,
-                    mx: 'auto',
-                    mb: 2,
-                  }}
-                >
-                  <IconCategory size={32} />
-                </Avatar>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  {categories.length}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  إجمالي التصنيفات
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={{
-                p: 3,
-                textAlign: 'center',
-                borderRadius: 3,
-                background: `linear-gradient(135deg, ${alpha(
-                  theme.palette.success.main,
-                  0.08,
-                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
-                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
-                transition: 'all .3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 8,
-                },
-              }}
-            >
-              <CardContent>
-                <Avatar
-                  sx={{
-                    bgcolor: alpha(theme.palette.success.main, 0.1),
-                    color: theme.palette.success.main,
-                    width: 56,
-                    height: 56,
-                    mx: 'auto',
-                    mb: 2,
-                  }}
-                >
-                  <IconPackage size={32} />
-                </Avatar>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  {totalProducts}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  إجمالي المنتجات
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={{
-                p: 3,
-                textAlign: 'center',
-                borderRadius: 3,
-                background: `linear-gradient(135deg, ${alpha(
-                  theme.palette.warning.main,
-                  0.08,
-                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
-                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
-                transition: 'all .3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 8,
-                },
-              }}
-            >
-              <CardContent>
-                <Avatar
-                  sx={{
-                    bgcolor: alpha(theme.palette.warning.main, 0.1),
-                    color: theme.palette.warning.main,
-                    width: 56,
-                    height: 56,
-                    mx: 'auto',
-                    mb: 2,
-                  }}
-                >
-                  <IconShoppingCart size={32} />
-                </Avatar>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  {totalSales}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  إجمالي المبيعات
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-
-          <Grid item xs={12} md={3}>
-            <Card
-              sx={{
-                p: 3,
-                textAlign: 'center',
-                borderRadius: 3,
-                background: `linear-gradient(135deg, ${alpha(
-                  theme.palette.error.main,
-                  0.08,
-                )} 0%, ${alpha(theme.palette.error.main, 0.04)} 100%)`,
-                border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
-                transition: 'all .3s ease',
-                '&:hover': {
-                  transform: 'translateY(-4px)',
-                  boxShadow: 8,
-                },
-              }}
-            >
-              <CardContent>
-                <Avatar
-                  sx={{
-                    bgcolor: alpha(theme.palette.error.main, 0.1),
-                    color: theme.palette.error.main,
-                    width: 56,
-                    height: 56,
-                    mx: 'auto',
-                    mb: 2,
-                  }}
-                >
-                  <IconTrendingUp size={32} />
-                </Avatar>
-                <Typography variant="h4" fontWeight={700} mb={1}>
-                  {(totalRevenue / 1000).toFixed(0)}K
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  إجمالي الإيرادات
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
+          {[
+            {
+              title: 'إجمالي التصنيفات',
+              value: categories.length,
+              icon: IconCategory,
+              color: 'primary',
+            },
+            { title: 'إجمالي المنتجات', value: totalProducts, icon: IconPackage, color: 'info' },
+            {
+              title: 'إجمالي المبيعات',
+              value: totalSales,
+              icon: IconShoppingCart,
+              color: 'success',
+            },
+            {
+              title: 'إجمالي الإيرادات',
+              value: (totalRevenue / 1000).toFixed(0) + 'K',
+              icon: IconTrendingUp,
+              color: 'warning',
+            },
+          ].map((stat, index) => (
+            <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
+              <Card
+                sx={{
+                  p: 3,
+                  textAlign: 'center',
+                  flexDirection: 'row',
+                  borderRadius: 3,
+                  background: `linear-gradient(135deg, ${alpha(
+                    theme.palette[stat.color].main,
+                    0.08,
+                  )} 0%, ${alpha(theme.palette[stat.color].main, 0.04)} 100%)`,
+                  border: `1px solid ${alpha(theme.palette[stat.color].main, 0.2)}`,
+                  transition: 'all .3s ease',
+                  '&:hover': {
+                    transform: 'translateY(-4px)',
+                    boxShadow: 8,
+                  },
+                  '& .stat-icon': {
+                    transform: 'scale(1.1)',
+                  },
+                }}
+              >
+                <CardContent>
+                  <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette[stat.color].main, 0.1),
+                        color: theme.palette[stat.color].main,
+                        width: 56,
+                        height: 56,
+                        mx: 'auto',
+                        mb: 2,
+                      }}
+                    >
+                      <stat.icon />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                        {stat.value}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        {stat.title}
+                      </Typography>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
         </Grid>
 
         {/* Categories Table */}
@@ -342,4 +249,3 @@ const ProductsCategories = () => {
 };
 
 export default ProductsCategories;
-

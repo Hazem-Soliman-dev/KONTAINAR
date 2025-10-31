@@ -23,6 +23,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
   TablePagination,
   LinearProgress,
   Stack,
@@ -69,6 +70,22 @@ import {
   ShoppingCart as ShoppingCartIcon,
   Email as EmailIcon,
 } from '@mui/icons-material';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+
+const BCrumb = [
+  {
+    to: '/system',
+    title: 'الرئيسية',
+  },
+  {
+    to: '/system/analytics',
+    title: 'التحليلات',
+  },
+  {
+    title: 'تقارير العملاء',
+  },
+];
 
 const CustomerReports = () => {
   const [loading, setLoading] = useState(false);
@@ -448,58 +465,10 @@ const CustomerReports = () => {
   }, []);
 
   return (
-    <Box sx={{ p: 3 }}>
-      {/* رأس الصفحة مع الإحصائيات */}
-      <Box sx={{ mb: 4 }}>
-        <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}
-        >
-          <Box>
-            <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, color: 'primary.main' }}>
-              تقارير العملاء
-            </Typography>
-            <Typography variant="body1" sx={{ mb: 2, color: 'text.secondary' }}>
-              تحليل أداء العملاء ومؤشرات الرضا والولاء
-            </Typography>
-            <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} sx={{ mt: 1 }}>
-              <Link color="inherit" href="/system" sx={{ display: 'flex', alignItems: 'center' }}>
-                <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-                لوحة التحكم
-              </Link>
-              <Link color="inherit" href="/system/analytics">
-                التحليلات
-              </Link>
-              <Typography color="text.primary">تقارير العملاء</Typography>
-            </Breadcrumbs>
-          </Box>
+    <PageContainer title="تقارير العملاء" description="تحليل أداء العملاء ومؤشرات الرضا والولاء">
+      <Breadcrumb title="تقارير العملاء" items={BCrumb} />
 
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<FilterIcon />}
-              onClick={() =>
-                setSnackbar({ open: true, message: 'تم تطبيق المرشحات', severity: 'success' })
-              }
-            >
-              تطبيق المرشحات
-            </Button>
-            <Button variant="contained" startIcon={<DownloadIcon />} onClick={handleExport}>
-              تصدير التقرير
-            </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              عميل جديد
-            </Button>
-          </Stack>
-        </Box>
-
+      <Box>
         {/* Enhanced Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 3 }}>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
@@ -717,7 +686,7 @@ const CustomerReports = () => {
       </Paper>
 
       {/* المحتوى المحسن */}
-      <Paper>
+      <Paper sx={{ overflow: 'auto' }}>
         <Box sx={{ p: 2 }}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             تفاصيل العملاء
@@ -740,157 +709,161 @@ const CustomerReports = () => {
             </Box>
           ) : (
             <>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        indeterminate={
-                          selectedItems.length > 0 && selectedItems.length < customerData.length
-                        }
-                        checked={
-                          customerData.length > 0 && selectedItems.length === customerData.length
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'reportDate'}
-                        direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('reportDate')}
-                      >
-                        تاريخ التقرير
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell>اسم العميل</TableCell>
-                    <TableCell>معرف العميل</TableCell>
-                    <TableCell>الإيميل</TableCell>
-                    <TableCell align="right">عدد الطلبات</TableCell>
-                    <TableCell align="right">إجمالي الإنفاق</TableCell>
-                    <TableCell align="right">متوسط قيمة الطلب</TableCell>
-                    <TableCell align="right">معدل الرضا</TableCell>
-                    <TableCell>مستوى الولاء</TableCell>
-                    <TableCell>المنطقة</TableCell>
-                    <TableCell>الحالة</TableCell>
-                    <TableCell>الأولوية</TableCell>
-                    <TableCell align="center">الإجراءات</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((item) => (
-                      <TableRow key={item.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selectedItems.includes(item.id)}
-                            onChange={() => handleSelectItem(item.id)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">{item.reportDate}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {item.customerName}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                            {item.customerId}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">{item.email}</Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="subtitle2" fontWeight="bold">
-                            {item.totalOrders}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="body2" color="primary.main">
-                            ${item.totalSpent.toLocaleString()}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="body2">${item.avgOrderValue.toFixed(2)}</Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'flex-end',
-                            }}
-                          >
-                            <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
-                            <Typography variant="body2" color="warning.main">
-                              {item.satisfactionScore}
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          indeterminate={
+                            selectedItems.length > 0 && selectedItems.length < customerData.length
+                          }
+                          checked={
+                            customerData.length > 0 && selectedItems.length === customerData.length
+                          }
+                          onChange={handleSelectAll}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'reportDate'}
+                          direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('reportDate')}
+                        >
+                          تاريخ التقرير
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell>اسم العميل</TableCell>
+                      <TableCell>معرف العميل</TableCell>
+                      <TableCell>الإيميل</TableCell>
+                      <TableCell align="right">عدد الطلبات</TableCell>
+                      <TableCell align="right">إجمالي الإنفاق</TableCell>
+                      <TableCell align="right">متوسط قيمة الطلب</TableCell>
+                      <TableCell align="right">معدل الرضا</TableCell>
+                      <TableCell>مستوى الولاء</TableCell>
+                      <TableCell>المنطقة</TableCell>
+                      <TableCell>الحالة</TableCell>
+                      <TableCell>الأولوية</TableCell>
+                      <TableCell align="center">الإجراءات</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {sortedData
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((item) => (
+                        <TableRow key={item.id} hover>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={selectedItems.includes(item.id)}
+                              onChange={() => handleSelectItem(item.id)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2">{item.reportDate}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {item.customerName}
                             </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={item.loyaltyLevel}
-                            color={getLoyaltyColor(item.loyaltyLevel)}
-                            size="small"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Chip label={item.region} size="small" variant="outlined" />
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={item.status}
-                            color={getStatusColor(item.status)}
-                            size="small"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={item.priority}
-                            color={getPriorityColor(item.priority)}
-                            size="small"
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <Stack direction="row" spacing={1} justifyContent="center">
-                            <Tooltip title="عرض التفاصيل" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleView(item)}
-                                aria-label="view report"
-                              >
-                                <VisibilityIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="تعديل التقرير" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEdit(item)}
-                                aria-label="edit report"
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="حذف التقرير" arrow>
-                              <IconButton
-                                size="small"
-                                color="error"
-                                onClick={() => handleDelete(item)}
-                                aria-label="delete report"
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                              {item.customerId}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2">{item.email}</Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="subtitle2" fontWeight="bold">
+                              {item.totalOrders}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="body2" color="primary.main">
+                              ${item.totalSpent.toLocaleString()}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="body2">
+                              ${item.avgOrderValue.toFixed(2)}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                              }}
+                            >
+                              <StarIcon sx={{ mr: 0.5, fontSize: 16, color: 'warning.main' }} />
+                              <Typography variant="body2" color="warning.main">
+                                {item.satisfactionScore}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={item.loyaltyLevel}
+                              color={getLoyaltyColor(item.loyaltyLevel)}
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip label={item.region} size="small" variant="outlined" />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={item.status}
+                              color={getStatusColor(item.status)}
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={item.priority}
+                              color={getPriorityColor(item.priority)}
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Stack direction="row" spacing={1} justifyContent="center">
+                              <Tooltip title="عرض التفاصيل" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleView(item)}
+                                  aria-label="view report"
+                                >
+                                  <VisibilityIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="تعديل التقرير" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleEdit(item)}
+                                  aria-label="edit report"
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="حذف التقرير" arrow>
+                                <IconButton
+                                  size="small"
+                                  color="error"
+                                  onClick={() => handleDelete(item)}
+                                  aria-label="delete report"
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"
@@ -1555,7 +1528,8 @@ const CustomerReports = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Box>
+      </Box>
+    </PageContainer>
   );
 };
 

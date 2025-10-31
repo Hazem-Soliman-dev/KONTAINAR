@@ -23,6 +23,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableContainer,
   TablePagination,
   LinearProgress,
   Stack,
@@ -701,7 +702,7 @@ const InventoryReports = () => {
       </Paper>
 
       {/* المحتوى المحسن */}
-      <Paper>
+      <Paper sx={{ overflow: 'auto' }}>
         <Box sx={{ p: 2 }}>
           <Typography variant="h6" sx={{ mb: 2, fontWeight: 600 }}>
             تفاصيل المخزون
@@ -724,170 +725,175 @@ const InventoryReports = () => {
             </Box>
           ) : (
             <>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        indeterminate={
-                          selectedItems.length > 0 && selectedItems.length < inventoryData.length
-                        }
-                        checked={
-                          inventoryData.length > 0 && selectedItems.length === inventoryData.length
-                        }
-                        onChange={handleSelectAll}
-                      />
-                    </TableCell>
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'reportDate'}
-                        direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('reportDate')}
-                      >
-                        تاريخ التقرير
-                      </TableSortLabel>
-                    </TableCell>
-                    <TableCell>اسم المنتج</TableCell>
-                    <TableCell>الفئة</TableCell>
-                    <TableCell>SKU</TableCell>
-                    <TableCell align="right">المخزون الحالي</TableCell>
-                    <TableCell align="right">الحد الأدنى</TableCell>
-                    <TableCell align="right">الحد الأقصى</TableCell>
-                    <TableCell align="right">التكلفة</TableCell>
-                    <TableCell align="right">القيمة الإجمالية</TableCell>
-                    <TableCell align="right">معدل الدوران</TableCell>
-                    <TableCell>الحالة</TableCell>
-                    <TableCell>الأولوية</TableCell>
-                    <TableCell align="center">الإجراءات</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {sortedData
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((item) => (
-                      <TableRow key={item.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selectedItems.includes(item.id)}
-                            onChange={() => handleSelectItem(item.id)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">{item.reportDate}</Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {item.productName}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Chip label={item.category} size="small" variant="outlined" />
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
-                            {item.sku}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography
-                            variant="subtitle2"
-                            fontWeight="bold"
-                            color={
-                              item.currentStock <= item.minStock
-                                ? 'error.main'
-                                : item.currentStock <= item.minStock * 1.5
-                                ? 'warning.main'
-                                : 'success.main'
-                            }
-                          >
-                            {item.currentStock}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="body2">{item.minStock}</Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="body2">{item.maxStock}</Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="body2">${item.unitCost.toLocaleString()}</Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Typography variant="subtitle2" fontWeight="bold" color="primary.main">
-                            ${item.totalValue.toLocaleString()}
-                          </Typography>
-                        </TableCell>
-                        <TableCell align="right">
-                          <Box
-                            sx={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'flex-end',
-                            }}
-                          >
-                            {item.turnoverRate >= 3 ? (
-                              <TrendingUpIcon color="success" sx={{ mr: 0.5, fontSize: 16 }} />
-                            ) : (
-                              <TrendingDownIcon color="error" sx={{ mr: 0.5, fontSize: 16 }} />
-                            )}
-                            <Typography
-                              variant="body2"
-                              color={item.turnoverRate >= 3 ? 'success.main' : 'error.main'}
-                            >
-                              {item.turnoverRate}
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          indeterminate={
+                            selectedItems.length > 0 && selectedItems.length < inventoryData.length
+                          }
+                          checked={
+                            inventoryData.length > 0 &&
+                            selectedItems.length === inventoryData.length
+                          }
+                          onChange={handleSelectAll}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'reportDate'}
+                          direction={sortBy === 'reportDate' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('reportDate')}
+                        >
+                          تاريخ التقرير
+                        </TableSortLabel>
+                      </TableCell>
+                      <TableCell>اسم المنتج</TableCell>
+                      <TableCell>الفئة</TableCell>
+                      <TableCell>SKU</TableCell>
+                      <TableCell align="right">المخزون الحالي</TableCell>
+                      <TableCell align="right">الحد الأدنى</TableCell>
+                      <TableCell align="right">الحد الأقصى</TableCell>
+                      <TableCell align="right">التكلفة</TableCell>
+                      <TableCell align="right">القيمة الإجمالية</TableCell>
+                      <TableCell align="right">معدل الدوران</TableCell>
+                      <TableCell>الحالة</TableCell>
+                      <TableCell>الأولوية</TableCell>
+                      <TableCell align="center">الإجراءات</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {sortedData
+                      .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                      .map((item) => (
+                        <TableRow key={item.id} hover>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={selectedItems.includes(item.id)}
+                              onChange={() => handleSelectItem(item.id)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2">{item.reportDate}</Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                              {item.productName}
                             </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={item.status}
-                            color={getStatusColor(item.status)}
-                            size="small"
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Chip
-                            label={item.priority}
-                            color={getPriorityColor(item.priority)}
-                            size="small"
-                          />
-                        </TableCell>
-                        <TableCell align="center">
-                          <Stack direction="row" spacing={1} justifyContent="center">
-                            <Tooltip title="عرض التفاصيل" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleView(item)}
-                                aria-label="view report"
+                          </TableCell>
+                          <TableCell>
+                            <Chip label={item.category} size="small" variant="outlined" />
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" sx={{ fontFamily: 'monospace' }}>
+                              {item.sku}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography
+                              variant="subtitle2"
+                              fontWeight="bold"
+                              color={
+                                item.currentStock <= item.minStock
+                                  ? 'error.main'
+                                  : item.currentStock <= item.minStock * 1.5
+                                  ? 'warning.main'
+                                  : 'success.main'
+                              }
+                            >
+                              {item.currentStock}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="body2">{item.minStock}</Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="body2">{item.maxStock}</Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="body2">
+                              ${item.unitCost.toLocaleString()}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Typography variant="subtitle2" fontWeight="bold" color="primary.main">
+                              ${item.totalValue.toLocaleString()}
+                            </Typography>
+                          </TableCell>
+                          <TableCell align="right">
+                            <Box
+                              sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                justifyContent: 'flex-end',
+                              }}
+                            >
+                              {item.turnoverRate >= 3 ? (
+                                <TrendingUpIcon color="success" sx={{ mr: 0.5, fontSize: 16 }} />
+                              ) : (
+                                <TrendingDownIcon color="error" sx={{ mr: 0.5, fontSize: 16 }} />
+                              )}
+                              <Typography
+                                variant="body2"
+                                color={item.turnoverRate >= 3 ? 'success.main' : 'error.main'}
                               >
-                                <VisibilityIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="تعديل التقرير" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEdit(item)}
-                                aria-label="edit report"
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="حذف التقرير" arrow>
-                              <IconButton
-                                size="small"
-                                color="error"
-                                onClick={() => handleDelete(item)}
-                                aria-label="delete report"
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
+                                {item.turnoverRate}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={item.status}
+                              color={getStatusColor(item.status)}
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Chip
+                              label={item.priority}
+                              color={getPriorityColor(item.priority)}
+                              size="small"
+                            />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Stack direction="row" spacing={1} justifyContent="center">
+                              <Tooltip title="عرض التفاصيل" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleView(item)}
+                                  aria-label="view report"
+                                >
+                                  <VisibilityIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="تعديل التقرير" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleEdit(item)}
+                                  aria-label="edit report"
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="حذف التقرير" arrow>
+                                <IconButton
+                                  size="small"
+                                  color="error"
+                                  onClick={() => handleDelete(item)}
+                                  aria-label="delete report"
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, 50]}
                 component="div"

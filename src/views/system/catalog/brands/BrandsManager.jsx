@@ -71,6 +71,22 @@ import {
   Public as PublicIcon,
   Schedule as ScheduleIcon,
 } from '@mui/icons-material';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+
+const BCrumb = [
+  {
+    to: '/system',
+    title: 'الرئيسية',
+  },
+  {
+    to: '/system/catalog',
+    title: 'الكتالوج',
+  },
+  {
+    title: 'العلامات التجارية',
+  },
+];
 
 const BrandsManager = () => {
   const theme = useTheme();
@@ -778,35 +794,14 @@ const BrandsManager = () => {
   );
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة العلامات التجارية" aria-hidden="false" tabIndex={0}>
-      {/* Header */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
-          إدارة العلامات التجارية
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          إدارة العلامات التجارية وتنظيم المنتجات بطريقة احترافية.
-        </Typography>
-        <Breadcrumbs
-          separator={<NavigateNextIcon fontSize="small" />}
-          sx={{ mt: 1 }}
-          aria-label="مسار التنقل"
-        >
-          <Link color="inherit" href="/main-store" sx={{ display: 'flex', alignItems: 'center' }}>
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            المتجر الرئيسي
-          </Link>
-          <Link color="inherit" href="/main-store/catalog">
-            الكتالوج
-          </Link>
-          <Typography color="text.primary">العلامات التجارية</Typography>
-        </Breadcrumbs>
-      </Box>
+    <PageContainer title="إدارة العلامات التجارية" description="إدارة العلامات التجارية">
+      <Breadcrumb title="إدارة العلامات التجارية" items={BCrumb} />
 
-      {/* Loading State */}
-      {loading && <LinearProgress sx={{ mb: 2 }} />}
+      <Box>
+        {/* Loading State */}
+        {loading && <LinearProgress sx={{ mb: 2 }} />}
 
-      {/* Stats Cards */}
+        {/* Stats Cards */}
       {renderStatsCards()}
 
       {/* Filters */}
@@ -1084,7 +1079,8 @@ const BrandsManager = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Box>
+      </Box>
+    </PageContainer>
   );
 };
 

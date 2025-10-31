@@ -130,57 +130,44 @@ const ProductsStatistics = () => {
 
       <Box>
         {/* Statistics Cards */}
-        <Grid container spacing={3} mb={3}>
-          {stats.map((stat, index) => (
-            <Grid item xs={12} sm={6} lg={3} key={index}>
+          <Grid container spacing={3} mb={3}>
+            {stats.map((stat, index) => (
+              <Grid size={{ xs: 12, sm: 6, md: 3 }} key={index}>
               <Card
                 sx={{
                   p: 3,
-                  textAlign: 'center',
-                  borderRadius: 3,
-                  background: `linear-gradient(135deg, ${alpha(
-                    theme.palette[stat.color].main,
-                    0.08,
-                  )} 0%, ${alpha(theme.palette[stat.color].main, 0.04)} 100%)`,
-                  border: `1px solid ${alpha(theme.palette[stat.color].main, 0.2)}`,
-                  transition: 'all .3s ease',
-                  '&:hover': {
-                    transform: 'translateY(-4px)',
-                    boxShadow: 8,
-                  },
+                textAlign: 'center',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette[stat.color].main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette[stat.color].main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette[stat.color].main, 0.2)}`,
+                transition: 'all .3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+                '& .stat-icon': {
+                  transform: 'scale(1.1)',
+                },
                 }}
               >
                 <CardContent>
-                  <Avatar
-                    sx={{
-                      bgcolor: alpha(theme.palette[stat.color].main, 0.1),
-                      color: theme.palette[stat.color].main,
-                      width: 56,
-                      height: 56,
-                      mx: 'auto',
-                      mb: 2,
-                    }}
-                  >
-                    <stat.icon />
-                  </Avatar>
-                  <Typography variant="h4" fontWeight={700} mb={1}>
-                    {stat.value}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" mb={1}>
-                    {stat.title}
-                  </Typography>
-                  <Chip
-                    icon={
-                      stat.trend === 'up' ? (
-                        <IconTrendingUp size={16} />
-                      ) : (
-                        <IconTrendingDown size={16} />
-                      )
-                    }
-                    label={stat.change}
-                    size="small"
-                    color={stat.trend === 'up' ? 'success' : 'error'}
-                  />
+                <Box display="flex" alignItems="center" justifyContent="space-between">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                      <stat.icon />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                        {stat.value}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                        {stat.title}
+                      </Typography>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             </Grid>

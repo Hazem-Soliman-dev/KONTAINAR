@@ -59,13 +59,13 @@ const Modern = () => {
             </Grid>
           </Grid>
           {/* Additional analytics */}
-          <Grid size={{ xs: 12, lg: 4 }}>
+          <Grid size={{ xs: 12, lg: 6 }}>
             <WeeklyStats />
           </Grid>
-          <Grid size={{ xs: 12, lg: 4 }}>
+          <Grid size={{ xs: 12, lg: 6 }}>
             <SellingProducts />
           </Grid>
-          <Grid size={{ xs: 12, lg: 8 }}>
+          <Grid size={{ xs: 12, lg: 12 }}>
             <TopPerformers />
           </Grid>
         </Grid>

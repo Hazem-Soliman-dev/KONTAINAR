@@ -72,6 +72,22 @@ import {
   Search as SearchIcon,
   FilterList as FilterIcon,
 } from '@mui/icons-material';
+import PageContainer from '../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
+
+const BCrumb = [
+  {
+    to: '/system',
+    title: 'الرئيسية',
+  },
+  {
+    to: '/system/catalog',
+    title: 'الكتالوج',
+  },
+  {
+    title: 'الخصائص',
+  },
+];
 
 const AttributesManager = () => {
   const theme = useTheme();
@@ -971,246 +987,202 @@ const AttributesManager = () => {
   );
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة الخصائص" aria-hidden="false" tabIndex={0}>
-      {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main', mb: 1 }}>
-          إدارة الخصائص
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-          إدارة خصائص منتجات المتجر وتكوينها
-        </Typography>
-        <Breadcrumbs separator={<NavigateNextIcon fontSize="small" />} aria-label="مسار التنقل">
-          <Link color="inherit" href="/main-store" aria-label="الذهاب إلى لوحة التحكم">
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            لوحة التحكم
-          </Link>
-          <Link color="inherit" href="/main-store/catalog" aria-label="الذهاب إلى الكتالوج">
-            الكتالوج
-          </Link>
-          <Typography color="text.primary">الخصائص</Typography>
-        </Breadcrumbs>
-        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-              aria-label="تحديث البيانات"
-              aria-hidden="false"
-              tabIndex={0}
-            >
-              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
+    <PageContainer title="إدارة الخصائص" description="إدارة خصائص منتجات المتجر">
+      <Breadcrumb title="إدارة الخصائص" items={BCrumb} />
+
+      <Box>
+        {/* Tabs */}
+        <Paper sx={{ mb: 3 }} aria-hidden="false">
+          <Tabs
+            value={activeTab}
+            onChange={(e, newValue) => setActiveTab(newValue)}
+            aria-label="تبويبات إدارة الخصائص"
+            aria-hidden="false"
+          >
+            <Tab label="قائمة الخصائص" aria-hidden="false" tabIndex={0} />
+            <Tab label="إنشاء خاصية جديدة" aria-hidden="false" tabIndex={0} />
+          </Tabs>
+        </Paper>
+
+        {/* Tab Content */}
+        {activeTab === 0 && renderListTab()}
+        {activeTab === 1 && renderCreateTab()}
+
+        {/* Edit Dialog */}
+        <Dialog
+          open={openDialog}
+          onClose={() => setOpenDialog(false)}
+          maxWidth="md"
+          fullWidth
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
+        >
+          <DialogTitle id="dialog-title">
+            {selectedAttribute ? 'تعديل الخاصية' : 'إنشاء خاصية جديدة'}
+          </DialogTitle>
+          <DialogContent id="dialog-description">
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="اسم الخاصية"
+                  placeholder="أدخل اسم الخاصية"
+                  defaultValue={selectedAttribute?.name || ''}
+                  aria-label="اسم الخاصية"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>النوع</InputLabel>
+                  <Select
+                    label="النوع"
+                    defaultValue={selectedAttribute?.type || 'text'}
+                    aria-label="نوع الخاصية"
+                  >
+                    <MenuItem value="text">نص</MenuItem>
+                    <MenuItem value="number">رقم</MenuItem>
+                    <MenuItem value="select">اختيار</MenuItem>
+                    <MenuItem value="multiselect">اختيار متعدد</MenuItem>
+                    <MenuItem value="boolean">منطقي</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={3}
+                  label="الوصف"
+                  placeholder="أدخل وصف الخاصية"
+                  defaultValue={selectedAttribute?.description || ''}
+                  aria-label="وصف الخاصية"
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControlLabel
+                  control={<Switch defaultChecked={selectedAttribute?.isActive || true} />}
+                  label="نشط"
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)} aria-label="إلغاء العملية">
+              إلغاء
             </Button>
             <Button
               variant="contained"
-              startIcon={<AddIcon />}
-              onClick={() => {
-                setSelectedAttribute(null);
-                setOpenDialog(true);
-              }}
-              aria-label="إضافة خاصية جديدة"
-              aria-hidden="false"
-              tabIndex={0}
+              onClick={handleSave}
+              disabled={loading}
+              startIcon={<SaveIcon />}
+              aria-label="حفظ الخاصية"
             >
-              إضافة خاصية
+              {loading ? 'جاري الحفظ...' : 'حفظ الخاصية'}
             </Button>
-          </Stack>
-        </Box>
-      </Box>
+          </DialogActions>
+        </Dialog>
 
-      {/* Tabs */}
-      <Paper sx={{ mb: 3 }} aria-hidden="false">
-        <Tabs
-          value={activeTab}
-          onChange={(e, newValue) => setActiveTab(newValue)}
-          aria-label="تبويبات إدارة الخصائص"
-          aria-hidden="false"
+        {/* Delete Confirmation Dialog */}
+        <Dialog
+          open={openDeleteDialog}
+          onClose={() => setOpenDeleteDialog(false)}
+          aria-labelledby="delete-dialog-title"
+          aria-describedby="delete-dialog-description"
         >
-          <Tab label="قائمة الخصائص" aria-hidden="false" tabIndex={0} />
-          <Tab label="إنشاء خاصية جديدة" aria-hidden="false" tabIndex={0} />
-        </Tabs>
-      </Paper>
-
-      {/* Tab Content */}
-      {activeTab === 0 && renderListTab()}
-      {activeTab === 1 && renderCreateTab()}
-
-      {/* Edit Dialog */}
-      <Dialog
-        open={openDialog}
-        onClose={() => setOpenDialog(false)}
-        maxWidth="md"
-        fullWidth
-        aria-labelledby="dialog-title"
-        aria-describedby="dialog-description"
-      >
-        <DialogTitle id="dialog-title">
-          {selectedAttribute ? 'تعديل الخاصية' : 'إنشاء خاصية جديدة'}
-        </DialogTitle>
-        <DialogContent id="dialog-description">
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="اسم الخاصية"
-                placeholder="أدخل اسم الخاصية"
-                defaultValue={selectedAttribute?.name || ''}
-                aria-label="اسم الخاصية"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>النوع</InputLabel>
-                <Select
-                  label="النوع"
-                  defaultValue={selectedAttribute?.type || 'text'}
-                  aria-label="نوع الخاصية"
-                >
-                  <MenuItem value="text">نص</MenuItem>
-                  <MenuItem value="number">رقم</MenuItem>
-                  <MenuItem value="select">اختيار</MenuItem>
-                  <MenuItem value="multiselect">اختيار متعدد</MenuItem>
-                  <MenuItem value="boolean">منطقي</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="الوصف"
-                placeholder="أدخل وصف الخاصية"
-                defaultValue={selectedAttribute?.description || ''}
-                aria-label="وصف الخاصية"
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControlLabel
-                control={<Switch defaultChecked={selectedAttribute?.isActive || true} />}
-                label="نشط"
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)} aria-label="إلغاء العملية">
-            إلغاء
-          </Button>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={<SaveIcon />}
-            aria-label="حفظ الخاصية"
-          >
-            {loading ? 'جاري الحفظ...' : 'حفظ الخاصية'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog
-        open={openDeleteDialog}
-        onClose={() => setOpenDeleteDialog(false)}
-        aria-labelledby="delete-dialog-title"
-        aria-describedby="delete-dialog-description"
-      >
-        <DialogTitle id="delete-dialog-title">حذف الخاصية</DialogTitle>
-        <DialogContent id="delete-dialog-description">
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            هل أنت متأكد من أنك تريد حذف هذه الخاصية؟
-          </Typography>
-          {selectedAttribute && (
-            <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-              <Typography variant="subtitle2">{selectedAttribute.name}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                النوع: {selectedAttribute.type} | القيم: {selectedAttribute.valuesCount}
-              </Typography>
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)} aria-label="إلغاء الحذف">
-            إلغاء
-          </Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteConfirm}
-            disabled={loading}
-            aria-label="تأكيد حذف الخاصية"
-          >
-            {loading ? 'جاري الحذف...' : 'حذف الخاصية'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* View Drawer */}
-      <Drawer
-        anchor="right"
-        open={viewDrawer}
-        onClose={() => setViewDrawer(false)}
-        sx={{ '& .MuiDrawer-paper': { width: 500 } }}
-        aria-labelledby="drawer-title"
-      >
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom id="drawer-title">
-            تفاصيل الخاصية
-          </Typography>
-          {selectedAttribute && (
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <CategoryIcon sx={{ mr: 2, color: 'text.secondary' }} />
-                <Box>
-                  <Typography variant="h6">{selectedAttribute.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {selectedAttribute.description}
-                  </Typography>
-                </Box>
+          <DialogTitle id="delete-dialog-title">حذف الخاصية</DialogTitle>
+          <DialogContent id="delete-dialog-description">
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              هل أنت متأكد من أنك تريد حذف هذه الخاصية؟
+            </Typography>
+            {selectedAttribute && (
+              <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                <Typography variant="subtitle2">{selectedAttribute.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  النوع: {selectedAttribute.type} | القيم: {selectedAttribute.valuesCount}
+                </Typography>
               </Box>
-              <Divider sx={{ my: 2 }} />
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDeleteDialog(false)} aria-label="إلغاء الحذف">
+              إلغاء
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteConfirm}
+              disabled={loading}
+              aria-label="تأكيد حذف الخاصية"
+            >
+              {loading ? 'جاري الحذف...' : 'حذف الخاصية'}
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-              <List dense>
-                <ListItem>
-                  <ListItemText primary="النوع" secondary={selectedAttribute.type} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="عدد القيم" secondary={selectedAttribute.valuesCount} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="الحالة"
-                    secondary={selectedAttribute.isActive ? 'نشط' : 'غير نشط'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="آخر تحديث" secondary={selectedAttribute.updatedAt} />
-                </ListItem>
-              </List>
-            </Box>
-          )}
-        </Box>
-      </Drawer>
-
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={2500}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
+        {/* View Drawer */}
+        <Drawer
+          anchor="right"
+          open={viewDrawer}
+          onClose={() => setViewDrawer(false)}
+          sx={{ '& .MuiDrawer-paper': { width: 500 } }}
+          aria-labelledby="drawer-title"
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom id="drawer-title">
+              تفاصيل الخاصية
+            </Typography>
+            {selectedAttribute && (
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <CategoryIcon sx={{ mr: 2, color: 'text.secondary' }} />
+                  <Box>
+                    <Typography variant="h6">{selectedAttribute.name}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {selectedAttribute.description}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Divider sx={{ my: 2 }} />
+
+                <List dense>
+                  <ListItem>
+                    <ListItemText primary="النوع" secondary={selectedAttribute.type} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="عدد القيم" secondary={selectedAttribute.valuesCount} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="الحالة"
+                      secondary={selectedAttribute.isActive ? 'نشط' : 'غير نشط'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="آخر تحديث" secondary={selectedAttribute.updatedAt} />
+                  </ListItem>
+                </List>
+              </Box>
+            )}
+          </Box>
+        </Drawer>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2500}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </PageContainer>
   );
 };
 
