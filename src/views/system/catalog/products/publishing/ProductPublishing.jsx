@@ -51,6 +51,7 @@ import {
   ListItemText as MuiListItemText,
   ListItemSecondaryAction,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Add as AddIcon,
   EditOutlined as EditIcon,
@@ -82,6 +83,7 @@ import {
 } from '@mui/icons-material';
 
 const ProductPublishing = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -400,7 +402,7 @@ const ProductPublishing = () => {
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
-        case 'منشور':
+      case 'منشور':
         return 'success';
       case 'مسودة':
         return 'warning';
@@ -515,24 +517,6 @@ const ProductPublishing = () => {
               <Typography color="text.primary">النشر</Typography>
             </Breadcrumbs>
           </Box>
-
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<SyncIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? 'جاري المزامنة...' : 'مزامنة الكل'}
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<PublishIcon />}
-              onClick={() => setOpenDialog(true)}
-            >
-              نشر المنتجات
-            </Button>
-          </Stack>
         </Box>
 
         {/* Enhanced Stats Cards */}
@@ -542,31 +526,61 @@ const ProductPublishing = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-                border: '1px solid rgba(25, 118, 210, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <PublishIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: theme.palette.primary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <PublishIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {publishingData.length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي المنتجات
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  {publishingData.length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي المنتجات
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -575,31 +589,61 @@ const ProductPublishing = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
-                border: '1px solid rgba(46, 125, 50, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(46, 125, 50, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <CheckCircleIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                        color: theme.palette.success.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <CheckCircleIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {publishingData.filter((item) => item.status === 'منشور').length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      منشور
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  {publishingData.filter((item) => item.status === 'منشور').length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  منشور
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -608,31 +652,61 @@ const ProductPublishing = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <StoreIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.warning.main, 0.1),
+                        color: theme.palette.warning.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <StoreIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {publishingData.reduce((sum, item) => sum + item.totalStores, 0)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي المتاجر
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  {publishingData.reduce((sum, item) => sum + item.totalStores, 0)}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي المتاجر
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -641,31 +715,61 @@ const ProductPublishing = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.secondary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <SyncIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                        color: theme.palette.secondary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <SyncIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {publishingData.reduce((sum, item) => sum + item.publishedStores, 0)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المتاجر المنشورة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  {publishingData.reduce((sum, item) => sum + item.publishedStores, 0)}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  المتاجر المنشورة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -769,6 +873,23 @@ const ProductPublishing = () => {
               </Box>
             </Fade>
           )}
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<SyncIcon />}
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              {isRefreshing ? 'جاري المزامنة...' : 'مزامنة الكل'}
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<PublishIcon />}
+              onClick={() => setOpenDialog(true)}
+            >
+              نشر المنتجات
+            </Button>
+          </Stack>
         </Toolbar>
 
         {loading ? (
@@ -859,9 +980,6 @@ const ProductPublishing = () => {
                       </TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                          <Avatar sx={{ width: 40, height: 40, bgcolor: 'primary.light' }}>
-                            <InventoryIcon />
-                          </Avatar>
                           <Box>
                             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                               {item.name}

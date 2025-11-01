@@ -547,7 +547,7 @@ const Warehouses = () => {
           >
             <CardContent sx={{ p: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, justifyContent: 'center' }}>
                   <WarehouseIcon />
                 </Avatar>
               </Box>
@@ -578,7 +578,7 @@ const Warehouses = () => {
           >
             <CardContent sx={{ p: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, justifyContent: 'center' }}>
                   <CheckIcon />
                 </Avatar>
               </Box>
@@ -609,7 +609,7 @@ const Warehouses = () => {
           >
             <CardContent sx={{ p: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, justifyContent: 'center' }}>
                   <InventoryIcon />
                 </Avatar>
               </Box>
@@ -640,7 +640,7 @@ const Warehouses = () => {
           >
             <CardContent sx={{ p: 0 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, mr: 2 }}>
+                <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, justifyContent: 'center' }}>
                   <TrendingUpIcon />
                 </Avatar>
               </Box>
@@ -656,7 +656,7 @@ const Warehouses = () => {
       </Grid>
 
       {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }}>
+      <Paper sx={{ p: 1, mb: 3 }}>
         <Toolbar>
           <Grid container spacing={2} alignItems="center">
             <Grid size={{ xs: 12, md: 3 }}>

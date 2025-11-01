@@ -155,10 +155,37 @@ const InvoicesPayments = () => {
                 }}
               >
                 <CardContent>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
-                      <stat.icon />
-                    </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="180px"
+                    height="90px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                  >
+                    <Box
+                      display="flex"
+                      alignItems="center"
+                      width="60px"
+                      height="60px"
+                      margin="auto"
+                      flexDirection="column"
+                      justifyContent="center"
+                      mb={2}
+                    >
+                      <Avatar
+                        sx={{
+                          bgcolor: alpha(theme.palette[stat.color].main, 0.1),
+                          color: theme.palette[stat.color].main,
+                          width: 60,
+                          height: 60,
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <stat.icon />
+                      </Avatar>
+                    </Box>
                     <Box>
                       <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
                         {stat.value}
@@ -175,40 +202,11 @@ const InvoicesPayments = () => {
         </Grid>
 
         <Grid container spacing={3}>
-          {/* Payment Methods */}
-          <Grid size={{ xs: 12, lg: 4 }}>
-            <DashboardCard title="طرق الدفع" subtitle="توزيع المدفوعات حسب الطريقة">
-              <Box>
-                {paymentMethods.map((method, index) => (
-                  <Box key={index} mb={3}>
-                    <Box display="flex" justifyContent="space-between" mb={1}>
-                      <Typography variant="subtitle2" fontWeight={600}>
-                        {method.method}
-                      </Typography>
-                      <Typography variant="subtitle2" color="textSecondary">
-                        {method.count} مدفوعة
-                      </Typography>
-                    </Box>
-                    <LinearProgress
-                      variant="determinate"
-                      value={method.percentage}
-                      color={method.color}
-                      sx={{ height: 8, borderRadius: 5 }}
-                    />
-                    <Typography variant="caption" color="textSecondary" mt={0.5}>
-                      {method.percentage}% من إجمالي المدفوعات
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            </DashboardCard>
-          </Grid>
-
           {/* Recent Payments */}
           <Grid size={{ xs: 12, lg: 8 }}>
             <DashboardCard title="المدفوعات الأخيرة" subtitle="آخر المدفوعات المستلمة">
-              <TableContainer>
-                <Table>
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: 650 }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>رقم الدفعة</TableCell>
@@ -262,6 +260,35 @@ const InvoicesPayments = () => {
                   </TableBody>
                 </Table>
               </TableContainer>
+            </DashboardCard>
+          </Grid>
+          
+          {/* Payment Methods */}
+          <Grid size={{ xs: 12, lg: 4 }}>
+            <DashboardCard title="طرق الدفع" subtitle="توزيع المدفوعات حسب الطريقة">
+              <Box>
+                {paymentMethods.map((method, index) => (
+                  <Box key={index} mb={3}>
+                    <Box display="flex" justifyContent="space-between" mb={1}>
+                      <Typography variant="subtitle2" fontWeight={600}>
+                        {method.method}
+                      </Typography>
+                      <Typography variant="subtitle2" color="textSecondary">
+                        {method.count} مدفوعة
+                      </Typography>
+                    </Box>
+                    <LinearProgress
+                      variant="determinate"
+                      value={method.percentage}
+                      color={method.color}
+                      sx={{ height: 8, borderRadius: 5 }}
+                    />
+                    <Typography variant="caption" color="textSecondary" mt={0.5}>
+                      {method.percentage}% من إجمالي المدفوعات
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
             </DashboardCard>
           </Grid>
         </Grid>

@@ -191,7 +191,7 @@ const OrdersNew = () => {
                 }}
               >
                 <CardContent>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
                     <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
                       <stat.icon />
                     </Avatar>
@@ -220,8 +220,8 @@ const OrdersNew = () => {
             border: `1px solid ${theme.palette.primary.main}22`,
           })}
         >
-          <TableContainer>
-            <Table>
+          <TableContainer sx={{ overflowX: 'auto' }}>
+            <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>
                   <TableCell>رقم الطلب</TableCell>

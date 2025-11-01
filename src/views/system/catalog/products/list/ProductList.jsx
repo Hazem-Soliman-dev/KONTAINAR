@@ -45,6 +45,7 @@ import {
   ListItem,
   Divider,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Add as AddIcon,
   EditOutlined as EditIcon,
@@ -62,9 +63,26 @@ import {
   DensityMedium as DensityMediumIcon,
   DensitySmall as DensitySmallIcon,
 } from '@mui/icons-material';
+import PageContainer from '../../../../../components/container/PageContainer';
+import Breadcrumb from '../../../../../layouts/shared/breadcrumb/Breadcrumb';
+
+const BCrumb = [
+  {
+    to: '/system',
+    title: 'الرئيسية',
+  },
+  {
+    to: '/system/catalog',
+    title: 'الكتالوج',
+  },
+  {
+    title: 'المنتجات',
+  },
+];
 
 const ProductList = () => {
   const navigate = useNavigate();
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -668,1006 +686,1133 @@ const ProductList = () => {
   }, [density]);
 
   return (
-    <Box sx={{ p: 3 }}>
-      {/* رأس الصفحة */}
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h4" gutterBottom color="primary.main">
-          إدارة المنتجات
-        </Typography>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          إدارة كتالوج المنتجات والمخزون بطريقة شاملة ومتطورة.
-        </Typography>
-        <Breadcrumbs>
-          <Link color="inherit" href="/system">
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            لوحة التحكم
-          </Link>
-          <Link color="inherit" href="/system/catalog">
-            الكتالوج
-          </Link>
-          <Typography color="text.primary">المنتجات</Typography>
-        </Breadcrumbs>
-      </Box>
+    <PageContainer
+      title="إدارة المنتجات"
+      description="إدارة كتالوج المنتجات والمخزون بطريقة شاملة ومتطورة"
+    >
+      <Breadcrumb title="إدارة المنتجات" items={BCrumb} />
 
-      {/* Stats Cards */}
-      <Grid container spacing={3} sx={{ mb: 3 }}>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card
-            sx={{
-              p: 3,
-              textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-              border: '1px solid rgba(25, 118, 210, 0.2)',
-              borderRadius: 3,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
-              },
-            }}
-          >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                  <InventoryIcon />
-                </Avatar>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                {productData.length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                إجمالي المنتجات
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card
-            sx={{
-              p: 3,
-              textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)',
-              border: '1px solid rgba(76, 175, 80, 0.2)',
-              borderRadius: 3,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(76, 175, 80, 0.15)',
-              },
-            }}
-          >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                  <TrendingUpIcon />
-                </Avatar>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                {productData.filter((p) => p.status === 'active').length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                المنتجات النشطة
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card
-            sx={{
-              p: 3,
-              textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-              border: '1px solid rgba(255, 152, 0, 0.2)',
-              borderRadius: 3,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
-              },
-            }}
-          >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                  <TrendingDownIcon />
-                </Avatar>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                {productData.filter((p) => p.stock > 0 && p.stock < 10).length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                مخزون منخفض
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
-          <Card
-            sx={{
-              p: 3,
-              textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%)',
-              border: '1px solid rgba(244, 67, 54, 0.2)',
-              borderRadius: 3,
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(244, 67, 54, 0.15)',
-              },
-            }}
-          >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, mr: 2 }}>
-                  <TrendingDownIcon />
-                </Avatar>
-              </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'error.main', mb: 1 }}>
-                {productData.filter((p) => p.stock === 0).length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                نفد من المخزون
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
-
-      {/* Filters */}
-      <Paper sx={{ p: 2, mb: 3 }}>
-        <Toolbar>
-          <Grid container spacing={2} alignItems="center">
-            <Grid size={{ xs: 12, md: 3 }}>
-              <TextField
-                fullWidth
-                size="small"
-                placeholder="البحث في المنتجات..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                InputProps={{
-                  startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 2 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الحالة</InputLabel>
-                <Select
-                  value={statusFilter}
-                  label="الحالة"
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <MenuItem value="all">جميع الحالات</MenuItem>
-                  <MenuItem value="active">نشط</MenuItem>
-                  <MenuItem value="inactive">غير نشط</MenuItem>
-                  <MenuItem value="out of stock">نفد من المخزون</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 2 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>الفئة</InputLabel>
-                <Select
-                  value={categoryFilter}
-                  label="الفئة"
-                  onChange={(e) => setCategoryFilter(e.target.value)}
-                >
-                  <MenuItem value="all">جميع الفئات</MenuItem>
-                  {categories.map((cat) => (
-                    <MenuItem key={cat} value={cat}>
-                      {cat}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 2 }}>
-              <FormControl fullWidth size="small">
-                <InputLabel>العلامة التجارية</InputLabel>
-                <Select
-                  value={brandFilter}
-                  label="العلامة التجارية"
-                  onChange={(e) => setBrandFilter(e.target.value)}
-                >
-                  <MenuItem value="all">جميع العلامات</MenuItem>
-                  {brands.map((brand) => (
-                    <MenuItem key={brand} value={brand}>
-                      {brand}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 2 }}>
-              <Button
-                variant="outlined"
-                startIcon={<FilterIcon />}
-                onClick={() => {
-                  setSearchTerm('');
-                  setStatusFilter('all');
-                  setCategoryFilter('all');
-                  setBrandFilter('all');
-                }}
-                fullWidth
-              >
-                إعادة تعيين
-              </Button>
-            </Grid>
-            <Grid size={{ xs: 12, md: 1 }}>
-              <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
-                تم العثور على {filteredData.length}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </Paper>
-
-      {/* Content */}
-      <Paper>
-        <Toolbar>
-          <Typography variant="h6" sx={{ flex: 1 }}>
-            قائمة المنتجات
-          </Typography>
-          {selectedItems.length > 0 && (
-            <Box sx={{ mr: 2 }}>
-              <Button size="small" onClick={() => handleBulkAction('تفعيل')} sx={{ mr: 1 }}>
-                تفعيل ({selectedItems.length})
-              </Button>
-              <Button size="small" color="error" onClick={() => handleBulkAction('حذف')}>
-                حذف ({selectedItems.length})
-              </Button>
-            </Box>
-          )}
-          <Tooltip title="تصدير CSV">
-            <IconButton onClick={handleExport} sx={{ mr: 1 }}>
-              <DownloadIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="رؤية الأعمدة">
-            <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ mr: 1 }}>
-              <ViewColumnIcon />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="الكثافة">
-            <IconButton
-              onClick={() => handleDensityChange(density === 'compact' ? 'comfortable' : 'compact')}
-              sx={{ mr: 1 }}
+      <Box>
+        {/* Stats Cards */}
+        <Grid container spacing={3} sx={{ mb: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card
+              sx={{
+                p: 3,
+                textAlign: 'center',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all .3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+              }}
             >
-              {density === 'compact' ? <DensityMediumIcon /> : <DensitySmallIcon />}
-            </IconButton>
-          </Tooltip>
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              navigate('/system/catalog/products/create');
-            }}
-          >
-            إضافة منتج
-          </Button>
-        </Toolbar>
-
-        {loading ? (
-          <Box sx={{ p: 2 }}>
-            <LinearProgress />
-            {[...Array(3)].map((_, index) => (
-              <Skeleton key={index} height={60} sx={{ mb: 1 }} />
-            ))}
-          </Box>
-        ) : error ? (
-          <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Alert severity="error">خطأ في تحميل المنتجات. يرجى المحاولة مرة أخرى.</Alert>
-          </Box>
-        ) : sortedData.length === 0 ? (
-          <Box sx={{ p: 4, textAlign: 'center' }}>
-            <Alert severity="info">لم يتم العثور على منتجات. أضف أول منتج.</Alert>
-          </Box>
-        ) : (
-          <>
-            <Table {...getDensityProps()}>
-              <TableHead>
-                <TableRow>
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      checked={selectedItems.length === sortedData.length && sortedData.length > 0}
-                      indeterminate={
-                        selectedItems.length > 0 && selectedItems.length < sortedData.length
-                      }
-                      onChange={handleSelectAll}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === 'name'}
-                      direction={sortBy === 'name' ? sortOrder : 'asc'}
-                      onClick={() => handleSort('name')}
+              <CardContent>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: theme.palette.primary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
                     >
-                      المنتج
-                    </TableSortLabel>
-                  </TableCell>
-                  {columnVisibility.sku && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'sku'}
-                        direction={sortBy === 'sku' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('sku')}
-                      >
-                        رمز المنتج
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.barcode && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'barcode'}
-                        direction={sortBy === 'barcode' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('barcode')}
-                      >
-                        الباركود
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.category && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'category'}
-                        direction={sortBy === 'category' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('category')}
-                      >
-                        الفئة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.subCategory && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'subCategory'}
-                        direction={sortBy === 'subCategory' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('subCategory')}
-                      >
-                        الفئة الفرعية
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.brand && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'brand'}
-                        direction={sortBy === 'brand' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('brand')}
-                      >
-                        العلامة التجارية
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.model && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'model'}
-                        direction={sortBy === 'model' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('model')}
-                      >
-                        الموديل
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.manufacturer && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'manufacturer'}
-                        direction={sortBy === 'manufacturer' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('manufacturer')}
-                      >
-                        الشركة المصنعة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.price && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'price'}
-                        direction={sortBy === 'price' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('price')}
-                      >
-                        السعر
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.comparePrice && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'comparePrice'}
-                        direction={sortBy === 'comparePrice' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('comparePrice')}
-                      >
-                        سعر المقارنة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.cost && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'cost'}
-                        direction={sortBy === 'cost' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('cost')}
-                      >
-                        التكلفة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.wholesalePrice && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'wholesalePrice'}
-                        direction={sortBy === 'wholesalePrice' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('wholesalePrice')}
-                      >
-                        سعر الجملة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.stock && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'stock'}
-                        direction={sortBy === 'stock' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('stock')}
-                      >
-                        المخزون
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.sales && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'sales'}
-                        direction={sortBy === 'sales' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('sales')}
-                      >
-                        المبيعات
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.status && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'status'}
-                        direction={sortBy === 'status' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('status')}
-                      >
-                        الحالة
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  {columnVisibility.lastModified && (
-                    <TableCell>
-                      <TableSortLabel
-                        active={sortBy === 'lastModified'}
-                        direction={sortBy === 'lastModified' ? sortOrder : 'asc'}
-                        onClick={() => handleSort('lastModified')}
-                      >
-                        آخر تعديل
-                      </TableSortLabel>
-                    </TableCell>
-                  )}
-                  <TableCell align="right">الإجراءات</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {sortedData
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((item) => {
-                    const stockStatus = getStockStatus(item.stock);
-                    return (
-                      <TableRow key={item.id} hover>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selectedItems.includes(item.id)}
-                            onChange={() => handleSelectItem(item.id)}
-                          />
-                        </TableCell>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar src={item.image} sx={{ width: 40, height: 40, mr: 2 }} />
-                            <Box>
-                              <Typography variant="subtitle2">{item.name}</Typography>
-                              <Typography variant="body2" color="text.secondary">
-                                {item.description}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </TableCell>
-                        {columnVisibility.sku && (
-                          <TableCell>
-                            <Typography variant="body2" fontFamily="monospace">
-                              {item.sku}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.barcode && (
-                          <TableCell>
-                            <Typography variant="body2" fontFamily="monospace">
-                              {item.barcode}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.category && (
-                          <TableCell>
-                            <Chip label={item.category} size="small" variant="outlined" />
-                          </TableCell>
-                        )}
-                        {columnVisibility.subCategory && (
-                          <TableCell>
-                            <Chip
-                              label={item.subCategory}
-                              size="small"
-                              variant="outlined"
-                              color="secondary"
-                            />
-                          </TableCell>
-                        )}
-                        {columnVisibility.brand && (
-                          <TableCell>
-                            <Typography variant="body2">{item.brand}</Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.model && (
-                          <TableCell>
-                            <Typography variant="body2">{item.model}</Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.manufacturer && (
-                          <TableCell>
-                            <Typography variant="body2">{item.manufacturer}</Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.price && (
-                          <TableCell>
-                            <Typography variant="subtitle2" fontWeight="bold">
-                              ${item.price.toFixed(2)}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.comparePrice && (
-                          <TableCell>
-                            <Typography variant="body2" color="text.secondary">
-                              ${item.comparePrice.toFixed(2)}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.cost && (
-                          <TableCell>
-                            <Typography variant="body2" color="text.secondary">
-                              ${item.cost.toFixed(2)}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.wholesalePrice && (
-                          <TableCell>
-                            <Typography variant="body2" color="text.secondary">
-                              ${item.wholesalePrice.toFixed(2)}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.stock && (
-                          <TableCell>
-                            <Box sx={{ minWidth: 100 }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                                <Typography variant="body2" sx={{ mr: 1 }}>
-                                  {item.stock}
-                                </Typography>
-                                <LinearProgress
-                                  variant="determinate"
-                                  value={Math.min((item.stock / 100) * 100, 100)}
-                                  sx={{ flexGrow: 1 }}
-                                  color={stockStatus.color}
-                                />
-                              </Box>
-                              <Typography variant="caption" color="text.secondary">
-                                {stockStatus.label}
-                              </Typography>
-                            </Box>
-                          </TableCell>
-                        )}
-                        {columnVisibility.sales && (
-                          <TableCell>
-                            <Typography variant="body2">{item.sales.toLocaleString()}</Typography>
-                          </TableCell>
-                        )}
-                        {columnVisibility.status && (
-                          <TableCell>
-                            <Chip
-                              label={item.status}
-                              size="small"
-                              color={item.status === 'Active' ? 'success' : 'default'}
-                            />
-                          </TableCell>
-                        )}
-                        {columnVisibility.lastModified && (
-                          <TableCell>
-                            <Typography variant="body2" color="text.secondary">
-                              {item.lastModified}
-                            </Typography>
-                          </TableCell>
-                        )}
-                        <TableCell align="right">
-                          <Stack direction="row" spacing={1} justifyContent="flex-end">
-                            <Tooltip title="عرض التفاصيل" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleView(item)}
-                                aria-label="عرض تفاصيل المنتج"
-                              >
-                                <ViewIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="تعديل المنتج" arrow>
-                              <IconButton
-                                size="small"
-                                onClick={() => handleEdit(item)}
-                                aria-label="تعديل المنتج"
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </Tooltip>
-                            <Tooltip title="حذف المنتج" arrow>
-                              <IconButton
-                                size="small"
-                                color="error"
-                                onClick={() => handleDelete(item)}
-                                aria-label="حذف المنتج"
-                              >
-                                <DeleteIcon />
-                              </IconButton>
-                            </Tooltip>
-                          </Stack>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25, 50]}
-              component="div"
-              count={sortedData.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-          </>
-        )}
-      </Paper>
-
-      {/* Edit Dialog - فقط للتعديل */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>تعديل المنتج</DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="اسم المنتج"
-                placeholder="أدخل اسم المنتج"
-                defaultValue={selectedProduct?.name || ''}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="رمز المنتج"
-                placeholder="أدخل رمز المنتج"
-                defaultValue={selectedProduct?.sku || ''}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الفئة</InputLabel>
-                <Select label="الفئة" defaultValue={selectedProduct?.category || ''}>
-                  {categories.map((cat) => (
-                    <MenuItem key={cat} value={cat}>
-                      {cat}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>العلامة التجارية</InputLabel>
-                <Select label="العلامة التجارية" defaultValue={selectedProduct?.brand || ''}>
-                  {brands.map((brand) => (
-                    <MenuItem key={brand} value={brand}>
-                      {brand}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                type="number"
-                label="السعر"
-                placeholder="0.00"
-                defaultValue={selectedProduct?.price || ''}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                type="number"
-                label="كمية المخزون"
-                placeholder="0"
-                defaultValue={selectedProduct?.stock || ''}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الحالة</InputLabel>
-                <Select label="الحالة" defaultValue={selectedProduct?.status || 'نشط'}>
-                  <MenuItem value="Active">نشط</MenuItem>
-                  <MenuItem value="Inactive">غير نشط</MenuItem>
-                  <MenuItem value="Out of Stock">نفد من المخزون</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                multiline
-                rows={3}
-                label="الوصف"
-                placeholder="أدخل وصف المنتج"
-                defaultValue={selectedProduct?.description || ''}
-              />
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            onClick={handleSave}
-            disabled={loading}
-            startIcon={<SaveIcon />}
-          >
-            {loading ? 'جاري الحفظ...' : 'حفظ'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* Delete Confirmation Dialog */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>حذف المنتج</DialogTitle>
-        <DialogContent>
-          <Typography variant="body2" sx={{ mb: 2 }}>
-            هل أنت متأكد من حذف هذا المنتج؟
-          </Typography>
-          {selectedProduct && (
-            <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
-              <Typography variant="subtitle2">{selectedProduct.name}</Typography>
-              <Typography variant="body2" color="text.secondary">
-                SKU: {selectedProduct.sku} | Price: ${selectedProduct.price}
-              </Typography>
-            </Box>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            color="error"
-            onClick={handleDeleteConfirm}
-            disabled={loading}
-          >
-            {loading ? 'جاري الحذف...' : 'حذف'}
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* View Drawer */}
-      <Drawer
-        anchor="right"
-        open={viewDrawer}
-        onClose={() => setViewDrawer(false)}
-        sx={{ '& .MuiDrawer-paper': { width: 400 } }}
-      >
-        <Box sx={{ p: 3 }}>
-          <Typography variant="h6" gutterBottom>
-            تفاصيل المنتج
-          </Typography>
-          {selectedProduct && (
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                <Avatar src={selectedProduct.image} sx={{ width: 60, height: 60, mr: 2 }} />
-                <Box>
-                  <Typography variant="h6">{selectedProduct.name}</Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    SKU: {selectedProduct.sku}
-                  </Typography>
+                      <InventoryIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {productData.length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي المنتجات
+                    </Typography>
+                  </Box>
                 </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card
+              sx={{
+                p: 3,
+                textAlign: 'center',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+              }}
+            >
+              <CardContent>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                        color: theme.palette.success.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <TrendingUpIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {productData.filter((p) => p.status === 'active').length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المنتجات النشطة
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card
+              sx={{
+                p: 3,
+                textAlign: 'center',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+              }}
+            >
+              <CardContent>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.warning.main, 0.1),
+                        color: theme.palette.warning.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <TrendingDownIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {productData.filter((p) => p.stock > 0 && p.stock < 10).length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      مخزون منخفض
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card
+              sx={{
+                p: 3,
+                textAlign: 'center',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.error.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.error.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
+                transition: 'all .3s ease',
+                '&:hover': {
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+              }}
+            >
+              <CardContent>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.error.main, 0.1),
+                        color: theme.palette.error.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <TrendingDownIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {productData.filter((p) => p.stock === 0).length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      نفد من المخزون
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+
+        {/* Filters */}
+        <Paper sx={{ p: 2, mb: 3 }}>
+          <Toolbar>
+            <Grid container spacing={2} alignItems="center">
+              <Grid size={{ xs: 12, md: 3 }}>
+                <TextField
+                  fullWidth
+                  size="small"
+                  placeholder="البحث في المنتجات..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  InputProps={{
+                    startAdornment: <SearchIcon sx={{ mr: 1, color: 'text.secondary' }} />,
+                  }}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 2 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>الحالة</InputLabel>
+                  <Select
+                    value={statusFilter}
+                    label="الحالة"
+                    onChange={(e) => setStatusFilter(e.target.value)}
+                  >
+                    <MenuItem value="all">جميع الحالات</MenuItem>
+                    <MenuItem value="active">نشط</MenuItem>
+                    <MenuItem value="inactive">غير نشط</MenuItem>
+                    <MenuItem value="out of stock">نفد من المخزون</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 2 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>الفئة</InputLabel>
+                  <Select
+                    value={categoryFilter}
+                    label="الفئة"
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                  >
+                    <MenuItem value="all">جميع الفئات</MenuItem>
+                    {categories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>
+                        {cat}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 2 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>العلامة التجارية</InputLabel>
+                  <Select
+                    value={brandFilter}
+                    label="العلامة التجارية"
+                    onChange={(e) => setBrandFilter(e.target.value)}
+                  >
+                    <MenuItem value="all">جميع العلامات</MenuItem>
+                    {brands.map((brand) => (
+                      <MenuItem key={brand} value={brand}>
+                        {brand}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 2 }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<FilterIcon />}
+                  onClick={() => {
+                    setSearchTerm('');
+                    setStatusFilter('all');
+                    setCategoryFilter('all');
+                    setBrandFilter('all');
+                  }}
+                  fullWidth
+                >
+                  إعادة تعيين
+                </Button>
+              </Grid>
+              <Grid size={{ xs: 12, md: 1 }}>
+                <Typography variant="body2" color="text.secondary" sx={{ textAlign: 'center' }}>
+                  تم العثور على {filteredData.length}
+                </Typography>
+              </Grid>
+            </Grid>
+          </Toolbar>
+        </Paper>
+
+        {/* Content */}
+        <Paper>
+          <Toolbar>
+            <Typography variant="h6" sx={{ flex: 1 }}>
+              قائمة المنتجات
+            </Typography>
+            {selectedItems.length > 0 && (
+              <Box sx={{ mr: 2 }}>
+                <Button size="small" onClick={() => handleBulkAction('تفعيل')} sx={{ mr: 1 }}>
+                  تفعيل ({selectedItems.length})
+                </Button>
+                <Button size="small" color="error" onClick={() => handleBulkAction('حذف')}>
+                  حذف ({selectedItems.length})
+                </Button>
               </Box>
-              <Divider sx={{ my: 2 }} />
-              <List dense>
-                <ListItem>
-                  <ListItemText primary="رمز المنتج" secondary={selectedProduct.sku} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الباركود" secondary={selectedProduct.barcode} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الفئة" secondary={selectedProduct.category} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الفئة الفرعية" secondary={selectedProduct.subCategory} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="العلامة التجارية" secondary={selectedProduct.brand} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الموديل" secondary={selectedProduct.model} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الشركة المصنعة" secondary={selectedProduct.manufacturer} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="السعر" secondary={`$${selectedProduct.price}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="سعر المقارنة"
-                    secondary={`$${selectedProduct.comparePrice}`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="التكلفة" secondary={`$${selectedProduct.cost}`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="سعر الجملة"
-                    secondary={`$${selectedProduct.wholesalePrice}`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="المخزون" secondary={selectedProduct.stock} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="الحد الأدنى للمخزون"
-                    secondary={selectedProduct.minStock}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="الحد الأقصى للمخزون"
-                    secondary={selectedProduct.maxStock}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الوزن" secondary={`${selectedProduct.weight} كيلو`} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="الأبعاد"
-                    secondary={`${selectedProduct.dimensions.length} x ${selectedProduct.dimensions.width} x ${selectedProduct.dimensions.height} سم`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الوحدة" secondary={selectedProduct.unit} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الحالة" secondary={selectedProduct.status} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="الرؤية" secondary={selectedProduct.visibility} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="مميز"
-                    secondary={selectedProduct.featured ? 'نعم' : 'لا'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="رقمي" secondary={selectedProduct.digital ? 'نعم' : 'لا'} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="يتطلب شحن"
-                    secondary={selectedProduct.requiresShipping ? 'نعم' : 'لا'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="المبيعات"
-                    secondary={selectedProduct.sales.toLocaleString()}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="التقييم"
-                    secondary={`${selectedProduct.rating}/5 (${selectedProduct.reviews} تقييم)`}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="نقاط المكافآت" secondary={selectedProduct.rewardPoints} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="برنامج الولاء"
-                    secondary={selectedProduct.loyaltyProgram ? 'نعم' : 'لا'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="شحن مجاني"
-                    secondary={selectedProduct.freeShipping ? 'نعم' : 'لا'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="فئة الضريبة" secondary={selectedProduct.taxClass} />
-                </ListItem>
-                <ListItem>
-                  <ListItemText
-                    primary="خاضع للضريبة"
-                    secondary={selectedProduct.taxable ? 'نعم' : 'لا'}
-                  />
-                </ListItem>
-                <ListItem>
-                  <ListItemText primary="آخر تعديل" secondary={selectedProduct.lastModified} />
-                </ListItem>
-              </List>
-              <Divider sx={{ my: 2 }} />
-              <Typography variant="subtitle2" gutterBottom>
-                الوصف
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {selectedProduct.description}
-              </Typography>
+            )}
+            <Tooltip title="تصدير CSV">
+              <IconButton onClick={handleExport} sx={{ mr: 1 }}>
+                <DownloadIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="رؤية الأعمدة">
+              <IconButton onClick={(e) => setAnchorEl(e.currentTarget)} sx={{ mr: 1 }}>
+                <ViewColumnIcon />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="الكثافة">
+              <IconButton
+                onClick={() =>
+                  handleDensityChange(density === 'compact' ? 'comfortable' : 'compact')
+                }
+                sx={{ mr: 1 }}
+              >
+                {density === 'compact' ? <DensityMediumIcon /> : <DensitySmallIcon />}
+              </IconButton>
+            </Tooltip>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => {
+                navigate('/system/catalog/products/create');
+              }}
+            >
+              إضافة منتج
+            </Button>
+          </Toolbar>
+
+          {loading ? (
+            <Box sx={{ p: 2 }}>
+              <LinearProgress />
+              {[...Array(3)].map((_, index) => (
+                <Skeleton key={index} height={60} sx={{ mb: 1 }} />
+              ))}
             </Box>
+          ) : error ? (
+            <Box sx={{ p: 4, textAlign: 'center' }}>
+              <Alert severity="error">خطأ في تحميل المنتجات. يرجى المحاولة مرة أخرى.</Alert>
+            </Box>
+          ) : sortedData.length === 0 ? (
+            <Box sx={{ p: 4, textAlign: 'center' }}>
+              <Alert severity="info">لم يتم العثور على منتجات. أضف أول منتج.</Alert>
+            </Box>
+          ) : (
+            <>
+              <Table {...getDensityProps()}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell padding="checkbox">
+                      <Checkbox
+                        checked={
+                          selectedItems.length === sortedData.length && sortedData.length > 0
+                        }
+                        indeterminate={
+                          selectedItems.length > 0 && selectedItems.length < sortedData.length
+                        }
+                        onChange={handleSelectAll}
+                      />
+                    </TableCell>
+                    <TableCell>
+                      <TableSortLabel
+                        active={sortBy === 'name'}
+                        direction={sortBy === 'name' ? sortOrder : 'asc'}
+                        onClick={() => handleSort('name')}
+                      >
+                        المنتج
+                      </TableSortLabel>
+                    </TableCell>
+                    {columnVisibility.sku && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'sku'}
+                          direction={sortBy === 'sku' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('sku')}
+                        >
+                          رمز المنتج
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.barcode && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'barcode'}
+                          direction={sortBy === 'barcode' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('barcode')}
+                        >
+                          الباركود
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.category && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'category'}
+                          direction={sortBy === 'category' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('category')}
+                        >
+                          الفئة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.subCategory && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'subCategory'}
+                          direction={sortBy === 'subCategory' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('subCategory')}
+                        >
+                          الفئة الفرعية
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.brand && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'brand'}
+                          direction={sortBy === 'brand' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('brand')}
+                        >
+                          العلامة التجارية
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.model && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'model'}
+                          direction={sortBy === 'model' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('model')}
+                        >
+                          الموديل
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.manufacturer && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'manufacturer'}
+                          direction={sortBy === 'manufacturer' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('manufacturer')}
+                        >
+                          الشركة المصنعة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.price && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'price'}
+                          direction={sortBy === 'price' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('price')}
+                        >
+                          السعر
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.comparePrice && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'comparePrice'}
+                          direction={sortBy === 'comparePrice' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('comparePrice')}
+                        >
+                          سعر المقارنة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.cost && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'cost'}
+                          direction={sortBy === 'cost' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('cost')}
+                        >
+                          التكلفة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.wholesalePrice && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'wholesalePrice'}
+                          direction={sortBy === 'wholesalePrice' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('wholesalePrice')}
+                        >
+                          سعر الجملة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.stock && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'stock'}
+                          direction={sortBy === 'stock' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('stock')}
+                        >
+                          المخزون
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.sales && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'sales'}
+                          direction={sortBy === 'sales' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('sales')}
+                        >
+                          المبيعات
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.status && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'status'}
+                          direction={sortBy === 'status' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('status')}
+                        >
+                          الحالة
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    {columnVisibility.lastModified && (
+                      <TableCell>
+                        <TableSortLabel
+                          active={sortBy === 'lastModified'}
+                          direction={sortBy === 'lastModified' ? sortOrder : 'asc'}
+                          onClick={() => handleSort('lastModified')}
+                        >
+                          آخر تعديل
+                        </TableSortLabel>
+                      </TableCell>
+                    )}
+                    <TableCell align="right">الإجراءات</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {sortedData
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((item) => {
+                      const stockStatus = getStockStatus(item.stock);
+                      return (
+                        <TableRow key={item.id} hover>
+                          <TableCell padding="checkbox">
+                            <Checkbox
+                              checked={selectedItems.includes(item.id)}
+                              onChange={() => handleSelectItem(item.id)}
+                            />
+                          </TableCell>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <Box>
+                                <Typography variant="subtitle2">{item.name}</Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {item.description}
+                                </Typography>
+                              </Box>
+                            </Box>
+                          </TableCell>
+                          {columnVisibility.sku && (
+                            <TableCell>
+                              <Typography variant="body2" fontFamily="monospace">
+                                {item.sku}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.barcode && (
+                            <TableCell>
+                              <Typography variant="body2" fontFamily="monospace">
+                                {item.barcode}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.category && (
+                            <TableCell>
+                              <Chip label={item.category} size="small" variant="outlined" />
+                            </TableCell>
+                          )}
+                          {columnVisibility.subCategory && (
+                            <TableCell>
+                              <Chip
+                                label={item.subCategory}
+                                size="small"
+                                variant="outlined"
+                                color="secondary"
+                              />
+                            </TableCell>
+                          )}
+                          {columnVisibility.brand && (
+                            <TableCell>
+                              <Typography variant="body2">{item.brand}</Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.model && (
+                            <TableCell>
+                              <Typography variant="body2">{item.model}</Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.manufacturer && (
+                            <TableCell>
+                              <Typography variant="body2">{item.manufacturer}</Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.price && (
+                            <TableCell>
+                              <Typography variant="subtitle2" fontWeight="bold">
+                                ${item.price.toFixed(2)}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.comparePrice && (
+                            <TableCell>
+                              <Typography variant="body2" color="text.secondary">
+                                ${item.comparePrice.toFixed(2)}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.cost && (
+                            <TableCell>
+                              <Typography variant="body2" color="text.secondary">
+                                ${item.cost.toFixed(2)}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.wholesalePrice && (
+                            <TableCell>
+                              <Typography variant="body2" color="text.secondary">
+                                ${item.wholesalePrice.toFixed(2)}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.stock && (
+                            <TableCell>
+                              <Box sx={{ minWidth: 100 }}>
+                                <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                                  <Typography variant="body2" sx={{ mr: 1 }}>
+                                    {item.stock}
+                                  </Typography>
+                                  <LinearProgress
+                                    variant="determinate"
+                                    value={Math.min((item.stock / 100) * 100, 100)}
+                                    sx={{ flexGrow: 1 }}
+                                    color={stockStatus.color}
+                                  />
+                                </Box>
+                                <Typography variant="caption" color="text.secondary">
+                                  {stockStatus.label}
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                          )}
+                          {columnVisibility.sales && (
+                            <TableCell>
+                              <Typography variant="body2">{item.sales.toLocaleString()}</Typography>
+                            </TableCell>
+                          )}
+                          {columnVisibility.status && (
+                            <TableCell>
+                              <Chip
+                                label={item.status}
+                                size="small"
+                                color={item.status === 'Active' ? 'success' : 'default'}
+                              />
+                            </TableCell>
+                          )}
+                          {columnVisibility.lastModified && (
+                            <TableCell>
+                              <Typography variant="body2" color="text.secondary">
+                                {item.lastModified}
+                              </Typography>
+                            </TableCell>
+                          )}
+                          <TableCell align="right">
+                            <Stack direction="row" spacing={1} justifyContent="flex-end">
+                              <Tooltip title="عرض التفاصيل" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleView(item)}
+                                  aria-label="عرض تفاصيل المنتج"
+                                >
+                                  <ViewIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="تعديل المنتج" arrow>
+                                <IconButton
+                                  size="small"
+                                  onClick={() => handleEdit(item)}
+                                  aria-label="تعديل المنتج"
+                                >
+                                  <EditIcon />
+                                </IconButton>
+                              </Tooltip>
+                              <Tooltip title="حذف المنتج" arrow>
+                                <IconButton
+                                  size="small"
+                                  color="error"
+                                  onClick={() => handleDelete(item)}
+                                  aria-label="حذف المنتج"
+                                >
+                                  <DeleteIcon />
+                                </IconButton>
+                              </Tooltip>
+                            </Stack>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                </TableBody>
+              </Table>
+              <TablePagination
+                rowsPerPageOptions={[5, 10, 25, 50]}
+                component="div"
+                count={sortedData.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </>
           )}
-        </Box>
-      </Drawer>
+        </Paper>
 
-      {/* Column Visibility Menu */}
-      <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
-        <MenuItem>
-          <ListItemText primary="رؤية الأعمدة" />
-        </MenuItem>
-        <Divider />
-        {Object.entries(columnVisibility).map(([column, visible]) => (
-          <MenuItem key={column} onClick={() => handleColumnToggle(column)}>
-            <Checkbox checked={visible} />
-            <ListItemText primary={column.charAt(0).toUpperCase() + column.slice(1)} />
-          </MenuItem>
-        ))}
-      </Menu>
+        {/* Edit Dialog - فقط للتعديل */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>تعديل المنتج</DialogTitle>
+          <DialogContent>
+            <Grid container spacing={2} sx={{ mt: 1 }}>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  label="اسم المنتج"
+                  placeholder="أدخل اسم المنتج"
+                  defaultValue={selectedProduct?.name || ''}
+                  required
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="رمز المنتج"
+                  placeholder="أدخل رمز المنتج"
+                  defaultValue={selectedProduct?.sku || ''}
+                  required
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>الفئة</InputLabel>
+                  <Select label="الفئة" defaultValue={selectedProduct?.category || ''}>
+                    {categories.map((cat) => (
+                      <MenuItem key={cat} value={cat}>
+                        {cat}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>العلامة التجارية</InputLabel>
+                  <Select label="العلامة التجارية" defaultValue={selectedProduct?.brand || ''}>
+                    {brands.map((brand) => (
+                      <MenuItem key={brand} value={brand}>
+                        {brand}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="السعر"
+                  placeholder="0.00"
+                  defaultValue={selectedProduct?.price || ''}
+                  required
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  type="number"
+                  label="كمية المخزون"
+                  placeholder="0"
+                  defaultValue={selectedProduct?.stock || ''}
+                  required
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>الحالة</InputLabel>
+                  <Select label="الحالة" defaultValue={selectedProduct?.status || 'نشط'}>
+                    <MenuItem value="Active">نشط</MenuItem>
+                    <MenuItem value="Inactive">غير نشط</MenuItem>
+                    <MenuItem value="Out of Stock">نفد من المخزون</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <TextField
+                  fullWidth
+                  multiline
+                  rows={3}
+                  label="الوصف"
+                  placeholder="أدخل وصف المنتج"
+                  defaultValue={selectedProduct?.description || ''}
+                />
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              onClick={handleSave}
+              disabled={loading}
+              startIcon={<SaveIcon />}
+            >
+              {loading ? 'جاري الحفظ...' : 'حفظ'}
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={2500}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
+        {/* Delete Confirmation Dialog */}
+        <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+          <DialogTitle>حذف المنتج</DialogTitle>
+          <DialogContent>
+            <Typography variant="body2" sx={{ mb: 2 }}>
+              هل أنت متأكد من حذف هذا المنتج؟
+            </Typography>
+            {selectedProduct && (
+              <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                <Typography variant="subtitle2">{selectedProduct.name}</Typography>
+                <Typography variant="body2" color="text.secondary">
+                  SKU: {selectedProduct.sku} | Price: ${selectedProduct.price}
+                </Typography>
+              </Box>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleDeleteConfirm}
+              disabled={loading}
+            >
+              {loading ? 'جاري الحذف...' : 'حذف'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* View Drawer */}
+        <Drawer
+          anchor="right"
+          open={viewDrawer}
+          onClose={() => setViewDrawer(false)}
+          sx={{ '& .MuiDrawer-paper': { width: 400 } }}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <Box sx={{ p: 3 }}>
+            <Typography variant="h6" gutterBottom>
+              تفاصيل المنتج
+            </Typography>
+            {selectedProduct && (
+              <Box>
+                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                  <Avatar src={selectedProduct.image} sx={{ width: 60, height: 60, mr: 2 }} />
+                  <Box>
+                    <Typography variant="h6">{selectedProduct.name}</Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      SKU: {selectedProduct.sku}
+                    </Typography>
+                  </Box>
+                </Box>
+                <Divider sx={{ my: 2 }} />
+                <List dense>
+                  <ListItem>
+                    <ListItemText primary="رمز المنتج" secondary={selectedProduct.sku} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الباركود" secondary={selectedProduct.barcode} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الفئة" secondary={selectedProduct.category} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الفئة الفرعية" secondary={selectedProduct.subCategory} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="العلامة التجارية" secondary={selectedProduct.brand} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الموديل" secondary={selectedProduct.model} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="الشركة المصنعة"
+                      secondary={selectedProduct.manufacturer}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="السعر" secondary={`$${selectedProduct.price}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="سعر المقارنة"
+                      secondary={`$${selectedProduct.comparePrice}`}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="التكلفة" secondary={`$${selectedProduct.cost}`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="سعر الجملة"
+                      secondary={`$${selectedProduct.wholesalePrice}`}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="المخزون" secondary={selectedProduct.stock} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="الحد الأدنى للمخزون"
+                      secondary={selectedProduct.minStock}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="الحد الأقصى للمخزون"
+                      secondary={selectedProduct.maxStock}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الوزن" secondary={`${selectedProduct.weight} كيلو`} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="الأبعاد"
+                      secondary={`${selectedProduct.dimensions.length} x ${selectedProduct.dimensions.width} x ${selectedProduct.dimensions.height} سم`}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الوحدة" secondary={selectedProduct.unit} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الحالة" secondary={selectedProduct.status} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="الرؤية" secondary={selectedProduct.visibility} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="مميز"
+                      secondary={selectedProduct.featured ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="رقمي"
+                      secondary={selectedProduct.digital ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="يتطلب شحن"
+                      secondary={selectedProduct.requiresShipping ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="المبيعات"
+                      secondary={selectedProduct.sales.toLocaleString()}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="التقييم"
+                      secondary={`${selectedProduct.rating}/5 (${selectedProduct.reviews} تقييم)`}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="نقاط المكافآت"
+                      secondary={selectedProduct.rewardPoints}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="برنامج الولاء"
+                      secondary={selectedProduct.loyaltyProgram ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="شحن مجاني"
+                      secondary={selectedProduct.freeShipping ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="فئة الضريبة" secondary={selectedProduct.taxClass} />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText
+                      primary="خاضع للضريبة"
+                      secondary={selectedProduct.taxable ? 'نعم' : 'لا'}
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemText primary="آخر تعديل" secondary={selectedProduct.lastModified} />
+                  </ListItem>
+                </List>
+                <Divider sx={{ my: 2 }} />
+                <Typography variant="subtitle2" gutterBottom>
+                  الوصف
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {selectedProduct.description}
+                </Typography>
+              </Box>
+            )}
+          </Box>
+        </Drawer>
+
+        {/* Column Visibility Menu */}
+        <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={() => setAnchorEl(null)}>
+          <MenuItem>
+            <ListItemText primary="رؤية الأعمدة" />
+          </MenuItem>
+          <Divider />
+          {Object.entries(columnVisibility).map(([column, visible]) => (
+            <MenuItem key={column} onClick={() => handleColumnToggle(column)}>
+              <Checkbox checked={visible} />
+              <ListItemText primary={column.charAt(0).toUpperCase() + column.slice(1)} />
+            </MenuItem>
+          ))}
+        </Menu>
+
+        {/* Snackbar */}
+        <Snackbar
+          open={snackbar.open}
+          autoHideDuration={2500}
+          onClose={() => setSnackbar({ ...snackbar, open: false })}
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </PageContainer>
   );
 };
 

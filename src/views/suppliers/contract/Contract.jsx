@@ -376,9 +376,9 @@ const Contract = () => {
                 }}
               >
                 <CardContent sx={{ p: 2 }}>
-                  <Stack direction="row" spacing={2} alignItems="center">
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                  <Stack direction="row" spacing={2} alignItems="center" flexDirection="column">
+                  <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 60, height: 60, justifyContent: 'center', mb: 2 }}>
                       <stat.icon />
                     </Avatar>
                     <Box>
@@ -675,6 +675,7 @@ const Contract = () => {
                     bgcolor: alpha(theme.palette.success.main, 0.04),
                     border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
                     borderRadius: 2,
+                    textAlign: 'center',
                   }}
                 >
                   <Typography variant="caption" color="textSecondary" display="block" mb={1}>
@@ -910,8 +911,8 @@ const Contract = () => {
           </DialogTitle>
           <DialogContent>
             <Box sx={{ pt: 2 }}>
-              <TableContainer>
-                <Table>
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: 650 }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>اسم المستند</TableCell>
@@ -1048,8 +1049,8 @@ const Contract = () => {
           <DialogTitle>جدول الدفعات</DialogTitle>
           <DialogContent>
             <Box sx={{ pt: 2 }}>
-              <TableContainer>
-                <Table>
+              <TableContainer sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: 650 }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>تاريخ الاستحقاق</TableCell>

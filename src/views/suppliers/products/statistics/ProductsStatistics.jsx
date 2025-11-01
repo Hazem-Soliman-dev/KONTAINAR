@@ -155,9 +155,9 @@ const ProductsStatistics = () => {
                 }}
               >
                 <CardContent>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
-                      <stat.icon />
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 60, height: 60, justifyContent: 'center', mb: 2 }}>
+                      <stat.icon sx={{ fontSize: 28 }} />
                     </Avatar>
                     <Box>
                       <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
@@ -179,8 +179,8 @@ const ProductsStatistics = () => {
           title="المنتجات الأكثر مبيعاً"
           subtitle="عرض المنتجات الأكثر مبيعاً هذا الشهر"
         >
-          <TableContainer>
-            <Table>
+          <TableContainer sx={{ overflowX: 'auto' }}>
+            <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>
                   <TableCell>#</TableCell>

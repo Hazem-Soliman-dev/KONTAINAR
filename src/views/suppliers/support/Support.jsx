@@ -343,8 +343,8 @@ const Support = () => {
                 }}
               >
                 <CardContent>
-                <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, mx: 'auto', mb: 2 }}>
+                <Box display="flex" alignItems="center" flexDirection="column" justifyContent="center" width="70px" height="80px" margin="auto">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 56, height: 56, justifyContent: 'center', mb: 2 }}>
                       <stat.icon />
                     </Avatar>
                     <Box>
@@ -378,8 +378,8 @@ const Support = () => {
               </Button>
             }
           >
-            <TableContainer>
-              <Table>
+            <TableContainer sx={{ overflowX: 'auto' }}>
+              <Table sx={{ minWidth: 650 }}>
                 <TableHead>
                   <TableRow>
                     <TableCell>رقم التذكرة</TableCell>

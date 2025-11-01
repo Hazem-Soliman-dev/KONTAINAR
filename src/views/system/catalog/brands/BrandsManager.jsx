@@ -427,29 +427,61 @@ const BrandsManager = () => {
           sx={{
             p: 3,
             textAlign: 'center',
-            background:
-              'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-            border: '1px solid rgba(25, 118, 210, 0.2)',
+            flexDirection: 'row',
             borderRadius: 3,
-            transition: 'all 0.3s ease',
+            background: `linear-gradient(135deg, ${alpha(
+              theme.palette.primary.main,
+              0.08,
+            )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+            transition: 'all .3s ease',
             '&:hover': {
               transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+              boxShadow: 8,
             },
           }}
         >
-          <CardContent sx={{ p: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                <BusinessIcon />
-              </Avatar>
+          <CardContent>
+            <Box
+              display="flex"
+              alignItems="center"
+              width="180px"
+              height="90px"
+              margin="auto"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                width="60px"
+                height="60px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+                mb={2}
+              >
+                <Avatar
+                  sx={{
+                    bgcolor: alpha(theme.palette.primary.main, 0.1),
+                    color: theme.palette.primary.main,
+                    width: 60,
+                    height: 60,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <BusinessIcon />
+                </Avatar>
+              </Box>
+              <Box>
+                <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                  {brands.length}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  إجمالي العلامات التجارية
+                </Typography>
+              </Box>
             </Box>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-              {brands.length}
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              إجمالي العلامات التجارية
-            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -458,29 +490,61 @@ const BrandsManager = () => {
           sx={{
             p: 3,
             textAlign: 'center',
-            background:
-              'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)',
-            border: '1px solid rgba(76, 175, 80, 0.2)',
+            flexDirection: 'row',
             borderRadius: 3,
-            transition: 'all 0.3s ease',
+            background: `linear-gradient(135deg, ${alpha(
+              theme.palette.success.main,
+              0.08,
+            )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+            transition: 'all .3s ease',
             '&:hover': {
               transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(76, 175, 80, 0.15)',
+              boxShadow: 8,
             },
           }}
         >
-          <CardContent sx={{ p: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                <CheckCircleIcon />
-              </Avatar>
+          <CardContent>
+            <Box
+              display="flex"
+              alignItems="center"
+              width="180px"
+              height="90px"
+              margin="auto"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                width="60px"
+                height="60px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+                mb={2}
+              >
+                <Avatar
+                  sx={{
+                    bgcolor: alpha(theme.palette.success.main, 0.1),
+                    color: theme.palette.success.main,
+                    width: 60,
+                    height: 60,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CheckCircleIcon />
+                </Avatar>
+              </Box>
+              <Box>
+                <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                  {brands.filter((b) => b.status === 'Active').length}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  العلامات التجارية النشطة
+                </Typography>
+              </Box>
             </Box>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-              {brands.filter((b) => b.status === 'Active').length}
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              العلامات التجارية النشطة
-            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -489,29 +553,61 @@ const BrandsManager = () => {
           sx={{
             p: 3,
             textAlign: 'center',
-            background:
-              'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-            border: '1px solid rgba(255, 152, 0, 0.2)',
+            flexDirection: 'row',
             borderRadius: 3,
-            transition: 'all 0.3s ease',
+            background: `linear-gradient(135deg, ${alpha(
+              theme.palette.warning.main,
+              0.08,
+            )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+            transition: 'all .3s ease',
             '&:hover': {
               transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+              boxShadow: 8,
             },
           }}
         >
-          <CardContent sx={{ p: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                <TrendingUpIcon />
-              </Avatar>
+          <CardContent>
+            <Box
+              display="flex"
+              alignItems="center"
+              width="180px"
+              height="90px"
+              margin="auto"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                width="60px"
+                height="60px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+                mb={2}
+              >
+                <Avatar
+                  sx={{
+                    bgcolor: alpha(theme.palette.warning.main, 0.1),
+                    color: theme.palette.warning.main,
+                    width: 60,
+                    height: 60,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <TrendingUpIcon />
+                </Avatar>
+              </Box>
+              <Box>
+                <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                  {brands.reduce((sum, b) => sum + b.products, 0)}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  إجمالي المنتجات
+                </Typography>
+              </Box>
             </Box>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-              {brands.reduce((sum, b) => sum + b.products, 0)}
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              إجمالي المنتجات
-            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -520,29 +616,61 @@ const BrandsManager = () => {
           sx={{
             p: 3,
             textAlign: 'center',
-            background:
-              'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-            border: '1px solid rgba(156, 39, 176, 0.2)',
+            flexDirection: 'row',
             borderRadius: 3,
-            transition: 'all 0.3s ease',
+            background: `linear-gradient(135deg, ${alpha(
+              theme.palette.secondary.main,
+              0.08,
+            )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+            border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+            transition: 'all .3s ease',
             '&:hover': {
               transform: 'translateY(-4px)',
-              boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+              boxShadow: 8,
             },
           }}
         >
-          <CardContent sx={{ p: 0 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-              <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                <PublicIcon />
-              </Avatar>
+          <CardContent>
+            <Box
+              display="flex"
+              alignItems="center"
+              width="180px"
+              height="90px"
+              margin="auto"
+              flexDirection="column"
+              justifyContent="center"
+            >
+              <Box
+                display="flex"
+                alignItems="center"
+                width="60px"
+                height="60px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+                mb={2}
+              >
+                <Avatar
+                  sx={{
+                    bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                    color: theme.palette.secondary.main,
+                    width: 60,
+                    height: 60,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <PublicIcon />
+                </Avatar>
+              </Box>
+              <Box>
+                <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                  {new Set(brands.map((b) => b.country)).size}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                  عدد البلدان
+                </Typography>
+              </Box>
             </Box>
-            <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-              {new Set(brands.map((b) => b.country)).size}
-            </Typography>
-            <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              عدد البلدان
-            </Typography>
           </CardContent>
         </Card>
       </Grid>
@@ -802,283 +930,283 @@ const BrandsManager = () => {
         {loading && <LinearProgress sx={{ mb: 2 }} />}
 
         {/* Stats Cards */}
-      {renderStatsCards()}
+        {renderStatsCards()}
 
-      {/* Filters */}
-      {renderFilters()}
+        {/* Filters */}
+        {renderFilters()}
 
-      {/* Table */}
-      {renderTable()}
+        {/* Table */}
+        {renderTable()}
 
-      {/* Create/Edit Dialog */}
-      <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
-        <DialogTitle>
-          {selectedBrand ? 'تعديل العلامة التجارية' : 'إضافة علامة تجارية جديدة'}
-        </DialogTitle>
-        <DialogContent>
-          <Grid container spacing={2} sx={{ mt: 1 }}>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="اسم العلامة التجارية"
-                placeholder="أدخل اسم العلامة التجارية"
-                value={formData.name}
-                onChange={(e) => handleInputChange('name', e.target.value)}
-                required
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="الموقع الإلكتروني"
-                placeholder="https://example.com"
-                value={formData.website}
-                onChange={(e) => handleInputChange('website', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="الوصف"
-                placeholder="أدخل وصف العلامة التجارية"
-                multiline
-                rows={3}
-                value={formData.description}
-                onChange={(e) => handleInputChange('description', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>الحالة</InputLabel>
-                <Select
-                  label="الحالة"
-                  value={formData.status}
-                  onChange={(e) => handleInputChange('status', e.target.value)}
-                >
-                  <MenuItem value="Active">نشط</MenuItem>
-                  <MenuItem value="Inactive">غير نشط</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <FormControl fullWidth>
-                <InputLabel>البلد</InputLabel>
-                <Select
-                  label="البلد"
-                  value={formData.country}
-                  onChange={(e) => handleInputChange('country', e.target.value)}
-                >
-                  {countries.map((country) => (
-                    <MenuItem key={country} value={country}>
-                      {country}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="سنة التأسيس"
-                placeholder="2020"
-                value={formData.founded}
-                onChange={(e) => handleInputChange('founded', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="رابط الشعار"
-                placeholder="https://example.com/logo.png"
-                value={formData.logo}
-                onChange={(e) => handleInputChange('logo', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Typography variant="h6" sx={{ mb: 2 }}>
-                الوسائط الاجتماعية
-              </Typography>
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                fullWidth
-                label="فيسبوك"
-                placeholder="https://facebook.com/username"
-                value={formData.socialMedia.facebook}
-                onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                fullWidth
-                label="تويتر"
-                placeholder="https://twitter.com/username"
-                value={formData.socialMedia.twitter}
-                onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 4 }}>
-              <TextField
-                fullWidth
-                label="إنستغرام"
-                placeholder="https://instagram.com/username"
-                value={formData.socialMedia.instagram}
-                onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <Stack direction="row" spacing={2}>
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.isActive}
-                      onChange={(e) => handleInputChange('isActive', e.target.checked)}
-                    />
-                  }
-                  label="نشط"
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.featured}
-                      onChange={(e) => handleInputChange('featured', e.target.checked)}
-                    />
-                  }
-                  label="مميز"
-                />
-                <FormControlLabel
-                  control={
-                    <Switch
-                      checked={formData.warranty}
-                      onChange={(e) => handleInputChange('warranty', e.target.checked)}
-                    />
-                  }
-                  label="ضمان"
-                />
-              </Stack>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              setOpenDialog(false);
-              notify('حفظ العلامة التجارية', 'تم حفظ العلامة التجارية بنجاح');
-            }}
-          >
-            حفظ
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* View Dialog */}
-      <Dialog
-        open={openViewDialog}
-        onClose={() => setOpenViewDialog(false)}
-        maxWidth="md"
-        fullWidth
-      >
-        <DialogTitle>تفاصيل العلامة التجارية</DialogTitle>
-        <DialogContent>
-          {selectedBrand && (
+        {/* Create/Edit Dialog */}
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)} maxWidth="md" fullWidth>
+          <DialogTitle>
+            {selectedBrand ? 'تعديل العلامة التجارية' : 'إضافة علامة تجارية جديدة'}
+          </DialogTitle>
+          <DialogContent>
             <Grid container spacing={2} sx={{ mt: 1 }}>
-              <Grid size={{ xs: 12 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                  <Avatar src={selectedBrand.logo} sx={{ width: 60, height: 60, mr: 2 }}>
-                    <BusinessIcon />
-                  </Avatar>
-                  <Box>
-                    <Typography variant="h6">{selectedBrand.name}</Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {selectedBrand.website}
-                    </Typography>
-                  </Box>
-                </Box>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="اسم العلامة التجارية"
+                  placeholder="أدخل اسم العلامة التجارية"
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  required
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="الموقع الإلكتروني"
+                  placeholder="https://example.com"
+                  value={formData.website}
+                  onChange={(e) => handleInputChange('website', e.target.value)}
+                />
               </Grid>
               <Grid size={{ xs: 12 }}>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  {selectedBrand.description}
+                <TextField
+                  fullWidth
+                  label="الوصف"
+                  placeholder="أدخل وصف العلامة التجارية"
+                  multiline
+                  rows={3}
+                  value={formData.description}
+                  onChange={(e) => handleInputChange('description', e.target.value)}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>الحالة</InputLabel>
+                  <Select
+                    label="الحالة"
+                    value={formData.status}
+                    onChange={(e) => handleInputChange('status', e.target.value)}
+                  >
+                    <MenuItem value="Active">نشط</MenuItem>
+                    <MenuItem value="Inactive">غير نشط</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <FormControl fullWidth>
+                  <InputLabel>البلد</InputLabel>
+                  <Select
+                    label="البلد"
+                    value={formData.country}
+                    onChange={(e) => handleInputChange('country', e.target.value)}
+                  >
+                    {countries.map((country) => (
+                      <MenuItem key={country} value={country}>
+                        {country}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="سنة التأسيس"
+                  placeholder="2020"
+                  value={formData.founded}
+                  onChange={(e) => handleInputChange('founded', e.target.value)}
+                />
+              </Grid>
+              <Grid size={{ xs: 12, md: 6 }}>
+                <TextField
+                  fullWidth
+                  label="رابط الشعار"
+                  placeholder="https://example.com/logo.png"
+                  value={formData.logo}
+                  onChange={(e) => handleInputChange('logo', e.target.value)}
+                />
+              </Grid>
+              <Grid size={{ xs: 12 }}>
+                <Typography variant="h6" sx={{ mb: 2 }}>
+                  الوسائط الاجتماعية
                 </Typography>
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">عدد المنتجات</Typography>
-                <Typography variant="body2">{selectedBrand.products}</Typography>
-              </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">الحالة</Typography>
-                <Chip
-                  label={selectedBrand.status}
-                  size="small"
-                  color={getStatusColor(selectedBrand.status)}
+              <Grid size={{ xs: 12, md: 4 }}>
+                <TextField
+                  fullWidth
+                  label="فيسبوك"
+                  placeholder="https://facebook.com/username"
+                  value={formData.socialMedia.facebook}
+                  onChange={(e) => handleSocialMediaChange('facebook', e.target.value)}
                 />
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">البلد</Typography>
-                <Typography variant="body2">{selectedBrand.country}</Typography>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <TextField
+                  fullWidth
+                  label="تويتر"
+                  placeholder="https://twitter.com/username"
+                  value={formData.socialMedia.twitter}
+                  onChange={(e) => handleSocialMediaChange('twitter', e.target.value)}
+                />
               </Grid>
-              <Grid size={{ xs: 12, md: 6 }}>
-                <Typography variant="subtitle2">سنة التأسيس</Typography>
-                <Typography variant="body2">{selectedBrand.founded}</Typography>
+              <Grid size={{ xs: 12, md: 4 }}>
+                <TextField
+                  fullWidth
+                  label="إنستغرام"
+                  placeholder="https://instagram.com/username"
+                  value={formData.socialMedia.instagram}
+                  onChange={(e) => handleSocialMediaChange('instagram', e.target.value)}
+                />
               </Grid>
-              {selectedBrand.categories && (
+              <Grid size={{ xs: 12 }}>
+                <Stack direction="row" spacing={2}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => handleInputChange('isActive', e.target.checked)}
+                      />
+                    }
+                    label="نشط"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.featured}
+                        onChange={(e) => handleInputChange('featured', e.target.checked)}
+                      />
+                    }
+                    label="مميز"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.warranty}
+                        onChange={(e) => handleInputChange('warranty', e.target.checked)}
+                      />
+                    }
+                    label="ضمان"
+                  />
+                </Stack>
+              </Grid>
+            </Grid>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDialog(false)}>إلغاء</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                setOpenDialog(false);
+                notify('حفظ العلامة التجارية', 'تم حفظ العلامة التجارية بنجاح');
+              }}
+            >
+              حفظ
+            </Button>
+          </DialogActions>
+        </Dialog>
+
+        {/* View Dialog */}
+        <Dialog
+          open={openViewDialog}
+          onClose={() => setOpenViewDialog(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <DialogTitle>تفاصيل العلامة التجارية</DialogTitle>
+          <DialogContent>
+            {selectedBrand && (
+              <Grid container spacing={2} sx={{ mt: 1 }}>
                 <Grid size={{ xs: 12 }}>
-                  <Typography variant="subtitle2">التصنيفات</Typography>
-                  <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
-                    {selectedBrand.categories.map((category, index) => (
-                      <Chip key={index} label={category} size="small" />
-                    ))}
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    <Avatar src={selectedBrand.logo} sx={{ width: 60, height: 60, mr: 2 }}>
+                      <BusinessIcon />
+                    </Avatar>
+                    <Box>
+                      <Typography variant="h6">{selectedBrand.name}</Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        {selectedBrand.website}
+                      </Typography>
+                    </Box>
                   </Box>
                 </Grid>
-              )}
-            </Grid>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
-        </DialogActions>
-      </Dialog>
+                <Grid size={{ xs: 12 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                    {selectedBrand.description}
+                  </Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">عدد المنتجات</Typography>
+                  <Typography variant="body2">{selectedBrand.products}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">الحالة</Typography>
+                  <Chip
+                    label={selectedBrand.status}
+                    size="small"
+                    color={getStatusColor(selectedBrand.status)}
+                  />
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">البلد</Typography>
+                  <Typography variant="body2">{selectedBrand.country}</Typography>
+                </Grid>
+                <Grid size={{ xs: 12, md: 6 }}>
+                  <Typography variant="subtitle2">سنة التأسيس</Typography>
+                  <Typography variant="body2">{selectedBrand.founded}</Typography>
+                </Grid>
+                {selectedBrand.categories && (
+                  <Grid size={{ xs: 12 }}>
+                    <Typography variant="subtitle2">التصنيفات</Typography>
+                    <Box sx={{ display: 'flex', gap: 1, mt: 1 }}>
+                      {selectedBrand.categories.map((category, index) => (
+                        <Chip key={index} label={category} size="small" />
+                      ))}
+                    </Box>
+                  </Grid>
+                )}
+              </Grid>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenViewDialog(false)}>إغلاق</Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Delete Dialog */}
-      <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
-        <DialogTitle>حذف العلامة التجارية</DialogTitle>
-        <DialogContent>
-          {selectedBrand && (
-            <Typography>
-              هل أنت متأكد من حذف "{selectedBrand.name}"؟ لا يمكن التراجع عن هذا الإجراء.
-            </Typography>
-          )}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
-          <Button
-            color="error"
-            onClick={() => {
-              setOpenDeleteDialog(false);
-              notify('حذف العلامة التجارية', `تم حذف العلامة التجارية "${selectedBrand?.name}"`);
-            }}
-          >
-            حذف
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* Delete Dialog */}
+        <Dialog open={openDeleteDialog} onClose={() => setOpenDeleteDialog(false)}>
+          <DialogTitle>حذف العلامة التجارية</DialogTitle>
+          <DialogContent>
+            {selectedBrand && (
+              <Typography>
+                هل أنت متأكد من حذف "{selectedBrand.name}"؟ لا يمكن التراجع عن هذا الإجراء.
+              </Typography>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenDeleteDialog(false)}>إلغاء</Button>
+            <Button
+              color="error"
+              onClick={() => {
+                setOpenDeleteDialog(false);
+                notify('حذف العلامة التجارية', `تم حذف العلامة التجارية "${selectedBrand?.name}"`);
+              }}
+            >
+              حذف
+            </Button>
+          </DialogActions>
+        </Dialog>
 
-      {/* Snackbar */}
-      <Snackbar
-        open={snackbar.open}
-        onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        autoHideDuration={2500}
-      >
-        <Alert
+        {/* Snackbar */}
+        <Snackbar
+          open={snackbar.open}
           onClose={() => setSnackbar({ ...snackbar, open: false })}
-          severity={snackbar.severity}
-          variant="filled"
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+          autoHideDuration={2500}
         >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+          <Alert
+            onClose={() => setSnackbar({ ...snackbar, open: false })}
+            severity={snackbar.severity}
+            variant="filled"
+          >
+            {snackbar.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </PageContainer>
   );

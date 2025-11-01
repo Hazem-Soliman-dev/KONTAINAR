@@ -435,7 +435,7 @@ const Adjustments = () => {
   });
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة التعديلات" aria-hidden="false" tabIndex={0}>
+    <Box sx={{ p: 1 }} role="main" aria-label="إدارة التعديلات" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -516,7 +516,7 @@ const Adjustments = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <InventoryIcon />
                   </Avatar>
                 </Box>
@@ -549,7 +549,7 @@ const Adjustments = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -582,7 +582,7 @@ const Adjustments = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <ScheduleIcon />
                   </Avatar>
                 </Box>
@@ -615,7 +615,7 @@ const Adjustments = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <WarningIcon />
                   </Avatar>
                 </Box>
@@ -732,140 +732,6 @@ const Adjustments = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Adjustment Settings */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات التعديلات
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة التعديل</InputLabel>
-                    <Select
-                      value={formData.adjustmentStatus}
-                      label="حالة التعديل"
-                      onChange={(e) =>
-                        setFormData({ ...formData, adjustmentStatus: e.target.value })
-                      }
-                      aria-label="حالة التعديل"
-                    >
-                      <MenuItem value="في الانتظار">في الانتظار</MenuItem>
-                      <MenuItem value="قيد التقدم">قيد التقدم</MenuItem>
-                      <MenuItem value="مكتمل">مكتمل</MenuItem>
-                      <MenuItem value="ملغي">ملغي</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ التعديل"
-                    type="date"
-                    value={formData.adjustmentDate}
-                    onChange={(e) => setFormData({ ...formData, adjustmentDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    aria-label="تاريخ التعديل"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      />
-                    }
-                    label="التعديل نشط"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>نوع التعديل</InputLabel>
-                    <Select
-                      value={formData.adjustmentType}
-                      label="نوع التعديل"
-                      onChange={(e) => setFormData({ ...formData, adjustmentType: e.target.value })}
-                      aria-label="نوع التعديل"
-                    >
-                      {types.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {type}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>المستودع</InputLabel>
-                    <Select
-                      value={formData.warehouse}
-                      label="المستودع"
-                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
-                      aria-label="المستودع"
-                    >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse} value={warehouse}>
-                          {warehouse}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>الأولوية</InputLabel>
-                    <Select
-                      value={formData.priority}
-                      label="الأولوية"
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                      aria-label="الأولوية"
-                    >
-                      {priorities.map((priority) => (
-                        <MenuItem key={priority} value={priority}>
-                          {priority}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="قيمة التعديل"
-                    type="number"
-                    value={formData.adjustmentValue}
-                    onChange={(e) =>
-                      setFormData({ ...formData, adjustmentValue: parseFloat(e.target.value) || 0 })
-                    }
-                    size="small"
-                    placeholder="أدخل قيمة التعديل"
-                    aria-label="قيمة التعديل"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="الوصف"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    size="small"
-                    multiline
-                    rows={3}
-                    placeholder="وصف التعديل..."
-                    aria-label="الوصف"
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
         {/* Adjustment Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card sx={{ width: '100%', overflow: 'auto' }}>
@@ -1000,6 +866,140 @@ const Adjustments = () => {
                   />
                 </>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Adjustment Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات التعديلات
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>حالة التعديل</InputLabel>
+                    <Select
+                      value={formData.adjustmentStatus}
+                      label="حالة التعديل"
+                      onChange={(e) =>
+                        setFormData({ ...formData, adjustmentStatus: e.target.value })
+                      }
+                      aria-label="حالة التعديل"
+                    >
+                      <MenuItem value="في الانتظار">في الانتظار</MenuItem>
+                      <MenuItem value="قيد التقدم">قيد التقدم</MenuItem>
+                      <MenuItem value="مكتمل">مكتمل</MenuItem>
+                      <MenuItem value="ملغي">ملغي</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="تاريخ التعديل"
+                    type="date"
+                    value={formData.adjustmentDate}
+                    onChange={(e) => setFormData({ ...formData, adjustmentDate: e.target.value })}
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ التعديل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="التعديل نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>نوع التعديل</InputLabel>
+                    <Select
+                      value={formData.adjustmentType}
+                      label="نوع التعديل"
+                      onChange={(e) => setFormData({ ...formData, adjustmentType: e.target.value })}
+                      aria-label="نوع التعديل"
+                    >
+                      {types.map((type) => (
+                        <MenuItem key={type} value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المستودع</InputLabel>
+                    <Select
+                      value={formData.warehouse}
+                      label="المستودع"
+                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
+                      aria-label="المستودع"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="قيمة التعديل"
+                    type="number"
+                    value={formData.adjustmentValue}
+                    onChange={(e) =>
+                      setFormData({ ...formData, adjustmentValue: parseFloat(e.target.value) || 0 })
+                    }
+                    size="small"
+                    placeholder="أدخل قيمة التعديل"
+                    aria-label="قيمة التعديل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الوصف"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    size="small"
+                    multiline
+                    rows={3}
+                    placeholder="وصف التعديل..."
+                    aria-label="الوصف"
+                  />
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

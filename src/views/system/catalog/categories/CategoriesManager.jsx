@@ -110,7 +110,7 @@ import {
 } from '@mui/icons-material';
 import PageContainer from '../../../../components/container/PageContainer';
 import Breadcrumb from '../../../../layouts/shared/breadcrumb/Breadcrumb';
-import { useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 
 const BCrumb = [
   {
@@ -516,29 +516,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-              border: '1px solid rgba(25, 118, 210, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.primary.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                  <InventoryIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.primary.main, 0.1),
+                      color: theme.palette.primary.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InventoryIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {activeCategories.length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    إجمالي التصنيفات
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                {activeCategories.length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                إجمالي التصنيفات
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -547,29 +579,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)',
-              border: '1px solid rgba(76, 175, 80, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.success.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(76, 175, 80, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                  <CheckCircleIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.success.main, 0.1),
+                      color: theme.palette.success.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CheckCircleIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {activeCategories.filter((c) => c.status === 'active').length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    التصنيفات النشطة
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                {activeCategories.filter((c) => c.status === 'active').length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                التصنيفات النشطة
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -578,29 +642,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-              border: '1px solid rgba(255, 152, 0, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.warning.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                  <TrendingUpIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.warning.main, 0.1),
+                      color: theme.palette.warning.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <TrendingUpIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {activeCategories.reduce((sum, c) => sum + c.productsCount, 0)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    إجمالي المنتجات
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                {activeCategories.reduce((sum, c) => sum + c.productsCount, 0)}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                إجمالي المنتجات
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -609,29 +705,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-              border: '1px solid rgba(156, 39, 176, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.secondary.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                  <InventoryIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                      color: theme.palette.secondary.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <InventoryIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {activeCategories.filter((c) => c.status === 'inactive').length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    التصنيفات غير النشطة
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                {activeCategories.filter((c) => c.status === 'inactive').length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                التصنيفات غير النشطة
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -701,29 +829,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%)',
-              border: '1px solid rgba(244, 67, 54, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.error.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.error.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(244, 67, 54, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, mr: 2 }}>
-                  <CategoryIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.error.main, 0.1),
+                      color: theme.palette.error.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <CategoryIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {deletedCategories.length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    التصنيفات المحذوفة
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'error.main', mb: 1 }}>
-                {deletedCategories.length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                التصنيفات المحذوفة
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -732,29 +892,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)',
-              border: '1px solid rgba(76, 175, 80, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.success.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(76, 175, 80, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                  <RestoreIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.success.main, 0.1),
+                      color: theme.palette.success.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <RestoreIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {deletedCategories.filter((item) => item.canRestore).length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    يمكن استعادتها
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                {deletedCategories.filter((item) => item.canRestore).length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                يمكن استعادتها
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -763,29 +955,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-              border: '1px solid rgba(255, 152, 0, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.warning.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                  <ArchiveIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.warning.main, 0.1),
+                      color: theme.palette.warning.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <ArchiveIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {deletedCategories.filter((item) => item.deletionType === 'حذف مؤقت').length}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    محذوفة مؤقتاً
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                {deletedCategories.filter((item) => item.deletionType === 'حذف مؤقت').length}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                محذوفة مؤقتاً
-              </Typography>
             </CardContent>
           </Card>
         </Grid>
@@ -794,29 +1018,61 @@ const CategoriesManager = () => {
             sx={{
               p: 3,
               textAlign: 'center',
-              background:
-                'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-              border: '1px solid rgba(156, 39, 176, 0.2)',
+              flexDirection: 'row',
               borderRadius: 3,
-              transition: 'all 0.3s ease',
+              background: `linear-gradient(135deg, ${alpha(
+                theme.palette.secondary.main,
+                0.08,
+              )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+              border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+              transition: 'all .3s ease',
               '&:hover': {
                 transform: 'translateY(-4px)',
-                boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                boxShadow: 8,
               },
             }}
           >
-            <CardContent sx={{ p: 0 }}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}>
-                <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                  <HistoryIcon />
-                </Avatar>
+            <CardContent>
+              <Box
+                display="flex"
+                alignItems="center"
+                width="180px"
+                height="90px"
+                margin="auto"
+                flexDirection="column"
+                justifyContent="center"
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="60px"
+                  height="60px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  mb={2}
+                >
+                  <Avatar
+                    sx={{
+                      bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                      color: theme.palette.secondary.main,
+                      width: 60,
+                      height: 60,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <HistoryIcon />
+                  </Avatar>
+                </Box>
+                <Box>
+                  <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                    {deletedCategories.reduce((sum, item) => sum + item.originalProducts, 0)}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                    إجمالي المنتجات
+                  </Typography>
+                </Box>
               </Box>
-              <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                {deletedCategories.reduce((sum, item) => sum + item.originalProducts, 0)}
-              </Typography>
-              <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                إجمالي المنتجات
-              </Typography>
             </CardContent>
           </Card>
         </Grid>

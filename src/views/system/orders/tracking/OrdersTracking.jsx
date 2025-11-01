@@ -1837,8 +1837,8 @@ const OrdersTracking = () => {
             )}
 
             {viewMode === 'list' && (
-              <TableContainer component={Paper}>
-                <Table>
+              <TableContainer component={Paper} sx={{ overflowX: 'auto' }}>
+                <Table sx={{ minWidth: 650 }}>
                   <TableHead>
                     <TableRow>
                       <TableCell padding="checkbox">
@@ -2158,8 +2158,8 @@ const OrdersTracking = () => {
                     <Typography variant="h6" gutterBottom>
                       المنتجات ({selectedOrder.items.length})
                     </Typography>
-                    <TableContainer>
-                      <Table>
+                    <TableContainer sx={{ overflowX: 'auto' }}>
+                      <Table sx={{ minWidth: 650 }}>
                         <TableHead>
                           <TableRow>
                             <TableCell>المنتج</TableCell>

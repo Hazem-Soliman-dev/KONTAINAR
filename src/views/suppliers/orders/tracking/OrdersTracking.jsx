@@ -179,19 +179,12 @@ const OrdersTracking = () => {
                 }}
               >
                 <CardContent>
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar
-                      sx={{
-                        bgcolor: alpha(theme.palette[stat.color].main, 0.1),
-                        color: theme.palette[stat.color].main,
-                        width: 56,
-                        height: 56,
-                        mx: 'auto',
-                        mb: 2,
-                      }}
-                    >
-                      <stat.icon />
-                    </Avatar>
+                  <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                    <Box display="flex" alignItems="center" width="60px" height="60px" margin="auto" flexDirection="column" justifyContent="center" mb={2}>
+                      <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 60, height: 60, justifyContent: 'center' }}>
+                        <stat.icon />
+                      </Avatar>
+                    </Box>
                     <Box>
                       <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
                         {stat.value}

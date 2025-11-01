@@ -395,7 +395,7 @@ const Transfers = () => {
   });
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة التحويلات" aria-hidden="false" tabIndex={0}>
+    <Box sx={{ p: 1 }} role="main" aria-label="إدارة التحويلات" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -476,7 +476,7 @@ const Transfers = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <SwapHorizIcon />
                   </Avatar>
                 </Box>
@@ -509,7 +509,7 @@ const Transfers = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -542,7 +542,7 @@ const Transfers = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <LocalShippingIcon />
                   </Avatar>
                 </Box>
@@ -575,7 +575,7 @@ const Transfers = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <ScheduleIcon />
                   </Avatar>
                 </Box>
@@ -692,122 +692,6 @@ const Transfers = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Transfer Settings */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات التحويل
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة التحويل</InputLabel>
-                    <Select
-                      value={formData.transferStatus}
-                      label="حالة التحويل"
-                      onChange={(e) => setFormData({ ...formData, transferStatus: e.target.value })}
-                      aria-label="حالة التحويل"
-                    >
-                      <MenuItem value="pending">في الانتظار</MenuItem>
-                      <MenuItem value="approved">موافق عليه</MenuItem>
-                      <MenuItem value="completed">مكتمل</MenuItem>
-                      <MenuItem value="cancelled">ملغي</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ التحويل"
-                    type="date"
-                    value={formData.transferDate}
-                    onChange={(e) => setFormData({ ...formData, transferDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    aria-label="تاريخ التحويل"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      />
-                    }
-                    label="التحويل نشط"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>التحويل من</InputLabel>
-                    <Select
-                      value={formData.transferFrom}
-                      label="التحويل من"
-                      onChange={(e) => setFormData({ ...formData, transferFrom: e.target.value })}
-                      aria-label="التحويل من"
-                    >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse} value={warehouse}>
-                          {warehouse}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>التحويل إلى</InputLabel>
-                    <Select
-                      value={formData.transferTo}
-                      label="التحويل إلى"
-                      onChange={(e) => setFormData({ ...formData, transferTo: e.target.value })}
-                      aria-label="التحويل إلى"
-                    >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse} value={warehouse}>
-                          {warehouse}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>الأولوية</InputLabel>
-                    <Select
-                      value={formData.priority}
-                      label="الأولوية"
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                      aria-label="الأولوية"
-                    >
-                      {priorities.map((priority) => (
-                        <MenuItem key={priority} value={priority}>
-                          {priority}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="سبب التحويل"
-                    value={formData.reason}
-                    onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
-                    size="small"
-                    placeholder="سبب التحويل..."
-                    aria-label="سبب التحويل"
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
         {/* Transfer Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card sx={{ width: '100%', overflow: 'auto' }}>
@@ -933,6 +817,122 @@ const Transfers = () => {
                   />
                 </>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+        
+        {/* Transfer Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات التحويل
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>حالة التحويل</InputLabel>
+                    <Select
+                      value={formData.transferStatus}
+                      label="حالة التحويل"
+                      onChange={(e) => setFormData({ ...formData, transferStatus: e.target.value })}
+                      aria-label="حالة التحويل"
+                    >
+                      <MenuItem value="pending">في الانتظار</MenuItem>
+                      <MenuItem value="approved">موافق عليه</MenuItem>
+                      <MenuItem value="completed">مكتمل</MenuItem>
+                      <MenuItem value="cancelled">ملغي</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="تاريخ التحويل"
+                    type="date"
+                    value={formData.transferDate}
+                    onChange={(e) => setFormData({ ...formData, transferDate: e.target.value })}
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ التحويل"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="التحويل نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>التحويل من</InputLabel>
+                    <Select
+                      value={formData.transferFrom}
+                      label="التحويل من"
+                      onChange={(e) => setFormData({ ...formData, transferFrom: e.target.value })}
+                      aria-label="التحويل من"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>التحويل إلى</InputLabel>
+                    <Select
+                      value={formData.transferTo}
+                      label="التحويل إلى"
+                      onChange={(e) => setFormData({ ...formData, transferTo: e.target.value })}
+                      aria-label="التحويل إلى"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="سبب التحويل"
+                    value={formData.reason}
+                    onChange={(e) => setFormData({ ...formData, reason: e.target.value })}
+                    size="small"
+                    placeholder="سبب التحويل..."
+                    aria-label="سبب التحويل"
+                  />
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

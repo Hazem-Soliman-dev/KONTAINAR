@@ -229,17 +229,8 @@ const ReturnsList = () => {
                 }}
               >
                 <CardContent>
-                  <Box display="flex" alignItems="center" justifyContent="space-between">
-                    <Avatar
-                      sx={{
-                        bgcolor: alpha(theme.palette[stat.color].main, 0.1),
-                        color: theme.palette[stat.color].main,
-                        width: 56,
-                        height: 56,
-                        mx: 'auto',
-                        mb: 2,
-                      }}
-                    >
+                  <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                    <Avatar sx={{ bgcolor: alpha(theme.palette[stat.color].main, 0.1), color: theme.palette[stat.color].main, width: 60, height: 60, justifyContent: 'center', mb: 2 }}>
                       <stat.icon />
                     </Avatar>
                     <Box>
@@ -298,8 +289,8 @@ const ReturnsList = () => {
             </Box>
           }
         >
-          <TableContainer>
-            <Table>
+          <TableContainer sx={{ overflowX: 'auto' }}>
+            <Table sx={{ minWidth: 650 }}>
               <TableHead>
                 <TableRow>
                   <TableCell>رقم المرتجع</TableCell>

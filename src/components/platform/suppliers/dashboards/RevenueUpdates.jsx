@@ -6,12 +6,18 @@ import { MenuItem, Stack, Typography, Button, Avatar, Box } from '@mui/material'
 import { IconGridDots } from '@tabler/icons-react';
 import DashboardCard from '../../../shared/DashboardCard.jsx';
 import CustomSelect from '../../../../components/theme-elements/CustomSelect.jsx';
+import { useNavigate } from 'react-router';
 
 const RevenueUpdates = () => {
+  const navigate = useNavigate();
   const [month, setMonth] = React.useState('1');
 
   const handleChange = (event) => {
     setMonth(event.target.value);
+  };
+
+  const handleViewFullReport = () => {
+    navigate('/suppliers/analytics/sales');
   };
 
   // chart color
@@ -181,7 +187,7 @@ const RevenueUpdates = () => {
               </Box>
             </Stack>
           </Stack>
-          <Button color="primary" variant="contained" fullWidth>
+          <Button color="primary" variant="contained" fullWidth onClick={handleViewFullReport}>
             عرض التقرير الكامل
           </Button>
         </Grid>

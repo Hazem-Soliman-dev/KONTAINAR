@@ -1,12 +1,19 @@
 import React from 'react';
 import Chart from 'react-apexcharts';
 import { useTheme } from '@mui/material/styles';
-import { Stack, Typography, Avatar, Fab } from '@mui/material';
+import { Stack, Typography, Avatar, Fab, Tooltip } from '@mui/material';
 import { IconArrowDownRight, IconCurrencyDollar } from '@tabler/icons-react';
+import { useNavigate } from 'react-router';
 
 import DashboardCard from '../../../shared/DashboardCard.jsx';
 
 const MonthlyEarnings = () => {
+    const navigate = useNavigate();
+
+    const handleViewFinancials = () => {
+        navigate('/suppliers/analytics/sales');
+    };
+
     // chart color
     const theme = useTheme();
     const secondary = '#FF9800'; // Orange
@@ -59,9 +66,11 @@ const MonthlyEarnings = () => {
         <DashboardCard
             title="إيراداتي الشهرية"
             action={
-                <Fab color="secondary" size="medium">
-                    <IconCurrencyDollar width={24} />
-                </Fab>
+                <Tooltip title="عرض التفاصيل المالية" arrow>
+                    <Fab color="secondary" size="medium" onClick={handleViewFinancials}>
+                        <IconCurrencyDollar width={24} />
+                    </Fab>
+                </Tooltip>
             }
             footer={
                 <Chart options={optionscolumnchart} series={seriescolumnchart} type="area" height="60px" />

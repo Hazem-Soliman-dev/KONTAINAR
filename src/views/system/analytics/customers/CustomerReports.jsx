@@ -42,6 +42,8 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  alpha,
+  useTheme,
 } from '@mui/material';
 import {
   Home as HomeIcon,
@@ -88,6 +90,7 @@ const BCrumb = [
 ];
 
 const CustomerReports = () => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
@@ -474,132 +477,164 @@ const CustomerReports = () => {
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: { xs: 2, sm: 3 },
+                p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-                border: '1px solid rgba(25, 118, 210, 0.2)',
-                borderRadius: { xs: 2, sm: 3 },
-                transition: 'all 0.3s ease',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
-                  transform: { xs: 'none', sm: 'translateY(-4px)' },
-                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(25, 118, 210, 0.15)' },
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+                '& .stat-icon': {
+                  transform: 'scale(1.1)',
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <PeopleIcon />
-                  </Avatar>
+              <CardContent>
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                  <Box display="flex" alignItems="center" width="60px" height="60px" margin="auto" flexDirection="column" justifyContent="center" mb={2}>
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.primary.main, 0.1), color: theme.palette.primary.main, width: 60, height: 60, justifyContent: 'center' }}>
+                      <PeopleIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {totalCustomers}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي العملاء
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  {totalCustomers}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي العملاء
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: { xs: 2, sm: 3 },
+                p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
-                border: '1px solid rgba(46, 125, 50, 0.2)',
-                borderRadius: { xs: 2, sm: 3 },
-                transition: 'all 0.3s ease',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
-                  transform: { xs: 'none', sm: 'translateY(-4px)' },
-                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(46, 125, 50, 0.15)' },
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+                '& .stat-icon': {
+                  transform: 'scale(1.1)',
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <AttachMoneyIcon />
-                  </Avatar>
+              <CardContent>
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                  <Box display="flex" alignItems="center" width="60px" height="60px" margin="auto" flexDirection="column" justifyContent="center" mb={2}>
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.success.main, 0.1), color: theme.palette.success.main, width: 60, height: 60, justifyContent: 'center' }}>
+                      <AttachMoneyIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      ${totalRevenue.toLocaleString()}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي الإيرادات
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  ${totalRevenue.toLocaleString()}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي الإيرادات
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: { xs: 2, sm: 3 },
+                p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
-                borderRadius: { xs: 2, sm: 3 },
-                transition: 'all 0.3s ease',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
-                  transform: { xs: 'none', sm: 'translateY(-4px)' },
-                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(255, 152, 0, 0.15)' },
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+                '& .stat-icon': {
+                  transform: 'scale(1.1)',
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <StarIcon />
-                  </Avatar>
+              <CardContent>
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                  <Box display="flex" alignItems="center" width="60px" height="60px" margin="auto" flexDirection="column" justifyContent="center" mb={2}>
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.warning.main, 0.1), color: theme.palette.warning.main, width: 60, height: 60, justifyContent: 'center' }}>
+                      <StarIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {avgSatisfaction.toFixed(1)}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      متوسط الرضا
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  {avgSatisfaction.toFixed(1)}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  متوسط الرضا
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
           <Grid size={{ xs: 12, sm: 6, md: 3 }}>
             <Card
               sx={{
-                p: { xs: 2, sm: 3 },
+                p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
-                borderRadius: { xs: 2, sm: 3 },
-                transition: 'all 0.3s ease',
+                flexDirection: 'row',
+                borderRadius: 3,
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.secondary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
-                  transform: { xs: 'none', sm: 'translateY(-4px)' },
-                  boxShadow: { xs: 'none', sm: '0 8px 25px rgba(156, 39, 176, 0.15)' },
+                  transform: 'translateY(-4px)',
+                  boxShadow: 8,
+                },
+                '& .stat-icon': {
+                  transform: 'scale(1.1)',
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
-                <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
-                >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <ThumbUpIcon />
-                  </Avatar>
+              <CardContent>
+                <Box display="flex" alignItems="center" width="180px" height="90px" margin="auto" flexDirection="column" justifyContent="center">
+                  <Box display="flex" alignItems="center" width="60px" height="60px" margin="auto" flexDirection="column" justifyContent="center" mb={2}>
+                    <Avatar sx={{ bgcolor: alpha(theme.palette.secondary.main, 0.1), color: theme.palette.secondary.main, width: 60, height: 60, justifyContent: 'center' }}>
+                      <ThumbUpIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {vipCustomers}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      عملاء VIP
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  {vipCustomers}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  عملاء VIP
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -719,21 +754,9 @@ const CustomerReports = () => {
             ) : (
               <>
                 <TableContainer sx={{ overflowX: 'auto' }}>
-                  <Table>
+                  <Table sx={{ minWidth: 650 }}>
                     <TableHead>
                       <TableRow>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            indeterminate={
-                              selectedItems.length > 0 && selectedItems.length < customerData.length
-                            }
-                            checked={
-                              customerData.length > 0 &&
-                              selectedItems.length === customerData.length
-                            }
-                            onChange={handleSelectAll}
-                          />
-                        </TableCell>
                         <TableCell>
                           <TableSortLabel
                             active={sortBy === 'reportDate'}
@@ -762,12 +785,6 @@ const CustomerReports = () => {
                         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                         .map((item) => (
                           <TableRow key={item.id} hover>
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={selectedItems.includes(item.id)}
-                                onChange={() => handleSelectItem(item.id)}
-                              />
-                            </TableCell>
                             <TableCell>
                               <Typography variant="body2">{item.reportDate}</Typography>
                             </TableCell>
@@ -782,7 +799,7 @@ const CustomerReports = () => {
                               </Typography>
                             </TableCell>
                             <TableCell>
-                              <Typography variant="body2">{item.email}</Typography>
+                              <Typography variant="body2">{item.email.slice(0, 20)}...</Typography>
                             </TableCell>
                             <TableCell align="right">
                               <Typography variant="subtitle2" fontWeight="bold">

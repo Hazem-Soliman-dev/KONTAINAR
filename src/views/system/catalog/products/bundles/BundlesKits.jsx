@@ -54,6 +54,7 @@ import {
   ListItemText as MuiListItemText,
   ListItemSecondaryAction,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Add as AddIcon,
   EditOutlined as EditIcon,
@@ -93,6 +94,7 @@ import {
 } from '@mui/icons-material';
 
 const BundlesKits = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -413,20 +415,6 @@ const BundlesKits = () => {
               <Typography color="text.primary">الحزم والمجموعات</Typography>
             </Breadcrumbs>
           </Box>
-
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
-            </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              إنشاء حزمة
-            </Button>
-          </Stack>
         </Box>
 
         {/* Enhanced Stats Cards */}
@@ -436,31 +424,61 @@ const BundlesKits = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-                border: '1px solid rgba(25, 118, 210, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <BundleIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: theme.palette.primary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <BundleIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {bundlesData.length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي الحزم
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  {bundlesData.length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي الحزم
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -469,31 +487,61 @@ const BundlesKits = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
-                border: '1px solid rgba(46, 125, 50, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(46, 125, 50, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <CheckCircleIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                        color: theme.palette.success.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <CheckCircleIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {bundlesData.filter((item) => item.status === 'Active').length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      الحزم النشطة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  {bundlesData.filter((item) => item.status === 'Active').length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  الحزم النشطة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -502,34 +550,65 @@ const BundlesKits = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <PercentIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.warning.main, 0.1),
+                        color: theme.palette.warning.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <PercentIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {Math.round(
+                        bundlesData.reduce((sum, item) => sum + item.discount, 0) /
+                          bundlesData.length,
+                      )}
+                      %
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      متوسط الخصم
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  {Math.round(
-                    bundlesData.reduce((sum, item) => sum + item.discount, 0) / bundlesData.length,
-                  )}
-                  %
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  متوسط الخصم
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -538,31 +617,62 @@ const BundlesKits = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.secondary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <PriceIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                        color: theme.palette.secondary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <PriceIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {bundlesData.reduce((sum, item) => sum + item.savings, 0).toLocaleString()}{' '}
+                      ر.س
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي التوفير
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  {bundlesData.reduce((sum, item) => sum + item.savings, 0).toLocaleString()} ر.س
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي التوفير
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -667,6 +777,19 @@ const BundlesKits = () => {
               </Box>
             </Fade>
           )}
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
+            </Button>
+            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
+              إنشاء حزمة
+            </Button>
+          </Stack>
         </Toolbar>
 
         {loading ? (
@@ -756,9 +879,6 @@ const BundlesKits = () => {
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                            <Avatar sx={{ width: 40, height: 40, bgcolor: 'primary.light' }}>
-                              <BundleIcon />
-                            </Avatar>
                             <Box>
                               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                                 {item.name}

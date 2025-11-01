@@ -414,7 +414,7 @@ const Allocations = () => {
   });
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة التخصيصات" aria-hidden="false" tabIndex={0}>
+    <Box sx={{ p: 1 }} role="main" aria-label="إدارة التخصيصات" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -495,7 +495,7 @@ const Allocations = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <AssignmentIcon />
                   </Avatar>
                 </Box>
@@ -528,7 +528,7 @@ const Allocations = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -561,7 +561,7 @@ const Allocations = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <ScheduleIcon />
                   </Avatar>
                 </Box>
@@ -594,7 +594,7 @@ const Allocations = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <PeopleIcon />
                   </Avatar>
                 </Box>
@@ -711,140 +711,7 @@ const Allocations = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Allocation Settings */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات التخصيص
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة التخصيص</InputLabel>
-                    <Select
-                      value={formData.allocationStatus}
-                      label="حالة التخصيص"
-                      onChange={(e) =>
-                        setFormData({ ...formData, allocationStatus: e.target.value })
-                      }
-                      aria-label="حالة التخصيص"
-                    >
-                      <MenuItem value="pending">في الانتظار</MenuItem>
-                      <MenuItem value="allocated">مخصص</MenuItem>
-                      <MenuItem value="completed">مكتمل</MenuItem>
-                      <MenuItem value="cancelled">ملغي</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ التخصيص"
-                    type="date"
-                    value={formData.allocationDate}
-                    onChange={(e) => setFormData({ ...formData, allocationDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    aria-label="تاريخ التخصيص"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      />
-                    }
-                    label="التخصيص نشط"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>نوع التخصيص</InputLabel>
-                    <Select
-                      value={formData.allocationType}
-                      label="نوع التخصيص"
-                      onChange={(e) => setFormData({ ...formData, allocationType: e.target.value })}
-                      aria-label="نوع التخصيص"
-                    >
-                      {types.map((type) => (
-                        <MenuItem key={type} value={type}>
-                          {type}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>المخصص إليه</InputLabel>
-                    <Select
-                      value={formData.assignedTo}
-                      label="المخصص إليه"
-                      onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
-                      aria-label="المخصص إليه"
-                    >
-                      <MenuItem value="أحمد محمد">أحمد محمد</MenuItem>
-                      <MenuItem value="فاطمة علي">فاطمة علي</MenuItem>
-                      <MenuItem value="محمد عبدالله">محمد عبدالله</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>القسم</InputLabel>
-                    <Select
-                      value={formData.department}
-                      label="القسم"
-                      onChange={(e) => setFormData({ ...formData, department: e.target.value })}
-                      aria-label="القسم"
-                    >
-                      {departments.map((department) => (
-                        <MenuItem key={department} value={department}>
-                          {department}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>الأولوية</InputLabel>
-                    <Select
-                      value={formData.priority}
-                      label="الأولوية"
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                      aria-label="الأولوية"
-                    >
-                      {priorities.map((priority) => (
-                        <MenuItem key={priority} value={priority}>
-                          {priority}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="الوصف"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    size="small"
-                    multiline
-                    rows={3}
-                    placeholder="وصف التخصيص..."
-                    aria-label="الوصف"
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
+        
 
         {/* Allocation Table */}
         <Grid size={{ xs: 12, md: 8 }}>
@@ -990,6 +857,141 @@ const Allocations = () => {
                   />
                 </>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Allocation Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات التخصيص
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>حالة التخصيص</InputLabel>
+                    <Select
+                      value={formData.allocationStatus}
+                      label="حالة التخصيص"
+                      onChange={(e) =>
+                        setFormData({ ...formData, allocationStatus: e.target.value })
+                      }
+                      aria-label="حالة التخصيص"
+                    >
+                      <MenuItem value="pending">في الانتظار</MenuItem>
+                      <MenuItem value="allocated">مخصص</MenuItem>
+                      <MenuItem value="completed">مكتمل</MenuItem>
+                      <MenuItem value="cancelled">ملغي</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="تاريخ التخصيص"
+                    type="date"
+                    value={formData.allocationDate}
+                    onChange={(e) => setFormData({ ...formData, allocationDate: e.target.value })}
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ التخصيص"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="التخصيص نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>نوع التخصيص</InputLabel>
+                    <Select
+                      value={formData.allocationType}
+                      label="نوع التخصيص"
+                      onChange={(e) => setFormData({ ...formData, allocationType: e.target.value })}
+                      aria-label="نوع التخصيص"
+                    >
+                      {types.map((type) => (
+                        <MenuItem key={type} value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المخصص إليه</InputLabel>
+                    <Select
+                      value={formData.assignedTo}
+                      label="المخصص إليه"
+                      onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
+                      aria-label="المخصص إليه"
+                    >
+                      <MenuItem value="أحمد محمد">أحمد محمد</MenuItem>
+                      <MenuItem value="فاطمة علي">فاطمة علي</MenuItem>
+                      <MenuItem value="محمد عبدالله">محمد عبدالله</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>القسم</InputLabel>
+                    <Select
+                      value={formData.department}
+                      label="القسم"
+                      onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                      aria-label="القسم"
+                    >
+                      {departments.map((department) => (
+                        <MenuItem key={department} value={department}>
+                          {department}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الوصف"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    size="small"
+                    multiline
+                    rows={3}
+                    placeholder="وصف التخصيص..."
+                    aria-label="الوصف"
+                  />
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

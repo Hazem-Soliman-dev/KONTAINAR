@@ -408,7 +408,7 @@ const Replenishment = () => {
 
   return (
     <Box
-      sx={{ p: 3 }}
+      sx={{ p: 1 }}
       role="main"
       aria-label="إدارة إعادة التموين"
       aria-hidden="false"
@@ -494,7 +494,7 @@ const Replenishment = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <RefreshIcon />
                   </Avatar>
                 </Box>
@@ -527,7 +527,7 @@ const Replenishment = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -560,7 +560,7 @@ const Replenishment = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <ScheduleIcon />
                   </Avatar>
                 </Box>
@@ -593,7 +593,7 @@ const Replenishment = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, justifyContent: 'center' }}>
                     <InventoryIcon />
                   </Avatar>
                 </Box>
@@ -710,6 +710,139 @@ const Replenishment = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
+        {/* Replenishment Table */}
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Card sx={{ width: '100%', overflow: 'auto' }}>
+            <CardContent>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 2,
+                }}
+              >
+                <Typography variant="h6">قائمة إعادة التموين</Typography>
+                <Chip label={`${filteredData.length} تموين`} color="primary" size="small" />
+              </Box>
+              <Divider sx={{ mb: 2 }} />
+
+              {loading ? (
+                <Box sx={{ p: 2 }}>
+                  {[...Array(3)].map((_, index) => (
+                    <Skeleton key={index} height={60} sx={{ mb: 1 }} />
+                  ))}
+                </Box>
+              ) : (
+                <>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell padding="checkbox">
+                          <Checkbox
+                            checked={selectedItems.length === filteredData.length}
+                            onChange={handleSelectAll}
+                          />
+                        </TableCell>
+                        <TableCell>رقم التموين</TableCell>
+                        <TableCell>العنوان</TableCell>
+                        <TableCell>المصدر</TableCell>
+                        <TableCell>الحالة</TableCell>
+                        <TableCell>الأولوية</TableCell>
+                        <TableCell>التكلفة</TableCell>
+                        <TableCell>الإجراءات</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {sortedData
+                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                        .map((item) => (
+                          <TableRow key={item.id} hover>
+                            <TableCell padding="checkbox">
+                              <Checkbox
+                                checked={selectedItems.includes(item.id)}
+                                onChange={() => handleSelectItem(item.id)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Box>
+                                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                                  {item.replenishmentNumber}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {item.items} عنصر
+                                </Typography>
+                              </Box>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2" sx={{ maxWidth: 200 }}>
+                                {item.title}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">{item.source}</Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.status}
+                                size="small"
+                                color={getStatusColor(item.status)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Chip
+                                label={item.priority}
+                                size="small"
+                                color={getPriorityColor(item.priority)}
+                              />
+                            </TableCell>
+                            <TableCell>
+                              <Typography variant="body2">
+                                ${item.totalCost.toLocaleString()}
+                              </Typography>
+                            </TableCell>
+                            <TableCell>
+                              <Stack direction="row" spacing={1}>
+                                <Tooltip title="عرض">
+                                  <IconButton size="small" onClick={() => handleView(item)}>
+                                    <ViewIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="تعديل">
+                                  <IconButton size="small" onClick={() => handleEdit(item)}>
+                                    <EditIcon />
+                                  </IconButton>
+                                </Tooltip>
+                                <Tooltip title="حذف">
+                                  <IconButton
+                                    size="small"
+                                    color="error"
+                                    onClick={() => handleDelete(item)}
+                                  >
+                                    <DeleteIcon />
+                                  </IconButton>
+                                </Tooltip>
+                              </Stack>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                    </TableBody>
+                  </Table>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={filteredData.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </>
+              )}
+            </CardContent>
+          </Card>
+        </Grid>
+
         {/* Replenishment Settings */}
         <Grid size={{ xs: 12, md: 4 }}>
           <Card>
@@ -844,139 +977,6 @@ const Replenishment = () => {
                   />
                 </Grid>
               </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Replenishment Table */}
-        <Grid size={{ xs: 12, md: 8 }}>
-          <Card sx={{ width: '100%', overflow: 'auto' }}>
-            <CardContent>
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'space-between',
-                  mb: 2,
-                }}
-              >
-                <Typography variant="h6">قائمة إعادة التموين</Typography>
-                <Chip label={`${filteredData.length} تموين`} color="primary" size="small" />
-              </Box>
-              <Divider sx={{ mb: 2 }} />
-
-              {loading ? (
-                <Box sx={{ p: 2 }}>
-                  {[...Array(3)].map((_, index) => (
-                    <Skeleton key={index} height={60} sx={{ mb: 1 }} />
-                  ))}
-                </Box>
-              ) : (
-                <>
-                  <Table>
-                    <TableHead>
-                      <TableRow>
-                        <TableCell padding="checkbox">
-                          <Checkbox
-                            checked={selectedItems.length === filteredData.length}
-                            onChange={handleSelectAll}
-                          />
-                        </TableCell>
-                        <TableCell>رقم التموين</TableCell>
-                        <TableCell>العنوان</TableCell>
-                        <TableCell>المصدر</TableCell>
-                        <TableCell>الحالة</TableCell>
-                        <TableCell>الأولوية</TableCell>
-                        <TableCell>التكلفة</TableCell>
-                        <TableCell>الإجراءات</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {sortedData
-                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                        .map((item) => (
-                          <TableRow key={item.id} hover>
-                            <TableCell padding="checkbox">
-                              <Checkbox
-                                checked={selectedItems.includes(item.id)}
-                                onChange={() => handleSelectItem(item.id)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Box>
-                                <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
-                                  {item.replenishmentNumber}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                  {item.items} عنصر
-                                </Typography>
-                              </Box>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="body2" sx={{ maxWidth: 200 }}>
-                                {item.title}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="body2">{item.source}</Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Chip
-                                label={item.status}
-                                size="small"
-                                color={getStatusColor(item.status)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Chip
-                                label={item.priority}
-                                size="small"
-                                color={getPriorityColor(item.priority)}
-                              />
-                            </TableCell>
-                            <TableCell>
-                              <Typography variant="body2">
-                                ${item.totalCost.toLocaleString()}
-                              </Typography>
-                            </TableCell>
-                            <TableCell>
-                              <Stack direction="row" spacing={1}>
-                                <Tooltip title="عرض">
-                                  <IconButton size="small" onClick={() => handleView(item)}>
-                                    <ViewIcon />
-                                  </IconButton>
-                                </Tooltip>
-                                <Tooltip title="تعديل">
-                                  <IconButton size="small" onClick={() => handleEdit(item)}>
-                                    <EditIcon />
-                                  </IconButton>
-                                </Tooltip>
-                                <Tooltip title="حذف">
-                                  <IconButton
-                                    size="small"
-                                    color="error"
-                                    onClick={() => handleDelete(item)}
-                                  >
-                                    <DeleteIcon />
-                                  </IconButton>
-                                </Tooltip>
-                              </Stack>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                  <TablePagination
-                    rowsPerPageOptions={[5, 10, 25]}
-                    component="div"
-                    count={filteredData.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                  />
-                </>
-              )}
             </CardContent>
           </Card>
         </Grid>

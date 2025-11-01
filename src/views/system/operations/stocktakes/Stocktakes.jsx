@@ -409,7 +409,7 @@ const Stocktakes = () => {
   });
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة الجرد" aria-hidden="false" tabIndex={0}>
+    <Box sx={{ p: 1 }} role="main" aria-label="إدارة الجرد" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -490,7 +490,14 @@ const Stocktakes = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'primary.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <InventoryIcon />
                   </Avatar>
                 </Box>
@@ -523,7 +530,14 @@ const Stocktakes = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'success.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -556,7 +570,14 @@ const Stocktakes = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'warning.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <ScheduleIcon />
                   </Avatar>
                 </Box>
@@ -589,7 +610,14 @@ const Stocktakes = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'secondary.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <WarningIcon />
                   </Avatar>
                 </Box>
@@ -706,123 +734,6 @@ const Stocktakes = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Stocktake Settings */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات الجرد
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة الجرد</InputLabel>
-                    <Select
-                      value={formData.stocktakeStatus}
-                      label="حالة الجرد"
-                      onChange={(e) =>
-                        setFormData({ ...formData, stocktakeStatus: e.target.value })
-                      }
-                      aria-label="حالة الجرد"
-                    >
-                      <MenuItem value="pending">في الانتظار</MenuItem>
-                      <MenuItem value="in-progress">قيد التقدم</MenuItem>
-                      <MenuItem value="completed">مكتمل</MenuItem>
-                      <MenuItem value="cancelled">ملغي</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ الجرد"
-                    type="date"
-                    value={formData.stocktakeDate}
-                    onChange={(e) => setFormData({ ...formData, stocktakeDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    aria-label="تاريخ الجرد"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      />
-                    }
-                    label="الجرد نشط"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>المستودع</InputLabel>
-                    <Select
-                      value={formData.warehouse}
-                      label="المستودع"
-                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
-                      aria-label="المستودع"
-                    >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse} value={warehouse}>
-                          {warehouse}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>الأولوية</InputLabel>
-                    <Select
-                      value={formData.priority}
-                      label="الأولوية"
-                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                      aria-label="الأولوية"
-                    >
-                      {priorities.map((priority) => (
-                        <MenuItem key={priority} value={priority}>
-                          {priority}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="المدة المتوقعة (ساعة)"
-                    type="number"
-                    value={formData.estimatedDuration}
-                    onChange={(e) =>
-                      setFormData({ ...formData, estimatedDuration: parseInt(e.target.value) || 0 })
-                    }
-                    size="small"
-                    placeholder="أدخل المدة المتوقعة"
-                    aria-label="المدة المتوقعة"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="الوصف"
-                    value={formData.description}
-                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    size="small"
-                    multiline
-                    rows={3}
-                    placeholder="وصف الجرد..."
-                    aria-label="الوصف"
-                  />
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
         {/* Stocktake Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card sx={{ width: '100%', overflow: 'auto' }}>
@@ -952,6 +863,123 @@ const Stocktakes = () => {
                   />
                 </>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Stocktake Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات الجرد
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>حالة الجرد</InputLabel>
+                    <Select
+                      value={formData.stocktakeStatus}
+                      label="حالة الجرد"
+                      onChange={(e) =>
+                        setFormData({ ...formData, stocktakeStatus: e.target.value })
+                      }
+                      aria-label="حالة الجرد"
+                    >
+                      <MenuItem value="pending">في الانتظار</MenuItem>
+                      <MenuItem value="in-progress">قيد التقدم</MenuItem>
+                      <MenuItem value="completed">مكتمل</MenuItem>
+                      <MenuItem value="cancelled">ملغي</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="تاريخ الجرد"
+                    type="date"
+                    value={formData.stocktakeDate}
+                    onChange={(e) => setFormData({ ...formData, stocktakeDate: e.target.value })}
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ الجرد"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="الجرد نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المستودع</InputLabel>
+                    <Select
+                      value={formData.warehouse}
+                      label="المستودع"
+                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
+                      aria-label="المستودع"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الأولوية</InputLabel>
+                    <Select
+                      value={formData.priority}
+                      label="الأولوية"
+                      onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
+                      aria-label="الأولوية"
+                    >
+                      {priorities.map((priority) => (
+                        <MenuItem key={priority} value={priority}>
+                          {priority}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="المدة المتوقعة (ساعة)"
+                    type="number"
+                    value={formData.estimatedDuration}
+                    onChange={(e) =>
+                      setFormData({ ...formData, estimatedDuration: parseInt(e.target.value) || 0 })
+                    }
+                    size="small"
+                    placeholder="أدخل المدة المتوقعة"
+                    aria-label="المدة المتوقعة"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="الوصف"
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    size="small"
+                    multiline
+                    rows={3}
+                    placeholder="وصف الجرد..."
+                    aria-label="الوصف"
+                  />
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>

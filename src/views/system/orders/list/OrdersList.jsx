@@ -793,20 +793,6 @@ const OrdersList = () => {
               <Typography color="text.primary">قائمة الطلبات</Typography>
             </Breadcrumbs>
           </Box>
-
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
-            </Button>
-            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-              إضافة طلب جديد
-            </Button>
-          </Stack>
         </Box>
 
         {/* Enhanced Stats Cards */}
@@ -832,37 +818,47 @@ const OrdersList = () => {
                     },
                   }}
                 >
-                  <CardContent sx={{ p: 0 }}>
+                  <CardContent>
                     <Box
-                      sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        mb: 2,
-                      }}
+                      display="flex"
+                      alignItems="center"
+                      width="180px"
+                      height="90px"
+                      margin="auto"
+                      flexDirection="column"
+                      justifyContent="center"
                     >
-                      <Avatar sx={{ bgcolor: `${stat.color}.main`, width: 48, height: 48, mr: 2 }}>
-                        <IconComponent />
-                      </Avatar>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        width="60px"
+                        height="60px"
+                        margin="auto"
+                        flexDirection="column"
+                        justifyContent="center"
+                        mb={2}
+                      >
+                        <Avatar
+                          sx={{
+                            bgcolor: alpha(theme.palette[stat.color].main, 0.1),
+                            color: theme.palette[stat.color].main,
+                            width: 60,
+                            height: 60,
+                            justifyContent: 'center',
+                          }}
+                        >
+                          <IconComponent />
+                        </Avatar>
+                      </Box>
+                      <Box>
+                        <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                          {stat.value}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                          {stat.title}
+                        </Typography>
+                      </Box>
                     </Box>
-                    <Typography
-                      variant="h3"
-                      sx={{ fontWeight: 700, color: `${stat.color}.main`, mb: 1 }}
-                    >
-                      {stat.value}
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      sx={{ fontWeight: 500, color: 'text.secondary', mb: 1 }}
-                    >
-                      {stat.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: `${stat.color}.main`, fontWeight: 600 }}
-                    >
-                      {stat.change}
-                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -985,9 +981,20 @@ const OrdersList = () => {
               </Button>
             </Box>
           )}
-          <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
-            إضافة طلب
-          </Button>
+
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
+            </Button>
+            <Button variant="contained" startIcon={<AddIcon />} onClick={() => setOpenDialog(true)}>
+              إضافة طلب
+            </Button>
+          </Stack>
         </Toolbar>
 
         {loading ? (

@@ -53,6 +53,7 @@ import {
   ListItemAvatar,
   ListItemText as MuiListItemText,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   DeleteOutline as DeleteIcon,
   VisibilityOutlined as ViewIcon,
@@ -72,6 +73,7 @@ import {
 } from '@mui/icons-material';
 
 const DeletedProducts = () => {
+  const theme = useTheme();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [searchTerm, setSearchTerm] = useState('');
@@ -401,25 +403,6 @@ const DeletedProducts = () => {
               <Typography color="text.primary">المنتجات المحذوفة</Typography>
             </Breadcrumbs>
           </Box>
-
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              startIcon={<RefreshIcon />}
-              onClick={handleRefresh}
-              disabled={isRefreshing}
-            >
-              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
-            </Button>
-            <Button
-              variant="contained"
-              color="success"
-              startIcon={<RestoreIcon />}
-              onClick={() => setOpenRestoreDialog(true)}
-            >
-              استعادة جماعية
-            </Button>
-          </Stack>
         </Box>
 
         {/* Enhanced Stats Cards */}
@@ -429,31 +412,61 @@ const DeletedProducts = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(244, 67, 54, 0.1) 0%, rgba(244, 67, 54, 0.05) 100%)',
-                border: '1px solid rgba(244, 67, 54, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.error.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.error.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.error.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(244, 67, 54, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, mr: 2 }}>
-                    <DeleteIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.error.main, 0.1),
+                        color: theme.palette.error.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <DeleteIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {deletedProductsData.length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المنتجات المحذوفة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'error.main', mb: 1 }}>
-                  {deletedProductsData.length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  المنتجات المحذوفة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -462,31 +475,61 @@ const DeletedProducts = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(76, 175, 80, 0.1) 0%, rgba(76, 175, 80, 0.05) 100%)',
-                border: '1px solid rgba(76, 175, 80, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(76, 175, 80, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <RestoreIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                        color: theme.palette.success.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <RestoreIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {deletedProductsData.filter((item) => item.canRestore).length}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      يمكن الاستعادة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  {deletedProductsData.filter((item) => item.canRestore).length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  يمكن الاستعادة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -495,31 +538,64 @@ const DeletedProducts = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <ArchiveIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.warning.main, 0.1),
+                        color: theme.palette.warning.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <ArchiveIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {
+                        deletedProductsData.filter((item) => item.deletionType === 'Soft Delete')
+                          .length
+                      }
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      محذوف مؤقتاً
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  {deletedProductsData.filter((item) => item.deletionType === 'Soft Delete').length}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  محذوف مؤقتاً
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -528,31 +604,63 @@ const DeletedProducts = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.secondary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <HistoryIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                        color: theme.palette.secondary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <HistoryIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      {deletedProductsData
+                        .reduce((sum, item) => sum + item.views, 0)
+                        .toLocaleString()}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      إجمالي المشاهدات
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  {deletedProductsData.reduce((sum, item) => sum + item.views, 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  إجمالي المشاهدات
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -656,6 +764,24 @@ const DeletedProducts = () => {
               </Box>
             </Fade>
           )}
+          <Stack direction="row" spacing={2}>
+            <Button
+              variant="outlined"
+              startIcon={<RefreshIcon />}
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+            >
+              {isRefreshing ? 'جاري التحديث...' : 'تحديث'}
+            </Button>
+            <Button
+              variant="contained"
+              color="success"
+              startIcon={<RestoreIcon />}
+              onClick={() => setOpenRestoreDialog(true)}
+            >
+              استعادة جماعية
+            </Button>
+          </Stack>
         </Toolbar>
 
         {loading ? (
@@ -739,9 +865,6 @@ const DeletedProducts = () => {
                       </TableCell>
                       <TableCell>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                          <Avatar sx={{ width: 40, height: 40, bgcolor: 'error.light' }}>
-                            <DeleteIcon />
-                          </Avatar>
                           <Box>
                             <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                               {item.name}

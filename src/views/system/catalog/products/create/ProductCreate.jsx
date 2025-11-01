@@ -32,6 +32,7 @@ import {
   Checkbox,
   FormGroup,
 } from '@mui/material';
+import { alpha, useTheme } from '@mui/material/styles';
 import {
   Save as SaveIcon,
   Cancel as CancelIcon,
@@ -451,6 +452,7 @@ const RichTextEditor = ({ value, onChange, placeholder, label, helperText }) => 
 };
 
 const ProductCreate = () => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
   const [activeTab, setActiveTab] = useState(0);
@@ -722,37 +724,6 @@ const ProductCreate = () => {
               <Typography color="text.primary">إنشاء منتج</Typography>
             </Breadcrumbs>
           </Box>
-
-          <Stack direction="row" spacing={2} alignItems="center">
-            {/* Language Selector */}
-            <FormControl size="small" sx={{ minWidth: 120 }}>
-              <InputLabel>اللغة</InputLabel>
-              <Select
-                value={selectedLanguage}
-                onChange={(e) => setSelectedLanguage(e.target.value)}
-                label="اللغة"
-              >
-                <MenuItem value="ar">العربية</MenuItem>
-                <MenuItem value="en">الإنجليزية</MenuItem>
-              </Select>
-            </FormControl>
-
-            <Button
-              variant="outlined"
-              startIcon={<CancelIcon />}
-              onClick={() => window.history.back()}
-            >
-              إلغاء
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
-              onClick={handleSave}
-              disabled={loading}
-            >
-              {loading ? 'جاري الحفظ...' : 'حفظ المنتج'}
-            </Button>
-          </Stack>
         </Box>
 
         {/* Enhanced Stats Cards */}
@@ -762,31 +733,61 @@ const ProductCreate = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(25, 118, 210, 0.05) 100%)',
-                border: '1px solid rgba(25, 118, 210, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.primary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.primary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(25, 118, 210, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
-                    <InventoryIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.primary.main, 0.1),
+                        color: theme.palette.primary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <InventoryIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      1,247
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المنتجات الكلية
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'primary.main', mb: 1 }}>
-                  1,247
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  المنتجات الكلية
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -795,31 +796,61 @@ const ProductCreate = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(46, 125, 50, 0.1) 0%, rgba(46, 125, 50, 0.05) 100%)',
-                border: '1px solid rgba(46, 125, 50, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.success.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.success.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.success.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(46, 125, 50, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
-                    <PublicIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.success.main, 0.1),
+                        color: theme.palette.success.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <PublicIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      1,156
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المنتجات النشطة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'success.main', mb: 1 }}>
-                  1,156
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  المنتجات النشطة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -828,31 +859,61 @@ const ProductCreate = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 152, 0, 0.05) 100%)',
-                border: '1px solid rgba(255, 152, 0, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.warning.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.warning.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(255, 152, 0, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
-                    <LockIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.warning.main, 0.1),
+                        color: theme.palette.warning.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <LockIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      91
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      المنتجات المسودة
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'warning.main', mb: 1 }}>
-                  91
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  المنتجات المسودة
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -861,31 +922,61 @@ const ProductCreate = () => {
               sx={{
                 p: 3,
                 textAlign: 'center',
-                background:
-                  'linear-gradient(135deg, rgba(156, 39, 176, 0.1) 0%, rgba(156, 39, 176, 0.05) 100%)',
-                border: '1px solid rgba(156, 39, 176, 0.2)',
+                flexDirection: 'row',
                 borderRadius: 3,
-                transition: 'all 0.3s ease',
+                background: `linear-gradient(135deg, ${alpha(
+                  theme.palette.secondary.main,
+                  0.08,
+                )} 0%, ${alpha(theme.palette.secondary.main, 0.04)} 100%)`,
+                border: `1px solid ${alpha(theme.palette.secondary.main, 0.2)}`,
+                transition: 'all .3s ease',
                 '&:hover': {
                   transform: 'translateY(-4px)',
-                  boxShadow: '0 8px 25px rgba(156, 39, 176, 0.15)',
+                  boxShadow: 8,
                 },
               }}
             >
-              <CardContent sx={{ p: 0 }}>
+              <CardContent>
                 <Box
-                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
+                  display="flex"
+                  alignItems="center"
+                  width="180px"
+                  height="90px"
+                  margin="auto"
+                  flexDirection="column"
+                  justifyContent="center"
                 >
-                  <Avatar sx={{ bgcolor: 'secondary.main', width: 48, height: 48, mr: 2 }}>
-                    <TrendingUpIcon />
-                  </Avatar>
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    width="60px"
+                    height="60px"
+                    margin="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    mb={2}
+                  >
+                    <Avatar
+                      sx={{
+                        bgcolor: alpha(theme.palette.secondary.main, 0.1),
+                        color: theme.palette.secondary.main,
+                        width: 60,
+                        height: 60,
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <TrendingUpIcon />
+                    </Avatar>
+                  </Box>
+                  <Box>
+                    <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+                      24
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      الفئات
+                    </Typography>
+                  </Box>
                 </Box>
-                <Typography variant="h3" sx={{ fontWeight: 700, color: 'secondary.main', mb: 1 }}>
-                  24
-                </Typography>
-                <Typography variant="body1" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-                  الفئات
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -895,7 +986,7 @@ const ProductCreate = () => {
       <Grid container spacing={3}>
         {/* Main Content */}
         <Grid size={{ xs: 12 }}>
-          <Paper sx={{ p: 3 }}>
+          <Paper sx={{ p: 1 }}>
             <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
               <Tabs
                 value={activeTab}
@@ -910,6 +1001,23 @@ const ProductCreate = () => {
                 <Tab label="العروض والترويج" icon={<DiscountIcon />} />
                 <Tab label="المتاجر والتوفر" icon={<StoreIcon />} />
                 <Tab label="الوسائط والملفات" icon={<ImageIcon />} />
+                <Stack direction="row" spacing={2} alignItems="center" mx="auto">
+                  <Button
+                    variant="outlined"
+                    startIcon={<CancelIcon />}
+                    onClick={() => window.history.back()}
+                  >
+                    إلغاء
+                  </Button>
+                  <Button
+                    variant="contained"
+                    startIcon={loading ? <CircularProgress size={20} /> : <SaveIcon />}
+                    onClick={handleSave}
+                    disabled={loading}
+                  >
+                    {loading ? 'جاري الحفظ...' : 'حفظ المنتج'}
+                  </Button>
+                </Stack>
               </Tabs>
             </Box>
 
@@ -1090,24 +1198,28 @@ const ProductCreate = () => {
                             // توليد باركود حسب الفئات
                             const generateBarcode = () => {
                               // القسم الرئيسي - 3 أرقام
-                              const mainCategoryCode = formData.mainCategory ? 
-                                String(formData.mainCategory).padStart(3, '0') : '001';
-                              
-                              // القسم الفرعي - 3 أرقام  
-                              const subCategoryCode = formData.subCategory ? 
-                                String(formData.subCategory).padStart(3, '0') : '001';
-                              
+                              const mainCategoryCode = formData.mainCategory
+                                ? String(formData.mainCategory).padStart(3, '0')
+                                : '001';
+
+                              // القسم الفرعي - 3 أرقام
+                              const subCategoryCode = formData.subCategory
+                                ? String(formData.subCategory).padStart(3, '0')
+                                : '001';
+
                               // العلامة التجارية - 5 أرقام
-                              const brandCode = formData.brand ? 
-                                String(formData.brand).padStart(5, '0') : '00001';
-                              
+                              const brandCode = formData.brand
+                                ? String(formData.brand).padStart(5, '0')
+                                : '00001';
+
                               // الموديل - 4 أرقام
-                              const modelCode = formData.model ? 
-                                String(formData.model).padStart(4, '0') : '0001';
-                              
+                              const modelCode = formData.model
+                                ? String(formData.model).padStart(4, '0')
+                                : '0001';
+
                               return `${mainCategoryCode}-${subCategoryCode}-${brandCode}-${modelCode}`;
                             };
-                            
+
                             const newBarcode = generateBarcode();
                             setFormData({ ...formData, barcode: newBarcode });
                           }}
@@ -1217,7 +1329,9 @@ const ProductCreate = () => {
                     fullWidth
                     multiline
                     rows={2}
-                    label={`وصف ميتا تاج المنتج (${selectedLanguage === 'en' ? 'English' : 'العربية'})`}
+                    label={`وصف ميتا تاج المنتج (${
+                      selectedLanguage === 'en' ? 'English' : 'العربية'
+                    })`}
                     value={formData.seoDescription[selectedLanguage] || ''}
                     onChange={handleLanguageInputChange('seoDescription', selectedLanguage)}
                     placeholder={
@@ -1484,7 +1598,9 @@ const ProductCreate = () => {
                   <TextField
                     fullWidth
                     type="number"
-                    label={formData.discountType === 'percentage' ? 'نسبة الخصم (%)' : 'مبلغ الخصم (ر.س)'}
+                    label={
+                      formData.discountType === 'percentage' ? 'نسبة الخصم (%)' : 'مبلغ الخصم (ر.س)'
+                    }
                     value={formData.discount}
                     onChange={handleInputChange('discount')}
                     placeholder="0"
@@ -1773,7 +1889,6 @@ const ProductCreate = () => {
                   />
                 </Grid>
 
-
                 {/* Stock Alerts */}
                 <Grid size={{ xs: 12 }}>
                   <Alert severity="info" sx={{ mt: 2 }}>
@@ -1792,7 +1907,6 @@ const ProductCreate = () => {
                 </Grid>
               </Grid>
             )}
-
 
             {/* Specifications Tab */}
             {activeTab === 3 && (
@@ -1927,7 +2041,10 @@ const ProductCreate = () => {
                             onChange={(e) =>
                               setFormData((prev) => ({
                                 ...prev,
-                                imageProperties: { ...prev.imageProperties, required: e.target.checked },
+                                imageProperties: {
+                                  ...prev.imageProperties,
+                                  required: e.target.checked,
+                                },
                               }))
                             }
                           />
@@ -1941,7 +2058,10 @@ const ProductCreate = () => {
                             onChange={(e) =>
                               setFormData((prev) => ({
                                 ...prev,
-                                imageProperties: { ...prev.imageProperties, seoEnabled: e.target.checked },
+                                imageProperties: {
+                                  ...prev.imageProperties,
+                                  seoEnabled: e.target.checked,
+                                },
                               }))
                             }
                           />
@@ -1962,7 +2082,10 @@ const ProductCreate = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        imageProperties: { ...prev.imageProperties, minImages: parseInt(e.target.value) },
+                        imageProperties: {
+                          ...prev.imageProperties,
+                          minImages: parseInt(e.target.value),
+                        },
                       }))
                     }
                     placeholder="1"
@@ -1979,7 +2102,10 @@ const ProductCreate = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        imageProperties: { ...prev.imageProperties, maxImages: parseInt(e.target.value) },
+                        imageProperties: {
+                          ...prev.imageProperties,
+                          maxImages: parseInt(e.target.value),
+                        },
                       }))
                     }
                     placeholder="10"
@@ -1996,7 +2122,10 @@ const ProductCreate = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        imageProperties: { ...prev.imageProperties, maxFileSize: parseInt(e.target.value) },
+                        imageProperties: {
+                          ...prev.imageProperties,
+                          maxFileSize: parseInt(e.target.value),
+                        },
                       }))
                     }
                     placeholder="5"
@@ -2012,7 +2141,10 @@ const ProductCreate = () => {
                     onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
-                        imageProperties: { ...prev.imageProperties, allowedFormats: e.target.value.split(', ') },
+                        imageProperties: {
+                          ...prev.imageProperties,
+                          allowedFormats: e.target.value.split(', '),
+                        },
                       }))
                     }
                     placeholder="jpg, jpeg, png, webp"
@@ -2476,7 +2608,6 @@ const ProductCreate = () => {
               </Grid>
             )}
 
-
             {/* Media & Files Tab */}
             {activeTab === 6 && (
               <Grid container spacing={3}>
@@ -2575,10 +2706,8 @@ const ProductCreate = () => {
                 </Grid>
               </Grid>
             )}
-
           </Paper>
         </Grid>
-
       </Grid>
 
       {/* Action Buttons */}

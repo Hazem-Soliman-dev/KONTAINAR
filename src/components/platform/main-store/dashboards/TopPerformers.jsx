@@ -45,10 +45,11 @@ const TopPerformers = () => {
         </CustomSelect>
       }
     >
-      <TableContainer>
+      <TableContainer sx={{ overflowX: 'auto' }}>
         <Table
           aria-label="simple table"
           sx={{
+            minWidth: 650,
             whiteSpace: 'nowrap',
           }}
         >

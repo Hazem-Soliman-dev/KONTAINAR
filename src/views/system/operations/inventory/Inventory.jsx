@@ -374,7 +374,7 @@ const Inventory = () => {
   });
 
   return (
-    <Box sx={{ p: 3 }} role="main" aria-label="إدارة المخزون" aria-hidden="false" tabIndex={0}>
+    <Box sx={{ p: 1 }} role="main" aria-label="إدارة المخزون" aria-hidden="false" tabIndex={0}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Box
@@ -455,7 +455,14 @@ const Inventory = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'primary.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'primary.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <InventoryIcon />
                   </Avatar>
                 </Box>
@@ -488,7 +495,14 @@ const Inventory = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'success.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'success.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <CheckCircleIcon />
                   </Avatar>
                 </Box>
@@ -521,7 +535,14 @@ const Inventory = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'warning.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{
+                      bgcolor: 'warning.main',
+                      width: 48,
+                      height: 48,
+                      justifyContent: 'center',
+                    }}
+                  >
                     <WarningIcon />
                   </Avatar>
                 </Box>
@@ -554,7 +575,9 @@ const Inventory = () => {
                 <Box
                   sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mb: 2 }}
                 >
-                  <Avatar sx={{ bgcolor: 'error.main', width: 48, height: 48, mr: 2 }}>
+                  <Avatar
+                    sx={{ bgcolor: 'error.main', width: 48, height: 48, justifyContent: 'center' }}
+                  >
                     <CancelIcon />
                   </Avatar>
                 </Box>
@@ -670,109 +693,6 @@ const Inventory = () => {
 
       {/* Content */}
       <Grid container spacing={3}>
-        {/* Inventory Settings */}
-        <Grid size={{ xs: 12, md: 4 }}>
-          <Card>
-            <CardContent>
-              <Typography variant="h6" gutterBottom>
-                إعدادات المخزون
-              </Typography>
-              <Divider sx={{ mb: 2 }} />
-
-              <Grid container spacing={2}>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>حالة المخزون</InputLabel>
-                    <Select
-                      value={formData.inventoryStatus}
-                      label="حالة المخزون"
-                      onChange={(e) =>
-                        setFormData({ ...formData, inventoryStatus: e.target.value })
-                      }
-                      aria-label="حالة المخزون"
-                    >
-                      <MenuItem value="active">نشط</MenuItem>
-                      <MenuItem value="low">مخزون منخفض</MenuItem>
-                      <MenuItem value="out">نفد من المخزون</MenuItem>
-                      <MenuItem value="discontinued">متوقف</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="تاريخ المخزون"
-                    type="date"
-                    value={formData.inventoryDate}
-                    onChange={(e) => setFormData({ ...formData, inventoryDate: e.target.value })}
-                    size="small"
-                    InputLabelProps={{ shrink: true }}
-                    aria-label="تاريخ المخزون"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={formData.isActive}
-                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                      />
-                    }
-                    label="المخزون نشط"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <TextField
-                    fullWidth
-                    label="موقع المخزون"
-                    value={formData.inventoryLocation}
-                    onChange={(e) =>
-                      setFormData({ ...formData, inventoryLocation: e.target.value })
-                    }
-                    size="small"
-                    placeholder="موقع المخزون..."
-                    aria-label="موقع المخزون"
-                  />
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>المستودع</InputLabel>
-                    <Select
-                      value={formData.warehouse}
-                      label="المستودع"
-                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
-                      aria-label="المستودع"
-                    >
-                      {warehouses.map((warehouse) => (
-                        <MenuItem key={warehouse} value={warehouse}>
-                          {warehouse}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid size={{ xs: 12 }}>
-                  <FormControl fullWidth size="small">
-                    <InputLabel>الفئة</InputLabel>
-                    <Select
-                      value={formData.category}
-                      label="الفئة"
-                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      aria-label="الفئة"
-                    >
-                      {categories.map((category) => (
-                        <MenuItem key={category} value={category}>
-                          {category}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Grid>
-
         {/* Inventory Table */}
         <Grid size={{ xs: 12, md: 8 }}>
           <Card sx={{ width: '100%', overflow: 'auto' }}>
@@ -896,6 +816,108 @@ const Inventory = () => {
                   />
                 </>
               )}
+            </CardContent>
+          </Card>
+        </Grid>
+        {/* Inventory Settings */}
+        <Grid size={{ xs: 12, md: 4 }}>
+          <Card>
+            <CardContent>
+              <Typography variant="h6" gutterBottom>
+                إعدادات المخزون
+              </Typography>
+              <Divider sx={{ mb: 2 }} />
+
+              <Grid container spacing={2}>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>حالة المخزون</InputLabel>
+                    <Select
+                      value={formData.inventoryStatus}
+                      label="حالة المخزون"
+                      onChange={(e) =>
+                        setFormData({ ...formData, inventoryStatus: e.target.value })
+                      }
+                      aria-label="حالة المخزون"
+                    >
+                      <MenuItem value="active">نشط</MenuItem>
+                      <MenuItem value="low">مخزون منخفض</MenuItem>
+                      <MenuItem value="out">نفد من المخزون</MenuItem>
+                      <MenuItem value="discontinued">متوقف</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="تاريخ المخزون"
+                    type="date"
+                    value={formData.inventoryDate}
+                    onChange={(e) => setFormData({ ...formData, inventoryDate: e.target.value })}
+                    size="small"
+                    InputLabelProps={{ shrink: true }}
+                    aria-label="تاريخ المخزون"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={formData.isActive}
+                        onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
+                      />
+                    }
+                    label="المخزون نشط"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <TextField
+                    fullWidth
+                    label="موقع المخزون"
+                    value={formData.inventoryLocation}
+                    onChange={(e) =>
+                      setFormData({ ...formData, inventoryLocation: e.target.value })
+                    }
+                    size="small"
+                    placeholder="موقع المخزون..."
+                    aria-label="موقع المخزون"
+                  />
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>المستودع</InputLabel>
+                    <Select
+                      value={formData.warehouse}
+                      label="المستودع"
+                      onChange={(e) => setFormData({ ...formData, warehouse: e.target.value })}
+                      aria-label="المستودع"
+                    >
+                      {warehouses.map((warehouse) => (
+                        <MenuItem key={warehouse} value={warehouse}>
+                          {warehouse}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+                <Grid size={{ xs: 12 }}>
+                  <FormControl fullWidth size="small">
+                    <InputLabel>الفئة</InputLabel>
+                    <Select
+                      value={formData.category}
+                      label="الفئة"
+                      onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+                      aria-label="الفئة"
+                    >
+                      {categories.map((category) => (
+                        <MenuItem key={category} value={category}>
+                          {category}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
         </Grid>
